@@ -59,8 +59,8 @@
         <ul>
           <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
           <li><a class="nav-link scrollto" href="#about">About</a></li>
-          <li><a class="nav-link scrollto" href="#services">Services</a></li>
-          <li><a class="nav-link scrollto" href="#portfolio">Portfolio</a></li>
+          {% comment %}<li><a class="nav-link scrollto" href="#services">Services</a></li>{% endcomment %}
+          {% comment %}<li><a class="nav-link scrollto" href="#portfolio">Portfolio</a></li>{% endcomment%}
           <li><a class="nav-link scrollto" href="#team">Team</a></li>
           {% comment %} <li><a href="blog.html">Blog</a></li> {% endcomment %}
           {% comment %} <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
@@ -80,7 +80,7 @@
               <li><a href="#">Drop Down 4</a></li>
             </ul>
           </li> {% endcomment %}
-          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+         {% comment %} <li><a class="nav-link scrollto" href="#contact">Contact</a></li>{% endcomment %}
           <li><a id="login-btn" class="getstarted scrollto" data-toggle="modal"  data-bs-toggle="modal" data-bs-target="#login-register-modal">Login</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
@@ -114,13 +114,13 @@
           <span class="text-2">Let's get connected</span>
         </div>
       </div>
-      <div class="back">
+ {% comment %}     <div class="back">
         <img class="backImg" src="{% static '/flipper/images/backImg.jpg' %}" alt="">
         <div class="text">
           <span class="text-1">Complete miles of journey <br> with one step</span>
           <span class="text-2">Let's get started</span>
         </div>
-      </div>
+      </div>{% endcomment %}
     </div>
     <div class="forms">
         <div class="form-content">
@@ -140,11 +140,11 @@
               <div class="button input-box">
                 <input type="submit" value="Sumbit">
               </div>
-              <div class="text sign-up-text">Don't have an account? <label for="flip">Sigup now</label></div>
+              {% comment %}<div class="text sign-up-text">Don't have an account? <label for="flip">Sigup now</label></div>{% endcomment %}
             </div>
         </form>
       </div>
-        <div class="signup-form">
+      {% comment %}<div class="signup-form">
           <div class="title">Signup</div>
         <form action="#">
             <div class="input-boxes">
@@ -166,7 +166,7 @@
               <div class="text sign-up-text">Already have an account? <label for="flip">Login now</label></div>
             </div>
       </form>
-    </div>
+    </div>{% endcomment %}
     </div>
     </div>
   </div>
@@ -211,9 +211,9 @@
           <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
             <div class="content">
               <h3>Who We Are</h3>
-              <h2>Expedita voluptas omnis cupiditate totam eveniet nobis sint iste. Dolores est repellat corrupti reprehenderit.</h2>
+              <h2>Incorporated and duly established in 1976, Uni-Orient is regarded as the leading travel agency and tour operator in the Philippines. From its humble beginning in Manila’s Chinatown, Uni-Orient branched out to different strategic locations in the country and overseas.</h2>
               <p>
-                Quisquam vel ut sint cum eos hic dolores aperiam. Sed deserunt et. Inventore et et dolor consequatur itaque ut voluptate sed et. Magnam nam ipsum tenetur suscipit voluptatum nam et est corrupti.
+                The company accepted its first Top Sales Award from Philippine flag carrier, Philippine Airlines, and became a member of International Air Transport Association in 1984.
               </p>
               <div class="text-center text-lg-start">
                 <a href="#" class="btn-read-more d-inline-flex align-items-center justify-content-center align-self-center">
@@ -1248,7 +1248,7 @@
     </section><!-- End Recent Blog Posts Section --> {% endcomment %}
 
     <!-- ======= Contact Section ======= -->
-    <section id="contact" class="contact">
+   {% comment %} <section id="contact" class="contact">
 
       <div class="container" data-aos="fade-up">
 
@@ -1331,7 +1331,7 @@
 
       </div>
 
-    </section><!-- End Contact Section -->
+    </section><!-- End Contact Section --> {% endcomment %}
 
   </main><!-- End #main -->
 
@@ -1362,12 +1362,12 @@
               <img src="{% static '/home/assets/img/uni-logo-transparent.png' %}" alt="">
               <span><img src="{% static '/home/assets/img/uni-logo-2-transparent.png' %}" alt=""></span>
             </a>
-            <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus.</p>
+            <p>Your Business and Travel Concierge</p>
             <div class="social-links mt-3">
-              <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-              <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-              <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-              <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              <a href="https://www.twitter.com/uniorienttravel" class="twitter"><i class="bi bi-twitter"></i></a>
+              <a href="https://www.facebook.com/UniOrientTravel" class="facebook"><i class="bi bi-facebook"></i></a>
+              <a href="https://www.instagram.com/uniorienttravel" class="instagram"><i class="bi bi-instagram"></i></a>
+              {% comment %}<a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>{% endcomment %}
             </div>
           </div>
 
@@ -1396,11 +1396,11 @@
           <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
             <h4>Contact Us</h4>
             <p>
-              A108 Adam Street <br>
-              New York, NY 535022<br>
-              United States <br><br>
-              <strong>Phone:</strong> +1 5589 55488 55<br>
-              <strong>Email:</strong> info@example.com<br>
+              Capitol Square,<br>
+              82, N Escario St, Cebu City<br>
+              6000 Cebu, Philippines<br><br>
+              <strong>Phone:</strong> +63 (032) 253 1866<br>
+              <strong>Email:</strong> info@uniorient.com<br>
             </p>
 
           </div>
