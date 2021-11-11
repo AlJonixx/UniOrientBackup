@@ -22,8 +22,13 @@ from home.views import (
 
 )
 
+from admin.views import(
+    admin_screen_view,
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_screen_view.as_view(), name='home'),
+    path('admin-dashboard', admin_screen_view.as_view(), name='admin-dashboard'),
 
 ]
