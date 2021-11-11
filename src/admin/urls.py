@@ -19,6 +19,7 @@ from django.urls import path
 
 from admin.views import (
     admin_screen_view,
+    login_screen_view,
 
 )
 
@@ -26,4 +27,5 @@ from admin.views import (
 urlpatterns = [
 
     path('admin-dashboard', admin_screen_view.as_view(), name='admin-dashboard'),
+    path('admin-login', login_screen_view.as_view(), name='admin-login'),
 ]

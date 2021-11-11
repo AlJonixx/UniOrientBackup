@@ -7,3 +7,8 @@ from django.views.generic import View
 class admin_screen_view(View):
     def get(self, request):
         return render(request, 'admin/index.html', {})
+
+
+class login_screen_view(View):
+    def get(self, request):
+        return render(request, 'admin/login.html', {})

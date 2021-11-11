@@ -2243,11 +2243,11 @@ table.dataTable thead>tr>td.sorting {
 }
 
 .account-box .account-btn {
-	background: #f43b48;
-	background: -moz-linear-gradient(left, #f43b48 0%, #453a94 100%);
+	background: #14007d;
+	/* background: -moz-linear-gradient(left, #f43b48 0%, #453a94 100%);
 	background: -webkit-linear-gradient(left, #f43b48 0%, #453a94 100%);
 	background: -ms-linear-gradient(left, #f43b48 0%, #453a94 100%);
-	background: linear-gradient(to right, #f43b48 0%, #453a94 100%);
+	background: linear-gradient(to right, #f43b48 0%, #453a94 100%); */
 	border: 0;
 	border-radius: 4px;
 	display: block;
@@ -2260,6 +2260,7 @@ table.dataTable thead>tr>td.sorting {
 .account-box .account-btn:focus {
 	border: 0;
 	opacity: 0.8;
+	transition: 0.5s;
 }
 
 .account-box .form-control {
