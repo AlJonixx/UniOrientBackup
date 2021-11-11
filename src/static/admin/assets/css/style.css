@@ -2087,7 +2087,7 @@ table.dataTable thead>tr>td.sorting {
 }
 
 .page-wrapper>.content {
-	padding: 30px;
+	padding: 40px;
 }
 
 .page-header {
@@ -7393,7 +7393,7 @@ table.table-inbox tbody tr.checked {
 
 .responsive-search {
 	display: none;
-	color: #333;
+	color: #FFF;
 	font-size: 20px;
 	height: 60px;
 	line-height: 60px;
