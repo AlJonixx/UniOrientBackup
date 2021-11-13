@@ -1,4 +1,4 @@
-"""uniorient URL Configuration
+"""Admin URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -14,14 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from django.conf.urls import handler404
+from django.urls import path
+
+
+from customAdmin.views import (
+    admin_screen_view,
+    login_screen_view,
+    logout_screen_view,
+
+)
 
 
 urlpatterns = [
-    path('', include('home.urls')),
-    path('', include('customAdmin.urls')),
-
+    path('admin-dashboard', admin_screen_view.as_view(), name='admin-dashboard'),
+    path('admin-login', login_screen_view, name='admin-login'),
+    path('admin-logout', logout_screen_view, name='admin-logout'),
 ]
-
-handler404 = 'home.views.error_404'
