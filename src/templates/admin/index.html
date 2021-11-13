@@ -301,12 +301,15 @@
 						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
 							<span class="user-img"><img src="https://picsum.photos/200" alt="">
 							<span class="status online"></span></span>
-							<span>Hannah Laquinon</span>
+							{% if request.user.is_authenticated %}
+							<span>{{request.user.first_name}}</span>
+							{% endif %}
+							
 						</a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" href="profile.html">My Profile</a>
 							<a class="dropdown-item" href="settings.html">Settings</a>
-							<a class="dropdown-item" href="login.html">Logout</a>
+							<a class="dropdown-item" href="{% url 'admin-logout' %}">Logout</a>
 						</div>
 					</li>
 				</ul>
