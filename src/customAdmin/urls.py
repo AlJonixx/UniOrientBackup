@@ -76,8 +76,7 @@ urlpatterns = [
     # REPORTS TAB
     path('employee-report', employee_reports_screen_view, name='employee-report'),
     path('payslip-report', payslip_report_screen_view, name='payslip-report'),
-    path('attendance-report', attendance_report_screen_view,
-         name='attendance-report'),
+    path('attendance-report', attendance_report_screen_view, name='attendance-report'),
     path('leave-report', leave_report_screen_view, name='leave-report'),
     path('daily-report', daily_report_screen_view, name='daily-report'),
     path('overtime-report', overtime_report_screen_view, name='overtime-report'),
