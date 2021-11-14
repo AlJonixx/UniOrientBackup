@@ -23,6 +23,21 @@ from customAdmin.views import (
     login_screen_view,
     logout_screen_view,
 
+    # Employee View
+    all_employee_screen_view,
+    holidays_screen_view,
+    leaves_admin_screen_view,
+    leaves_employee_screen_view,
+    leaves_settings_screen_view,
+    attendance_admin_screen_view,
+    attendance_employee_screen_view,
+    departments_screen_view,
+    designations_screen_view,
+    timesheet_screen_view,
+    shift_scheduling_screen_view,
+    overtime_screen_view,
+
+
     # Reports View
     employee_reports_screen_view,
     payslip_report_screen_view,
@@ -42,6 +57,21 @@ urlpatterns = [
     path('admin-dashboard', admin_screen_view.as_view(), name='admin-dashboard'),
     path('admin-login', login_screen_view, name='admin-login'),
     path('admin-logout', logout_screen_view, name='admin-logout'),
+
+    #EMPLOYEES TAB
+    path('all-employee', all_employee_screen_view, name='all-employee'),
+    path('holidays', holidays_screen_view, name='holidays'),
+    path('leaves-admin', leaves_admin_screen_view, name='leaves-admin'),
+    path('leaves-employee', leaves_employee_screen_view, name='leaves-employee'),
+    path('leaves-settings', leaves_settings_screen_view, name='leaves-settings'),
+    path('attendance-admin', attendance_admin_screen_view, name='attendance-admin'),
+    path('attendance-employee', attendance_employee_screen_view, name='attendance-employee'),
+    path('departments', departments_screen_view, name='departments'),
+    path('designations', designations_screen_view, name='designations'),
+    path('timesheet', timesheet_screen_view, name='timesheet'),
+    path('shift-scheduling', shift_scheduling_screen_view, name='shift-scheduling'),
+    path('overtime', overtime_screen_view, name='overtime'),
+
 
     # REPORTS TAB
     path('employee-report', employee_reports_screen_view, name='employee-report'),
