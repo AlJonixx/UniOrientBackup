@@ -113,3 +113,54 @@
 
 
 {% endblock content %}
+
+{% block script %}
+		<!-- jQuery -->
+        <script src="{% static '/admin/assets/js/jquery-3.5.1.min.js' %}"></script>
+		
+		<!-- Bootstrap Core JS -->
+        <script src="{% static '/admin/assets/js/popper.min.js' %}"></script>
+        <script src="{% static '/admin/assets/js/bootstrap.min.js' %}"></script>
+		
+		<!-- Select2 JS -->
+		<script src="{% static '/admin/assets/js/select2.min.js' %}"></script>
+		
+		<!-- Datatable JS -->
+		<script src="{% static '/admin/assets/js/jquery.dataTables.min.js' %}"></script>
+		<script src="{% static '/admin/assets/js/dataTables.bootstrap4.min.js' %}"></script>
+		
+		<!-- Slimscroll JS -->
+		<script src="{% static '/admin/assets/js/jquery.slimscroll.min.js' %}"></script>
+		
+		<!-- Custom JS -->
+		<script src="{% static '/admin/assets/js/app.js' %}"></script>
+    
+    <script>
+    	// Small Sidebar
+
+	$(document).on('click', '#toggle_btn', function() {
+		if($('body').hasClass('mini-sidebar')) {
+			$('body').removeClass('mini-sidebar');
+			$('.subdrop + ul').slideDown();
+		} else {
+			$('body').addClass('mini-sidebar');
+			$('.subdrop + ul').slideUp();
+		}
+		return false;
+	});
+	$(document).on('mouseover', function(e) {
+		e.stopPropagation();
+		if($('body').hasClass('mini-sidebar') && $('#toggle_btn').is(':visible')) {
+			var targ = $(e.target).closest('.sidebar').length;
+			if(targ) {
+				$('body').addClass('expand-menu');
+				$('.subdrop + ul').slideDown();
+			} else {
+				$('body').removeClass('expand-menu');
+				$('.subdrop + ul').slideUp();
+			}
+			return false;
+		}
+	});
+    </script>
+{% endblock script %}
