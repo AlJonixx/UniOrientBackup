@@ -22,9 +22,6 @@ from customAdmin.views import (
     admin_screen_view,
     login_screen_view,
     logout_screen_view,
-<<<<<<< HEAD
-    holiday_screen_view,
-=======
 
     # Reports View
     employee_reports_screen_view,
@@ -38,7 +35,6 @@ from customAdmin.views import (
     salary_screen_view,
     salary_view_screen_view,
     payroll_items_screen_view,
->>>>>>> 545270f5fda843ac77025e1353a9e9a87268a355
 )
 
 
