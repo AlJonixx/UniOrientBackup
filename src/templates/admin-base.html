@@ -449,13 +449,13 @@
 									<li><a href="payroll-items.html"> Payroll Items </a></li>
 								</ul>
 							</li>
-							<li class="submenu">
+							{% comment %} <li class="submenu">
 								<a href="#"><i class="la la-money"></i> <span> Clock In/Out </span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
 									<li><a href="salary.html"> Time In </a></li>
 									<li><a href="salary-view.html"> Time Out </a></li>
 								</ul>
-							</li>
+							</li> {% endcomment %}
 						<!--	<li> 
 								<a href="policies.html"><i class="la la-file-pdf-o"></i> <span>Policies</span></a>
 							</li>-->
@@ -468,12 +468,12 @@
 									<li><a href="project-reports.html"> Project Report </a></li>
 									<li><a href="task-reports.html"> Task Report </a></li>
 									<li><a href="user-reports.html"> User Report </a></li>-->
-									<li><a href="{% url 'employee-report' %}"> Employee Report </a></li>
-									<li><a href="{% url 'payslip-report' %}"> Payslip Report </a></li>
+									<li><a class="{% if request.path == employeeReport %}active{% endif %}" href="{% url 'employee-report' %}"> Employee Report </a></li>
+									<li><a class="{% if request.path == payslipReport %}active{% endif %}" href="{% url 'payslip-report' %}"> Payslip Report </a></li>
 									<li><a class="{% if request.path == attendanceReport %}active{% endif %}" href="{% url 'attendance-report' %}"> Attendance Report </a></li>
-									<li><a href="{% url 'leave-report' %}"> Leave Report </a></li>
-									<li><a href="{% url 'daily-report' %}"> Daily Report </a></li>
-									<li><a href="{% url 'overtime-report' %}">Overtime Report </a></li>
+									<li><a class="{% if request.path == leaveReport %}active{% endif %}" href="{% url 'leave-report' %}"> Leave Report </a></li>
+									<li><a class="{% if request.path == dailyReport %}active{% endif %}" href="{% url 'daily-report' %}"> Daily Report </a></li>
+									<li><a class="{% if request.path == overtimeReport %}active{% endif %}" href="{% url 'overtime-report' %}">Overtime Report </a></li>
 								</ul>
 							</li>
 							<li class="menu-title"> 
