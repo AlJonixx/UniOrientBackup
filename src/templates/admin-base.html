@@ -1,4 +1,11 @@
 {% load static %}
+{% url 'attendance-report' as attendanceReport %}
+{% url 'employee-report' as employeeReport %}
+{% url 'payslip-report' as payslipReport %}
+{% url 'leave-report' as leaveReport %}
+{% url 'daily-report' as dailyReport %}
+{% url 'overtime-report' as overtimeReport %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -385,7 +392,7 @@
 									<li><a href="leaves.html">Leaves (Admin) <span class="badge badge-pill bg-primary float-right">1</span></a></li>
 									<li><a href="leaves-employee.html">Leaves (Employee)</a></li>
 									<li><a href="leave-settings.html">Leave Settings</a></li>
-									<li><a href="attendance.html">Attendance (Admin)</a></li>
+									<li><a href="attendance.html" >Attendance (Admin)</a></li>
 									<li><a href="attendance-employee.html">Attendance (Employee)</a></li>
 									<li><a href="departments.html">Departments</a></li>
 									<li><a href="designations.html">Designations</a></li>
@@ -463,7 +470,7 @@
 									<li><a href="user-reports.html"> User Report </a></li>-->
 									<li><a href="{% url 'employee-reports' %}"> Employee Report </a></li>
 									<li><a href="{% url 'payslip-report' %}"> Payslip Report </a></li>
-									<li><a href="{% url 'attendance-report' %}"> Attendance Report </a></li>
+									<li><a class="{% if request.path == attendanceReport %}active{% endif %}" href="{% url 'attendance-report' %}"> Attendance Report </a></li>
 									<li><a href="{% url 'leave-report' %}"> Leave Report </a></li>
 									<li><a href="{% url 'daily-report' %}"> Daily Report </a></li>
 									<li><a href="{% url 'overtime-report' %}">Overtime Report </a></li>

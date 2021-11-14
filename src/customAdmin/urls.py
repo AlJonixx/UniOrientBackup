@@ -35,11 +35,11 @@ urlpatterns = [
     path('admin-dashboard', admin_screen_view.as_view(), name='admin-dashboard'),
     path('admin-login', login_screen_view, name='admin-login'),
     path('admin-logout', logout_screen_view, name='admin-logout'),
-    path('employee-reports/', employee_reports_screen_view, name='employee-reports'),
+    path('employee-reports/', employee_reports_screen_view, name='employee-report'),
     path('payslip-report', payslip_report_screen_view, name='payslip-report'),
-    path('attendance-report', attendance_report_screen_view, name='attendance-report'),
+    path('attendance-report', attendance_report_screen_view,
+         name='attendance-report'),
     path('leave-report', leave_report_screen_view, name='leave-report'),
     path('daily-report', daily_report_screen_view, name='daily-report'),
     path('overtime-report', overtime_report_screen_view, name='overtime-report'),
 ]
-
