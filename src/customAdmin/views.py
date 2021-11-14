@@ -48,19 +48,19 @@ def login_screen_view(request):
     return render(request, 'admin/login.html', context)
 
 def employee_reports_screen_view(request):
-    return render(request, 'admin/employee_reports.html', {})
+    return render(request, 'admin/reports/employee_reports.html', {})
 
 def payslip_report_screen_view(request):
-    return render(request, 'admin/payslip_report.html', {})
+    return render(request, 'admin/reports/payslip_report.html', {})
 
 def attendance_report_screen_view(request):
-    return render(request, 'admin/attendance_report.html', {})
+    return render(request, 'admin/reports/attendance_report.html', {})
 
 def leave_report_screen_view(request):
-    return render(request, 'admin/leave_report.html', {})
+    return render(request, 'admin/reports/leave_report.html', {})
 
 def daily_report_screen_view(request):
-    return render(request, 'admin/daily_report.html', {})
+    return render(request, 'admin/reports/daily_report.html', {})
 
 def overtime_report_screen_view(request):
-    return render(request, 'admin/overtime_report.html', {})
+    return render(request, 'admin/reports/overtime_report.html', {})
