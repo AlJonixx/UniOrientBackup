@@ -46,13 +46,20 @@
 						<div class="account-wrapper">
 							<h3 class="account-title">Login</h3>
 							<p class="account-subtitle">Access to our dashboard</p>
-							
+							<!--Message-->
+							<div>
+                    			{% for message in messages %}
+								<div class="alert alert-danger text-center" role="alert">
+									<strong>{{ message }}</strong>									
+								</div>
+                    			{% endfor %}
+                			</div>
 							<!-- Account Form -->
 							<form method="POST">
 							{% csrf_token %}
 								<div class="form-group">
 									<label>Email Address</label>
-									<input name="email" class="form-control" type="text">
+									<input name="email" class="form-control" type="text" required>
 								</div>
 								<div class="form-group">
 									<div class="row">
@@ -65,7 +72,7 @@
 											</a>
 										</div>
 									</div>
-									<input name="password" class="form-control" type="password">
+									<input name="password" class="form-control" type="password" required>
 								</div>
 								<div class="form-group text-center">
 									<button class="btn btn-primary account-btn" type="submit">Login</button>
@@ -92,6 +99,23 @@
 		
 		<!-- Custom JS -->
 		<script src="{% static '/admin/assets/js/app.js' %}"></script>
+
+		<script type="text/javascript">
+			document.addEventListener("DOMContentLoaded", function() {
+    			var elements = document.getElementsByTagName("INPUT");
+    			for (var i = 0; i < elements.length; i++) {
+        			elements[i].oninvalid = function(e) {
+           			 e.target.setCustomValidity("");
+            		if (!e.target.validity.valid) {
+                e.target.setCustomValidity("This field cannot be left blank");
+            	}
+        		};
+        		elements[i].oninput = function(e) {
+            		e.target.setCustomValidity("");
+       			 	};
+    			}
+			})
+		</script>
 		
     </body>
 </html>
