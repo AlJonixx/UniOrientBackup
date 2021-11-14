@@ -1797,6 +1797,7 @@ table.dataTable thead>tr>td.sorting {
 	margin-top: 0;
 	position: fixed;
 	top: 60px;
+	padding-top: 40px;
 	transition: all 0.2s ease-in-out 0s;
 	width: 230px;
 	z-index: 1001;
@@ -2087,7 +2088,7 @@ table.dataTable thead>tr>td.sorting {
 }
 
 .page-wrapper>.content {
-	padding: 30px;
+	padding: 50px;
 }
 
 .page-header {
