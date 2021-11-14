@@ -15,13 +15,30 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from . import views
 
 
 from customAdmin.views import (
     admin_screen_view,
     login_screen_view,
     logout_screen_view,
+<<<<<<< HEAD
     holiday_screen_view,
+=======
+
+    # Reports View
+    employee_reports_screen_view,
+    payslip_report_screen_view,
+    attendance_report_screen_view,
+    leave_report_screen_view,
+    daily_report_screen_view,
+    overtime_report_screen_view,
+
+    # Payroll View
+    salary_screen_view,
+    salary_view_screen_view,
+    payroll_items_screen_view,
+>>>>>>> 545270f5fda843ac77025e1353a9e9a87268a355
 )
 
 
@@ -29,4 +46,18 @@ urlpatterns = [
     path('admin-dashboard', admin_screen_view.as_view(), name='admin-dashboard'),
     path('admin-login', login_screen_view, name='admin-login'),
     path('admin-logout', logout_screen_view, name='admin-logout'),
+
+    # REPORTS TAB
+    path('employee-report', employee_reports_screen_view, name='employee-report'),
+    path('payslip-report', payslip_report_screen_view, name='payslip-report'),
+    path('attendance-report', attendance_report_screen_view,
+         name='attendance-report'),
+    path('leave-report', leave_report_screen_view, name='leave-report'),
+    path('daily-report', daily_report_screen_view, name='daily-report'),
+    path('overtime-report', overtime_report_screen_view, name='overtime-report'),
+
+    # PAYROLL TAB
+    path('salary-view', salary_view_screen_view, name='salary-view'),
+    path('payroll-items', payroll_items_screen_view, name='payroll-items'),
+    path('salary', salary_screen_view, name='salary'),
 ]
