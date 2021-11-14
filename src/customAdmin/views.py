@@ -6,7 +6,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from customAdmin.forms import AccountAuthenticationForm
+from customAdmin.forms import AccountAuthenticationForm, DepartmentForm, DesignationForm
 from .models import *
 
 from django.http import HttpResponse
@@ -43,8 +43,8 @@ def login_screen_view(request):
 
             if user is not None:
                 login(request, user)
-                return redirect('admin-dashboard') 
-                
+                return redirect('admin-dashboard')
+
         else:
             messages.info(request, 'Email or Password do not match!')
             return redirect('admin-login')
@@ -58,42 +58,88 @@ def login_screen_view(request):
 
 # EMPLOYEE
 
+
 def all_employee_screen_view(request):
     return render(request, 'admin/employee/employees.html')
+
 
 def holidays_screen_view(request):
     return render(request, 'admin/employee/holidays.html')
 
+
 def leaves_admin_screen_view(request):
     return render(request, 'admin/employee/leaves-admin.html')
+
 
 def leaves_employee_screen_view(request):
     return render(request, 'admin/employee/leaves-employee.html')
 
+
 def leaves_settings_screen_view(request):
     return render(request, 'admin/employee/leaves-settings.html')
+
 
 def attendance_admin_screen_view(request):
     return render(request, 'admin/employee/attendance-admin.html')
 
+
 def attendance_employee_screen_view(request):
     return render(request, 'admin/employee/attendance-employee.html')
 
-def departments_screen_view(request):
-    return render(request, 'admin/employee/departments.html')
 
-def designations_screen_view(request):
-    return render(request, 'admin/employee/designations.html')
+class departments_screen_view(View):
+    def get(self, request):
+        dept = Department.objects.all()
+        context = {
+            'dept': dept
+        }
+
+        return render(request, 'admin/employee/departments.html', context)
+
+    def post(self, request):
+        form = DepartmentForm(request.POST)
+        if request.method == 'POST':
+            if 'btnSubmitDepartment' in request.POST:
+                department = request.POST['department_text']
+                form = Department(department_name=department)
+                form.save()
+                print("Deparment Added!")
+                return redirect('departments')
+
+
+class designations_screen_view(View):
+    def get(self, request):
+        designation = Designation.objects.all()
+        department = Department.objects.all()
+        context = {
+            'desig': designation,
+            'dept': department
+        }
+        return render(request, 'admin/employee/designations.html', context)
+
+    def post(self, request):
+        form = DesignationForm(request.POST)
+        if request.method == 'POST':
+            if 'btnSubmitDesignation' in request.POST:
+                designation = request.POST['designation_text']
+                department = request.POST['department_text']
+                form = Designation(designation_name=designation,
+                                   department_name=department)
+                form.save()
+                print("Designation Added!")
+                return redirect('designations')
+
 
 def timesheet_screen_view(request):
     return render(request, 'admin/employee/timesheet.html')
 
+
 def shift_scheduling_screen_view(request):
-    return render(request, 'admin/employee/timesheet.html')
+    return render(request, 'admin/employee/shift-scheduling.html')
+
 
 def overtime_screen_view(request):
     return render(request, 'admin/employee/overtime.html')
-
 
 
 # START PAYROLL
