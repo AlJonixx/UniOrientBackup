@@ -6,6 +6,8 @@
 {% url 'daily-report' as dailyReport %}
 {% url 'overtime-report' as overtimeReport %}
 
+{% url 'salary' as salary %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -444,9 +446,9 @@
 							<li class="submenu">
 								<a href="#"><i class="la la-money"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
-									<li><a href="salary.html"> Employee Salary </a></li>
-									<li><a href="salary-view.html"> Payslip </a></li>
-									<li><a href="payroll-items.html"> Payroll Items </a></li>
+									<li><a class="{% if request.path == salary %}active{% endif %}" href="{% url 'salary' %}"> Employee Salary </a></li>
+									<li><a href="{% url 'salary-view' %}"> Payslip </a></li>
+									<li><a href="{% url 'payroll-items' %}"> Payroll Items </a></li>
 								</ul>
 							</li>
 							{% comment %} <li class="submenu">
