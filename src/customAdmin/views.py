@@ -103,7 +103,7 @@ class departments_screen_view(View):
                 department = request.POST['department_text']
                 form = Department(department_name=department)
                 form.save()
-                print("Deparment Added!")
+                messages.success(request,"Deparment successfully Added!")
                 return redirect('departments')
 
 
@@ -126,7 +126,7 @@ class designations_screen_view(View):
                 form = Designation(designation_name=designation,
                                    department_name=department)
                 form.save()
-                print("Designation Added!")
+                messages.success(request, "Designation successfully Added!")
                 return redirect('designations')
 
 
