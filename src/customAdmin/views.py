@@ -56,6 +56,46 @@ def login_screen_view(request):
 
 # END AUTHENTICATION
 
+# EMPLOYEE
+
+def all_employee_screen_view(request):
+    return render(request, 'admin/employee/employees.html')
+
+def holidays_screen_view(request):
+    return render(request, 'admin/employee/holidays.html')
+
+def leaves_admin_screen_view(request):
+    return render(request, 'admin/employee/leaves-admin.html')
+
+def leaves_employee_screen_view(request):
+    return render(request, 'admin/employee/leaves-employee.html')
+
+def leaves_settings_screen_view(request):
+    return render(request, 'admin/employee/leaves-settings.html')
+
+def attendance_admin_screen_view(request):
+    return render(request, 'admin/employee/attendance-admin.html')
+
+def attendance_employee_screen_view(request):
+    return render(request, 'admin/employee/attendance-employee.html')
+
+def departments_screen_view(request):
+    return render(request, 'admin/employee/departments.html')
+
+def designations_screen_view(request):
+    return render(request, 'admin/employee/designations.html')
+
+def timesheet_screen_view(request):
+    return render(request, 'admin/employee/timesheet.html')
+
+def shift_scheduling_screen_view(request):
+    return render(request, 'admin/employee/timesheet.html')
+
+def overtime_screen_view(request):
+    return render(request, 'admin/employee/overtime.html')
+
+
+
 # START PAYROLL
 
 
