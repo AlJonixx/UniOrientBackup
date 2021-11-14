@@ -42,3 +42,15 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.user_name
+
+
+# Deparment Model
+class Department(models.Model):
+    department_name = models.CharField(max_length=150, unique=True)
+
+# Designation MOdel
+
+
+class Designation(models.Model):
+    designation_name = models.CharField(max_length=150, unique=True)
+    department_name = models.CharField(max_length=150)

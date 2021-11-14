@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth import authenticate
-from django.forms import fields
+from django.forms import fields, models
 from django.forms.widgets import PasswordInput
-from customAdmin.models import NewUser
+from customAdmin.models import Department, Designation, NewUser
 
 
 class AccountAuthenticationForm(forms.ModelForm):
@@ -17,3 +17,15 @@ class AccountAuthenticationForm(forms.ModelForm):
 
         if not authenticate(email=email, password=password):
             raise forms.ValidationError('Invalid Login')
+
+
+class DepartmentForm(forms.ModelForm):  # Department Form
+    class Meta:
+        model = Department
+        fields = "__all__"
+
+
+class DesignationForm(forms.ModelForm):  # Designation Form
+    class Meta:
+        model = Designation
+        fields = "__all__"
