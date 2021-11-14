@@ -450,12 +450,12 @@
 									<li><a href="project-reports.html"> Project Report </a></li>
 									<li><a href="task-reports.html"> Task Report </a></li>
 									<li><a href="user-reports.html"> User Report </a></li>-->
-									<li><a href="employee-reports.html"> Employee Report </a></li>
-									<li><a href="payslip-reports.html"> Payslip Report </a></li>
-									<li><a href="attendance-reports.html"> Attendance Report </a></li>
-									<li><a href="leave-reports.html"> Leave Report </a></li>
-									<li><a href="daily-reports.html"> Daily Report </a></li>
-									<li><a href="overtime-reports.html">Overtime Report </a></li>
+									<li><a href="{% url 'employee-reports' %}"> Employee Report </a></li>
+									<li><a href="{% url 'payslip-report' %}"> Payslip Report </a></li>
+									<li><a href="{% url 'attendance-report' %}"> Attendance Report </a></li>
+									<li><a href="{% url 'leave-report' %}"> Leave Report </a></li>
+									<li><a href="{% url 'daily-report' %}"> Daily Report </a></li>
+									<li><a href="{% url 'overtime-report' %}">Overtime Report </a></li>
 								</ul>
 							</li>
 							<li class="menu-title"> 

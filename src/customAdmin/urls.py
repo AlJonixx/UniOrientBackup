@@ -15,13 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from . import views
 
 
 from customAdmin.views import (
     admin_screen_view,
     login_screen_view,
     logout_screen_view,
-
+    employee_reports_screen_view,
+    payslip_report_screen_view,
+    attendance_report_screen_view,
+    leave_report_screen_view,
+    daily_report_screen_view,
+    overtime_report_screen_view,
 )
 
 
@@ -29,4 +35,11 @@ urlpatterns = [
     path('admin-dashboard', admin_screen_view.as_view(), name='admin-dashboard'),
     path('admin-login', login_screen_view, name='admin-login'),
     path('admin-logout', logout_screen_view, name='admin-logout'),
+    path('employee-reports/', employee_reports_screen_view, name='employee-reports'),
+    path('payslip-report', payslip_report_screen_view, name='payslip-report'),
+    path('attendance-report', attendance_report_screen_view, name='attendance-report'),
+    path('leave-report', leave_report_screen_view, name='leave-report'),
+    path('daily-report', daily_report_screen_view, name='daily-report'),
+    path('overtime-report', overtime_report_screen_view, name='overtime-report'),
 ]
+
