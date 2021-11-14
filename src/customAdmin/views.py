@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.views.generic import View
 from django.contrib.auth import login, authenticate, logout
@@ -31,16 +32,20 @@ def login_screen_view(request):
     if user.is_authenticated:
         return redirect('admin-dashboard')
 
-    if request.POST:
+    if request.method == 'POST':
         form = AccountAuthenticationForm(request.POST)
         if form.is_valid():
             email = request.POST['email']
             password = request.POST['password']
             user = authenticate(email=email, password=password)
 
-            if user:
+            if user is not None:
                 login(request, user)
-                return redirect('admin-dashboard')
+                return redirect('admin-dashboard') 
+                
+        else:
+            messages.info(request, 'Email or Password do not match!')
+            return redirect('admin-login')
     else:
         form = AccountAuthenticationForm()
 
