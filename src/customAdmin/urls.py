@@ -59,7 +59,7 @@ urlpatterns = [
     path('admin-logout', logout_screen_view, name='admin-logout'),
 
     # EMPLOYEES TAB
-    path('all-employee', all_employee_screen_view, name='all-employee'),
+    path('all-employee', all_employee_screen_view.as_view(), name='all-employee'),
     path('holidays', holidays_screen_view, name='holidays'),
     path('leaves-admin', leaves_admin_screen_view, name='leaves-admin'),
     path('leaves-employee', leaves_employee_screen_view, name='leaves-employee'),

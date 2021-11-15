@@ -5,9 +5,11 @@ from django.views.generic import View
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+import random
 
-from customAdmin.forms import AccountAuthenticationForm, DepartmentForm, DesignationForm
+from customAdmin.forms import AccountAuthenticationForm, DepartmentForm, DesignationForm, EmployeeForm
 from .models import *
+from django.contrib.auth.hashers import make_password
 
 from django.http import HttpResponse
 
@@ -59,8 +61,38 @@ def login_screen_view(request):
 # EMPLOYEE
 
 
-def all_employee_screen_view(request):
-    return render(request, 'admin/employee/employees.html')
+class all_employee_screen_view(View):
+    def get(self, request):
+        department = Department.objects.all()
+        designation = Designation.objects.all()
+        context = {
+            'dept': department,
+            'desig': designation,
+        }
+        return render(request, 'admin/employee/employees.html', context)
+
+    def post(self, request):
+        form = EmployeeForm(request.POST)
+        if request.method == 'POST':
+            if 'btnSubmitEmployee' in request.POST:
+                empid = random.randint(1000, 9999)
+                finalemp = "EMP" + str(empid)
+                firstName = request.POST['firstname_text']
+                lastName = request.POST['lastname_text']
+                userName = request.POST['username_text']
+                emailPost = request.POST['email_text']
+                passwordPost = request.POST['password_text']
+                password2 = request.POST['password2_text']
+                joinDate = request.POST['joindate_text']
+                phonePost = request.POST['phone_text']
+                designationPost = request.POST['designation_text']
+                departmentPost = request.POST['department_text']
+                hashed_pw = make_password(password2)
+                form = Employee(employee_id=finalemp, firstname=firstName, lastname=lastName, username=userName, email=emailPost,
+                                password=hashed_pw, phone=phonePost, department=departmentPost, designation=designationPost)
+                form.save()
+                messages.success(request, "Employee successfully Added!")
+                return redirect('all-employee')
 
 
 def holidays_screen_view(request):
@@ -103,7 +135,7 @@ class departments_screen_view(View):
                 department = request.POST['department_text']
                 form = Department(department_name=department)
                 form.save()
-                messages.success(request,"Deparment successfully Added!")
+                messages.success(request, "Deparment successfully Added!")
                 return redirect('departments')
 
 
