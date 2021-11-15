@@ -65,9 +65,11 @@ class all_employee_screen_view(View):
     def get(self, request):
         department = Department.objects.all()
         designation = Designation.objects.all()
+        employee = Employee.objects.all()
         context = {
             'dept': department,
             'desig': designation,
+            'empl': employee,
         }
         return render(request, 'admin/employee/employees.html', context)
 
