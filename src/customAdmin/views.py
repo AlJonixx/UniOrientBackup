@@ -95,6 +95,28 @@ class all_employee_screen_view(View):
                 form.save()
                 messages.success(request, "Employee successfully Added!")
                 return redirect('all-employee')
+            
+            if 'btnUpdateEmp' in request.POST:
+                eid = request.POST.get("emplID")
+                fname = request.POST.get("firstname_update")
+                lname = request.POST.get("lastname_update")
+                uname = request.POST.get("username_update")
+                emailUp = request.POST.get("email_update")
+                phoneUp = request.POST.get("phone_update")
+                departmentUp = request.POST.get("department_name")
+                designationUp = request.POST.get("designation_name")
+                idemp = request.POST.get("empid_update")
+
+                Employee.objects.filter(id = eid).update(employee_id=idemp, firstname=fname, lastname=lname, username=uname, email=emailUp, phone=phoneUp, department=departmentUp, designation=designationUp)
+                messages.success(request, "Employee " + idemp + " successfully Updated!")
+                return redirect('all-employee')                
+        
+    @staticmethod
+    def deleteEmp(request, id):
+        emp = Employee.objects.get(id=id)
+        emp.delete()
+        messages.success(request, "Employee successfully Deleted!")
+        return redirect('all-employee')
 
 
 def holidays_screen_view(request):
@@ -162,6 +184,8 @@ class designations_screen_view(View):
                 form.save()
                 messages.success(request, "Designation successfully Added!")
                 return redirect('designations')
+            
+
 
 
 def timesheet_screen_view(request):
