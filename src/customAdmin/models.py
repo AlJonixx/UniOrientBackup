@@ -44,13 +44,23 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
         return self.user_name
 
 
-# Deparment Model
-class Department(models.Model):
+class Department(models.Model):  # Deparment Model
     department_name = models.CharField(max_length=150, unique=True)
 
-# Designation MOdel
 
-
-class Designation(models.Model):
+class Designation(models.Model):  # Designation MOdel
     designation_name = models.CharField(max_length=150, unique=True)
     department_name = models.CharField(max_length=150)
+
+
+class Employee(models.Model):  # Employee Model
+    employee_id = models.CharField(max_length=150, unique=True)
+    firstname = models.CharField(max_length=150, blank=True)
+    lastname = models.CharField(max_length=150, blank=True)
+    username = models.CharField(max_length=150, blank=True, unique=True)
+    email = models.EmailField(_('email address'), unique=True, blank=True)
+    password = models.CharField(max_length=150, blank=True)
+    join_date = models.DateTimeField(default=timezone.now)
+    phone = models.CharField(max_length=150, blank=True)
+    department = models.CharField(max_length=150, blank=True)
+    designation = models.CharField(max_length=150, blank=True)
