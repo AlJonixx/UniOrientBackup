@@ -162,6 +162,20 @@ class departments_screen_view(View):
                 messages.success(request, "Deparment successfully Added!")
                 return redirect('departments')
 
+            if 'btnDepartUpdate' in request.POST:
+                departID = request.POST.get("deptID")
+                departName = request.POST.get("depart_name")
+
+                Department.objects.filter(id=departID).update(department_name = departName)
+                messages.success(request, "Deparment successfully Updated!")
+                return redirect('departments')
+
+    @staticmethod
+    def deleteDepartment(request, id):
+        depart = Department.objects.get(id=id)
+        depart.delete()
+        messages.success(request, "Deparment successfully Deleted!")
+        return redirect('departments')
 
 class designations_screen_view(View):
     def get(self, request):
@@ -184,7 +198,22 @@ class designations_screen_view(View):
                 form.save()
                 messages.success(request, "Designation successfully Added!")
                 return redirect('designations')
-            
+
+            if 'btndesigUpdate' in request.POST:
+                desigid = request.POST.get("desigID")
+                designame = request.POST.get("desig-name")
+                departname = request.POST.get("depart-name")
+
+                Designation.objects.filter(id=desigid).update(designation_name=designame, department_name=departname)
+                messages.success(request, "Designation successfully Updated!")
+                return redirect('designations')
+    
+    @staticmethod
+    def deleteDesig(request, id):
+        desig = Designation.objects.get(id=id)
+        desig.delete()
+        messages.success(request, "Designation successfully Deleted!")
+        return redirect('designations')
 
 
 
