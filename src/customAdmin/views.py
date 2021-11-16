@@ -95,7 +95,7 @@ class all_employee_screen_view(View):
                 form.save()
                 messages.success(request, "Employee successfully Added!")
                 return redirect('all-employee')
-            
+
             if 'btnUpdateEmp' in request.POST:
                 eid = request.POST.get("emplID")
                 fname = request.POST.get("firstname_update")
@@ -107,16 +107,106 @@ class all_employee_screen_view(View):
                 designationUp = request.POST.get("designation_name")
                 idemp = request.POST.get("empid_update")
 
-                Employee.objects.filter(id = eid).update(employee_id=idemp, firstname=fname, lastname=lname, username=uname, email=emailUp, phone=phoneUp, department=departmentUp, designation=designationUp)
-                messages.success(request, "Employee " + idemp + " successfully Updated!")
-                return redirect('all-employee')                
-        
+                Employee.objects.filter(id=eid).update(employee_id=idemp, firstname=fname, lastname=lname,
+                                                       username=uname, email=emailUp, phone=phoneUp, department=departmentUp, designation=designationUp)
+                messages.success(request, "Employee " +
+                                 idemp + " successfully Updated!")
+                return redirect('all-employee')
+
     @staticmethod
     def deleteEmp(request, id):
         emp = Employee.objects.get(id=id)
         emp.delete()
         messages.success(request, "Employee successfully Deleted!")
         return redirect('all-employee')
+
+
+class employee_list_screen_view(View):
+    def get(self, request):
+        department = Department.objects.all()
+        designation = Designation.objects.all()
+        employee = Employee.objects.all()
+        context = {
+            'dept': department,
+            'desig': designation,
+            'empl': employee,
+        }
+        return render(request, 'admin/employee/employees-list.html', context)
+
+    def post(self, request):
+        form = EmployeeForm(request.POST)
+        if request.method == 'POST':
+            if 'btnSubmitEmployee' in request.POST:
+                empid = random.randint(1000, 9999)
+                finalemp = "EMP" + str(empid)
+                firstName = request.POST['firstname_text']
+                lastName = request.POST['lastname_text']
+                userName = request.POST['username_text']
+                emailPost = request.POST['email_text']
+                passwordPost = request.POST['password_text']
+                password2 = request.POST['password2_text']
+                joinDate = request.POST['joindate_text']
+                phonePost = request.POST['phone_text']
+                designationPost = request.POST['designation_text']
+                departmentPost = request.POST['department_text']
+                hashed_pw = make_password(password2)
+                form = Employee(employee_id=finalemp, firstname=firstName, lastname=lastName, username=userName, email=emailPost,
+                                password=hashed_pw, phone=phonePost, department=departmentPost, designation=designationPost)
+                form.save()
+                messages.success(request, "Employee successfully Added!")
+                return redirect('employee-list')
+
+            if 'btnUpdateEmp' in request.POST:
+                eid = request.POST.get("emplID")
+                fname = request.POST.get("firstname_update")
+                lname = request.POST.get("lastname_update")
+                uname = request.POST.get("username_update")
+                emailUp = request.POST.get("email_update")
+                phoneUp = request.POST.get("phone_update")
+                departmentUp = request.POST.get("department_name")
+                designationUp = request.POST.get("designation_name")
+                idemp = request.POST.get("empid_update")
+
+                Employee.objects.filter(id=eid).update(employee_id=idemp, firstname=fname, lastname=lname,
+                                                       username=uname, email=emailUp, phone=phoneUp, department=departmentUp, designation=designationUp)
+                messages.success(request, "Employee " +
+                                 idemp + " successfully Updated!")
+                return redirect('employee-list')
+
+
+class profile_screen_view(View):
+    def get(self, request, id):
+        employee = Employee.objects.all()
+        department = Department.objects.all()
+        designation = Designation.objects.all()
+        context = {
+            'id': id,
+            'dept': department,
+            'desig': designation,
+            'empl': employee,
+        }
+        return render(request, 'admin/employee/profile.html', context)
+
+    def post(self, request, id):
+        if request.method == 'POST':
+            if 'btnEditProfile' in request.POST:
+                fname = request.POST.get("firstname_profile")
+                lname = request.POST.get("lastname_profile")
+                # uname = request.POST.get("username_profile")
+                # emailProf = request.POST.get("email_update")
+                phoneProf = request.POST.get("phone_profile")
+                departmentProf = request.POST.get("depart_name")
+                designationProf = request.POST.get("desig_name")
+                # idempProf = request.POST.get("empid_update")
+                gender = request.POST.get("gender")
+                address = request.POST.get("address")
+                state = request.POST.get("state")
+                country = request.POST.get("country")
+
+                Employee.objects.filter(id=id).update(firstname=fname, lastname=lname, phone=phoneProf, department=departmentProf,
+                                                      designation=designationProf, gender=gender, address=address, state=state, country=country)
+                messages.success(request, "Profile successfully Updated!")
+                return redirect('profile', id)
 
 
 def holidays_screen_view(request):
@@ -166,7 +256,8 @@ class departments_screen_view(View):
                 departID = request.POST.get("deptID")
                 departName = request.POST.get("depart_name")
 
-                Department.objects.filter(id=departID).update(department_name = departName)
+                Department.objects.filter(id=departID).update(
+                    department_name=departName)
                 messages.success(request, "Deparment successfully Updated!")
                 return redirect('departments')
 
@@ -176,6 +267,7 @@ class departments_screen_view(View):
         depart.delete()
         messages.success(request, "Deparment successfully Deleted!")
         return redirect('departments')
+
 
 class designations_screen_view(View):
     def get(self, request):
@@ -204,17 +296,17 @@ class designations_screen_view(View):
                 designame = request.POST.get("desig-name")
                 departname = request.POST.get("depart-name")
 
-                Designation.objects.filter(id=desigid).update(designation_name=designame, department_name=departname)
+                Designation.objects.filter(id=desigid).update(
+                    designation_name=designame, department_name=departname)
                 messages.success(request, "Designation successfully Updated!")
                 return redirect('designations')
-    
+
     @staticmethod
     def deleteDesig(request, id):
         desig = Designation.objects.get(id=id)
         desig.delete()
         messages.success(request, "Designation successfully Deleted!")
         return redirect('designations')
-
 
 
 def timesheet_screen_view(request):
