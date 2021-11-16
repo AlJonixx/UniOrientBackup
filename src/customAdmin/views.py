@@ -154,7 +154,7 @@ class employee_list_screen_view(View):
                                 password=hashed_pw, phone=phonePost, department=departmentPost, designation=designationPost)
                 form.save()
                 messages.success(request, "Employee successfully Added!")
-                return redirect('all-employee')
+                return redirect('employee-list')
 
             if 'btnUpdateEmp' in request.POST:
                 eid = request.POST.get("emplID")
@@ -168,7 +168,7 @@ class employee_list_screen_view(View):
                 idemp = request.POST.get("empid_update")
 
                 Employee.objects.filter(id=eid).update(employee_id=idemp, firstname=fname, lastname=lname,
-                    username=uname, email=emailUp, phone=phoneUp, department=departmentUp, designation=designationUp)
+                                                       username=uname, email=emailUp, phone=phoneUp, department=departmentUp, designation=designationUp)
                 messages.success(request, "Employee " +
                                  idemp + " successfully Updated!")
                 return redirect('employee-list')
@@ -176,17 +176,17 @@ class employee_list_screen_view(View):
 
 class profile_screen_view(View):
     def get(self, request, id):
-        employee = Employee.objects.all()   
+        employee = Employee.objects.all()
         department = Department.objects.all()
-        designation = Designation.objects.all()     
+        designation = Designation.objects.all()
         context = {
-            'id' : id,
+            'id': id,
             'dept': department,
             'desig': designation,
-            'empl' : employee,
+            'empl': employee,
         }
         return render(request, 'admin/employee/profile.html', context)
-    
+
     def post(self, request, id):
         if request.method == 'POST':
             if 'btnEditProfile' in request.POST:
@@ -203,7 +203,8 @@ class profile_screen_view(View):
                 state = request.POST.get("state")
                 country = request.POST.get("country")
 
-                Employee.objects.filter(id=id).update(firstname=fname, lastname=lname, phone=phoneProf, department=departmentProf, designation=designationProf, gender=gender, address=address, state=state, country=country)
+                Employee.objects.filter(id=id).update(firstname=fname, lastname=lname, phone=phoneProf, department=departmentProf,
+                                                      designation=designationProf, gender=gender, address=address, state=state, country=country)
                 messages.success(request, "Profile successfully Updated!")
                 return redirect('profile', id)
 
