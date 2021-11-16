@@ -25,6 +25,7 @@ from customAdmin.views import (
 
     # Employee View
     all_employee_screen_view,
+    employee_list_screen_view,
     holidays_screen_view,
     leaves_admin_screen_view,
     leaves_employee_screen_view,
@@ -36,6 +37,7 @@ from customAdmin.views import (
     timesheet_screen_view,
     shift_scheduling_screen_view,
     overtime_screen_view,
+    profile_screen_view,
 
 
     # Reports View
@@ -60,20 +62,26 @@ urlpatterns = [
 
     # EMPLOYEES TAB
     path('all-employee', all_employee_screen_view.as_view(), name='all-employee'),
-    path('deleteEmployee/<int:id>', all_employee_screen_view.deleteEmp, name='deleteEmployee'),
+    path('employee-list', employee_list_screen_view.as_view(), name='employee-list'),
+    path('deleteEmployee/<int:id>',
+         all_employee_screen_view.deleteEmp, name='deleteEmployee'),
     path('holidays', holidays_screen_view, name='holidays'),
     path('leaves-admin', leaves_admin_screen_view, name='leaves-admin'),
     path('leaves-employee', leaves_employee_screen_view, name='leaves-employee'),
     path('leaves-settings', leaves_settings_screen_view, name='leaves-settings'),
     path('attendance-admin', attendance_admin_screen_view, name='attendance-admin'),
-    path('attendance-employee', attendance_employee_screen_view, name='attendance-employee'),
+    path('attendance-employee', attendance_employee_screen_view,
+         name='attendance-employee'),
     path('departments', departments_screen_view.as_view(), name='departments'),
-    path('deleteDepart/<int:id>', departments_screen_view.deleteDepartment, name='deleteDepartment'),
+    path('deleteDepart/<int:id>',
+         departments_screen_view.deleteDepartment, name='deleteDepartment'),
     path('designations', designations_screen_view.as_view(), name='designations'),
-    path('deleteDesig/<int:id>', designations_screen_view.deleteDesig, name='deleteDesignation'),
+    path('deleteDesig/<int:id>', designations_screen_view.deleteDesig,
+         name='deleteDesignation'),
     path('timesheet', timesheet_screen_view, name='timesheet'),
     path('shift-scheduling', shift_scheduling_screen_view, name='shift-scheduling'),
     path('overtime', overtime_screen_view, name='overtime'),
+    path('profile', profile_screen_view.as_view(), name="profile"),
 
 
     # REPORTS TAB

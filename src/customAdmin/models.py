@@ -64,3 +64,5 @@ class Employee(models.Model):  # Employee Model
     phone = models.CharField(max_length=150, blank=True)
     department = models.CharField(max_length=150, blank=True)
     designation = models.CharField(max_length=150, blank=True)
+    state = models.CharField(max_length=150, blank=True)
+    country = models.CharField(max_length=150, blank=True)
