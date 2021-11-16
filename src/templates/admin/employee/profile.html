@@ -7,6 +7,35 @@
 			
 				<!-- Page Content -->
                 <div class="content container-fluid">
+					<!--Success message-->
+					<div class="row">
+            			<div class="col-lg-12">
+
+							{% if messages %}
+							{% for message in messages %}
+							<br>
+								<div class="alert alert-success shadow fade show" role="alert"
+									style="border-left:#155724 5px solid; border-radius: 0px">
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true" style="color:#155724">&times;</span>
+									</button>
+									<div class="row">
+										<svg width="1.25em" height="1.25em" viewBox="0 0 16 16" class="m-1 bi bi-shield-fill-check"
+											fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+											<path fill-rule="evenodd"
+												d="M8 .5c-.662 0-1.77.249-2.813.525a61.11 61.11 0 0 0-2.772.815 1.454 1.454 0 0 0-1.003 1.184c-.573 4.197.756 7.307 2.368 9.365a11.192 11.192 0 0 0 2.417 2.3c.371.256.715.451 1.007.586.27.124.558.225.796.225s.527-.101.796-.225c.292-.135.636-.33 1.007-.586a11.191 11.191 0 0 0 2.418-2.3c1.611-2.058 2.94-5.168 2.367-9.365a1.454 1.454 0 0 0-1.003-1.184 61.09 61.09 0 0 0-2.772-.815C9.77.749 8.663.5 8 .5zm2.854 6.354a.5.5 0 0 0-.708-.708L7.5 8.793 6.354 7.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z" />
+										</svg>
+										<p style="font-size:18px" class="mb-0 font-weight-light"><span
+												class="mr-1 font-weight-bold">Success!</span> {{message}}</p>
+									</div>
+								</div>
+								<br>
+								{% endfor %}
+								{% endif %}
+
+						</div>
+					</div>
+					<!--end of success message-->	
 				
 					<!-- Page Header -->
 					<div class="page-header">
@@ -14,7 +43,7 @@
 							<div class="col-sm-12">
 								<h3 class="page-title">Profile</h3>
 								<ul class="breadcrumb">
-									<li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+									<li class="breadcrumb-item"><a href="admin-dashboard">Dashboard</a></li>
 									<li class="breadcrumb-item active">Profile</li>
 								</ul>
 							</div>
@@ -26,6 +55,8 @@
 						<div class="card-body">
 							<div class="row">
 								<div class="col-md-12">
+									{% for employee in empl %}
+									{% if employee.id == id %}
 									<div class="profile-view">
 										<div class="profile-img-wrap">
 											<div class="profile-img">
@@ -36,23 +67,23 @@
 											<div class="row">
 												<div class="col-md-5">
 													<div class="profile-info-left">
-														<h3 class="user-name m-t-0 mb-0">John Doe</h3>
-														<h6 class="text-muted">UI/UX Design Team</h6>
-														<small class="text-muted">Web Designer</small>
-														<div class="staff-id">Employee ID : FT-0001</div>
+														<h3 class="user-name m-t-0 mb-0">{{employee.firstname}} {{employee.lastname}}</h3>
+														<h6 class="text-muted">{{employee.department}}</h6>
+														<small class="text-muted">{{employee.designation}}</small>
+														<div class="staff-id">Employee ID : {{employee.employee_id}}</div>
 														<div class="small doj text-muted">Date of Join : 1st Jan 2013</div>
-														<div class="staff-msg"><a class="btn btn-custom" href="chat.html">Send Message</a></div>
+														{% comment %} <div class="staff-msg"><a class="btn btn-custom" href="chat.html">Send Message</a></div> {% endcomment %}
 													</div>
 												</div>
 												<div class="col-md-7">
 													<ul class="personal-info">
 														<li>
 															<div class="title">Phone:</div>
-															<div class="text"><a href="">9876543210</a></div>
+															<div class="text"><a href="">{{employee.phone}}</a></div>
 														</li>
 														<li>
 															<div class="title">Email:</div>
-															<div class="text"><a href="">johndoe@example.com</a></div>
+															<div class="text"><a href="">{{employee.email}}</a></div>
 														</li>
 														<li>
 															<div class="title">Birthday:</div>
@@ -60,11 +91,11 @@
 														</li>
 														<li>
 															<div class="title">Address:</div>
-															<div class="text">1861 Bayonne Ave, Manchester Township, NJ, 08759</div>
+															<div class="text">{{employee.address}}</div>
 														</li>
 														<li>
 															<div class="title">Gender:</div>
-															<div class="text">Male</div>
+															<div class="text">{{employee.gender}}</div>
 														</li>
 														<li>
 															<div class="title">Reports to:</div>
@@ -82,14 +113,15 @@
 													</ul>
 												</div>
 											</div>
-										</div>
-										<div class="pro-edit"><a data-target="#profile_info" data-toggle="modal" class="edit-icon" href="#"><i class="fa fa-pencil"></i></a></div>
+										</div>										
+										<div class="pro-edit"><a data-target="#profile_info{{employee.id}}" data-toggle="modal" class="edit-icon"><i class="fa fa-pencil"></i></a></div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					
+					{% endif %}
+					{% endfor %}
 					<div class="card tab-box">
 						<div class="row user-tabs">
 							<div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
@@ -810,7 +842,8 @@
 				<!-- /Page Content -->
 				
 				<!-- Profile Modal -->
-				<div id="profile_info" class="modal custom-modal fade" role="dialog">
+				{% for employee in empl %}
+				<div id="profile_info{{employee.id}}" class="modal custom-modal fade" role="dialog">
 					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -820,9 +853,11 @@
 								</button>
 							</div>
 							<div class="modal-body">
-								<form>
+								<form method="POST">
+								{% csrf_token %}
 									<div class="row">
 										<div class="col-md-12">
+											<input type="hidden" name="profileID" value="{{employee.id}}">
 											<div class="profile-img-wrap edit-img">
 												<img class="inline-block" src="assets/img/profiles/avatar-02.jpg" alt="user">
 												<div class="fileupload btn">
@@ -834,13 +869,13 @@
 												<div class="col-md-6">
 													<div class="form-group">
 														<label>First Name</label>
-														<input type="text" class="form-control" value="John">
+														<input type="text" name="firstname_profile" class="form-control" value="{{employee.firstname}}">
 													</div>
 												</div>
 												<div class="col-md-6">
 													<div class="form-group">
 														<label>Last Name</label>
-														<input type="text" class="form-control" value="Doe">
+														<input type="text" name="lastname_profile" class="form-control" value="{{employee.lastname}}">
 													</div>
 												</div>
 												<div class="col-md-6">
@@ -854,9 +889,10 @@
 												<div class="col-md-6">
 													<div class="form-group">
 														<label>Gender</label>
-														<select class="select form-control">
-															<option value="male selected">Male</option>
-															<option value="female">Female</option>
+														<select name="gender" class="select form-control">
+															<option>~ Select Gender ~</option>
+															<option value="Male">Male</option>
+															<option value="Female">Female</option>
 														</select>
 													</div>
 												</div>
@@ -867,52 +903,51 @@
 										<div class="col-md-12">
 											<div class="form-group">
 												<label>Address</label>
-												<input type="text" class="form-control" value="4487 Snowbird Lane">
+												<input name="address" type="text" class="form-control" value="{{employee.address}}">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>State</label>
-												<input type="text" class="form-control" value="New York">
+												<input name="state" type="text" class="form-control" value="{{employee.state}}">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Country</label>
-												<input type="text" class="form-control" value="United States">
+												<input name="country" type="text" class="form-control" value="{{employee.country}}">
 											</div>
 										</div>
-										<div class="col-md-6">
+										{% comment %} <div class="col-md-6">
 											<div class="form-group">
 												<label>Pin Code</label>
 												<input type="text" class="form-control" value="10523">
 											</div>
-										</div>
+										</div> {% endcomment %}
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Phone Number</label>
-												<input type="text" class="form-control" value="631-889-3206">
+												<input name="phone_profile" type="text" class="form-control" value="{{employee.phone}}">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Department <span class="text-danger">*</span></label>
-												<select class="select">
-													<option>Select Department</option>
-													<option>Web Development</option>
-													<option>IT Management</option>
-													<option>Marketing</option>
+												<select name="depart_name" class="select">
+													{% for department in dept %}
+													<option value="{{department.department_name}}" {% if employee.department == department.department_name %} 
+														selected="selected"{% endif %}>{{department.department_name}}</option>											
+													{% endfor %}
 												</select>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Designation <span class="text-danger">*</span></label>
-												<select class="select">
-													<option>Select Designation</option>
-													<option>Web Designer</option>
-													<option>Web Developer</option>
-													<option>Android Developer</option>
+												<select name="desig_name" class="select">
+													{% for designation in desig %}
+													<option value="{{designation.designation_name}}" {% if employee.designation == designation.designation_name %} selected="selected"{% endif %}>{{designation.designation_name}}</option>											
+													{% endfor %}
 												</select>
 											</div>
 										</div>
@@ -929,13 +964,14 @@
 										</div>
 									</div>
 									<div class="submit-section">
-										<button class="btn btn-primary submit-btn">Submit</button>
+										<input type="submit" name="btnEditProfile" class="btn btn-primary submit-btn" value="Submit">
 									</div>
 								</form>
 							</div>
 						</div>
 					</div>
 				</div>
+				{% endfor %}
 				<!-- /Profile Modal -->
 				
 				<!-- Personal Info Modal -->

@@ -168,15 +168,44 @@ class employee_list_screen_view(View):
                 idemp = request.POST.get("empid_update")
 
                 Employee.objects.filter(id=eid).update(employee_id=idemp, firstname=fname, lastname=lname,
-                                                       username=uname, email=emailUp, phone=phoneUp, department=departmentUp, designation=designationUp)
+                    username=uname, email=emailUp, phone=phoneUp, department=departmentUp, designation=designationUp)
                 messages.success(request, "Employee " +
                                  idemp + " successfully Updated!")
                 return redirect('employee-list')
 
 
 class profile_screen_view(View):
-    def get(self, request):
-        return render(request, 'admin/employee/profile.html')
+    def get(self, request, id):
+        employee = Employee.objects.all()   
+        department = Department.objects.all()
+        designation = Designation.objects.all()     
+        context = {
+            'id' : id,
+            'dept': department,
+            'desig': designation,
+            'empl' : employee,
+        }
+        return render(request, 'admin/employee/profile.html', context)
+    
+    def post(self, request, id):
+        if request.method == 'POST':
+            if 'btnEditProfile' in request.POST:
+                fname = request.POST.get("firstname_profile")
+                lname = request.POST.get("lastname_profile")
+                # uname = request.POST.get("username_profile")
+                # emailProf = request.POST.get("email_update")
+                phoneProf = request.POST.get("phone_profile")
+                departmentProf = request.POST.get("depart_name")
+                designationProf = request.POST.get("desig_name")
+                # idempProf = request.POST.get("empid_update")
+                gender = request.POST.get("gender")
+                address = request.POST.get("address")
+                state = request.POST.get("state")
+                country = request.POST.get("country")
+
+                Employee.objects.filter(id=id).update(firstname=fname, lastname=lname, phone=phoneProf, department=departmentProf, designation=designationProf, gender=gender, address=address, state=state, country=country)
+                messages.success(request, "Profile successfully Updated!")
+                return redirect('profile', id)
 
 
 def holidays_screen_view(request):
