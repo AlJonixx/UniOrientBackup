@@ -63,8 +63,7 @@ urlpatterns = [
     # EMPLOYEES TAB
     path('all-employee', all_employee_screen_view.as_view(), name='all-employee'),
     path('employee-list', employee_list_screen_view.as_view(), name='employee-list'),
-    path('deleteEmployee/<int:id>',
-         all_employee_screen_view.deleteEmp, name='deleteEmployee'),
+    path('deleteEmployee/<int:id>', all_employee_screen_view.deleteEmp, name='deleteEmployee'),
     path('holidays', holidays_screen_view, name='holidays'),
     path('leaves-admin', leaves_admin_screen_view, name='leaves-admin'),
     path('leaves-employee', leaves_employee_screen_view, name='leaves-employee'),
@@ -81,7 +80,7 @@ urlpatterns = [
     path('timesheet', timesheet_screen_view, name='timesheet'),
     path('shift-scheduling', shift_scheduling_screen_view, name='shift-scheduling'),
     path('overtime', overtime_screen_view, name='overtime'),
-    path('profile', profile_screen_view.as_view(), name="profile"),
+    path('profile/<int:id>', profile_screen_view.as_view(), name="profile"),
 
 
     # REPORTS TAB
