@@ -58,35 +58,36 @@
 					<!-- /Page Header -->
 					
 					<!-- Search Filter -->
+					<form method="GET">
 					<div class="row filter-row">
 						<div class="col-sm-6 col-md-3">  
 							<div class="form-group form-focus">
-								<input type="text" class="form-control floating">
+								<input name="q1" type="search" class="form-control floating">
 								<label class="focus-label">Employee ID</label>
 							</div>
 						</div>
 						<div class="col-sm-6 col-md-3">  
 							<div class="form-group form-focus">
-								<input type="text" class="form-control floating">
+								<input name="q2" type="search" class="form-control floating">
 								<label class="focus-label">Employee Name</label>
 							</div>
 						</div>
 						<div class="col-sm-6 col-md-3"> 
 							<div class="form-group form-focus select-focus">
-								<select class="select floating"> 
-									<option>Select Designation</option>
-									<option>Web Developer</option>
-									<option>Web Designer</option>
-									<option>Android Developer</option>
-									<option>Ios Developer</option>
+								<select name="q3" class="select floating"> 
+									<option value="">~ Select Designation ~</option>
+									{% for designation in desig %}
+										<option>{{designation.designation_name}}</option>											
+									{% endfor %}
 								</select>
 								<label class="focus-label">Designation</label>
 							</div>
 						</div>
 						<div class="col-sm-6 col-md-3">  
-							<a href="#" class="btn btn-success btn-block"> Search </a>  
+							<button type="submit" name="SearchEmp" class="btn btn-success btn-block"> Search </button>  
 						</div>
                     </div>
+					</form>
 					<!-- Search Filter -->
 					
 					<div class="row staff-grid-row">
