@@ -85,10 +85,22 @@
 															<div class="title">Email:</div>
 															<div class="text"><a href="">{{employee.email}}</a></div>
 														</li>
-														<li>
+
+														 <li>
 															<div class="title">Birthday:</div>
 															<div class="text">24th July</div>
 														</li>
+
+														<li>
+															<div class="title">Address:</div>
+															<div class="text">{{employee.address}}</div>
+														</li>
+
+														<li>
+															<div class="title">Gender:</div>
+															<div class="text">{{employee.gender}}</div>
+														</li> 
+														{% comment %}
 														<li>
 															<div class="title">Address:</div>
 															<div class="text">{{employee.address}}</div>
@@ -96,8 +108,8 @@
 														<li>
 															<div class="title">Gender:</div>
 															<div class="text">{{employee.gender}}</div>
-														</li>
-														<li>
+														</li> {% endcomment %}
+														{% comment %} <li>
 															<div class="title">Reports to:</div>
 															<div class="text">
 															   <div class="avatar-box">
@@ -109,7 +121,7 @@
 																	Jeffery Lalor
 																</a>
 															</div>
-														</li>
+														</li> {% endcomment %}
 													</ul>
 												</div>
 											</div>
@@ -859,7 +871,7 @@
 										<div class="col-md-12">
 											<input type="hidden" name="profileID" value="{{employee.id}}">
 											<div class="profile-img-wrap edit-img">
-												<img class="inline-block" src="assets/img/profiles/avatar-02.jpg" alt="user">
+												<img class="inline-block" src="https://picsum.photos/200" alt="user">
 												<div class="fileupload btn">
 													<span class="btn-text">edit</span>
 													<input class="upload" type="file">

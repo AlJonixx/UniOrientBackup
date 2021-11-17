@@ -85,13 +85,13 @@ class all_employee_screen_view(View):
                 emailPost = request.POST['email_text']
                 passwordPost = request.POST['password_text']
                 password2 = request.POST['password2_text']
-                joinDate = request.POST['joindate_text']
+                gender = request.POST['gender_text']
                 phonePost = request.POST['phone_text']
                 designationPost = request.POST['designation_text']
                 departmentPost = request.POST['department_text']
                 hashed_pw = make_password(password2)
                 form = Employee(employee_id=finalemp, firstname=firstName, lastname=lastName, username=userName, email=emailPost,
-                                password=hashed_pw, phone=phonePost, department=departmentPost, designation=designationPost)
+                                password=hashed_pw, phone=phonePost, department=departmentPost, designation=designationPost, gender=gender)
                 form.save()
                 messages.success(request, "Employee successfully Added!")
                 return redirect('all-employee')
@@ -145,13 +145,13 @@ class employee_list_screen_view(View):
                 emailPost = request.POST['email_text']
                 passwordPost = request.POST['password_text']
                 password2 = request.POST['password2_text']
-                joinDate = request.POST['joindate_text']
+                gender = request.POST['gender_text']
                 phonePost = request.POST['phone_text']
                 designationPost = request.POST['designation_text']
                 departmentPost = request.POST['department_text']
                 hashed_pw = make_password(password2)
                 form = Employee(employee_id=finalemp, firstname=firstName, lastname=lastName, username=userName, email=emailPost,
-                                password=hashed_pw, phone=phonePost, department=departmentPost, designation=designationPost)
+                                password=hashed_pw, phone=phonePost, department=departmentPost, designation=designationPost, gender=gender)
                 form.save()
                 messages.success(request, "Employee successfully Added!")
                 return redirect('employee-list')
