@@ -1,5 +1,4 @@
 {% load static %}
-{% comment %} Reports Tab {% endcomment %}
 {% url 'attendance-report' as attendanceReport %}
 {% url 'employee-report' as employeeReport %}
 {% url 'payslip-report' as payslipReport %}
@@ -7,25 +6,7 @@
 {% url 'daily-report' as dailyReport %}
 {% url 'overtime-report' as overtimeReport %}
 
-{% comment %} Payroll Tab {% endcomment %}
 {% url 'salary' as salary %}
-{% url 'salary-view' as salaryView %}
-{% url 'payroll-items' as payrollItems %}
-
-{% comment %} Employee Tab {% endcomment %}
-{% url 'all-employee' as allEmployee %}
-{% url 'holidays' as holidays %}
-{% url 'leaves-admin' as leavesAdmin %}
-{% url 'leaves-employee' as leavesEmployee %}
-{% url 'leaves-settings' as leaveSettings %}
-{% url 'attendance-admin' as attendanceAdmin %}
-{% url 'attendance-employee' as attendanceEmployee %}
-{% url 'departments' as departments %}
-{% url 'designations' as designations %}
-{% url 'timesheet' as timesheet %}
-{% url 'shift-scheduling' as shiftScheduling %}
-{% url 'overtime' as overtime %}
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -121,20 +102,20 @@
 					<!-- Flag -->
 					<li class="nav-item dropdown has-arrow flag-nav">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
-							<img src="assets/img/flags/us.png" alt="" height="20"> <span>English</span>
+							<img src="{% static '/admin/assets/img/flags/us.png' %}" alt="" height="20"> <span>English</span>
 						</a>
 						<div class="dropdown-menu dropdown-menu-right">
 							<a href="javascript:void(0);" class="dropdown-item">
-								<img src="assets/img/flags/us.png" alt="" height="16"> English
+								<img src="{% static '/admin/assets/img/flags/us.png' %}" alt="" height="16"> English
 							</a>
 							<a href="javascript:void(0);" class="dropdown-item">
-								<img src="assets/img/flags/fr.png" alt="" height="16"> French
+								<img src="{% static '/admin/assets/img/flags/fr.png' %}" alt="" height="16"> French
 							</a>
 							<a href="javascript:void(0);" class="dropdown-item">
-								<img src="assets/img/flags/es.png" alt="" height="16"> Spanish
+								<img src="{% static '/admin/assets/img/flags/es.png' %}" alt="" height="16"> Spanish
 							</a>
 							<a href="javascript:void(0);" class="dropdown-item">
-								<img src="assets/img/flags/de.png" alt="" height="16"> German
+								<img src="{% static '/admin/assets/img/flags/de.png' %}" alt="" height="16"> German
 							</a>
 						</div>
 					</li>
@@ -404,18 +385,18 @@
 							<li class="submenu">
 								<a href="#" class="noti-dot"><i class="la la-user"></i> <span> Employees</span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
-									<li><a class="{% if request.path == allEmployee %}active{% endif %}" href="{% url 'all-employee' %}">All Employees</a></li>
-									<li><a class="{% if request.path == holidays %}active{% endif %}" href="{% url 'holidays' %}">Holidays</a></li>
-									<li><a class="{% if request.path == leavesAdmin %}active{% endif %}" href="{% url 'leaves-admin' %}">Leaves (Admin) <span class="badge badge-pill bg-primary float-right">1</span></a></li>
-									<li><a class="{% if request.path == leavesEmployee %}active{% endif %}" href="{% url 'leaves-employee' %}">Leaves (Employee)</a></li>
-									<li><a class="{% if request.path == leaveSettings %}active{% endif %}" href="{% url 'leaves-settings' %}">Leave Settings</a></li>
-									<li><a class="{% if request.path == attendanceAdmin %}active{% endif %}" href="{% url 'attendance-admin' %}" >Attendance (Admin)</a></li>
-									<li><a class="{% if request.path == attendanceEmployee %}active{% endif %}" href="{% url 'attendance-employee' %}">Attendance (Employee)</a></li>
-									<li><a class="{% if request.path == departments %}active{% endif %}" href="{% url 'departments' %}">Departments</a></li>
-									<li><a class="{% if request.path == designations %}active{% endif %}" href="{% url 'designations' %}">Designations</a></li>
-									<li><a class="{% if request.path == timesheet %}active{% endif %}" href="{% url 'timesheet' %}">Timesheet</a></li>
-									<li><a class="{% if request.path == shiftScheduling %}active{% endif %}" href="{% url 'shift-scheduling' %}">Shift & Schedule</a></li>
-									<li><a class="{% if request.path == overtime %}active{% endif %}" href="{% url 'overtime' %}">Overtime</a></li>
+									<li><a href="{% url 'all-employee' %}">All Employees</a></li>
+									<li><a href="{% url 'holidays' %}">Holidays</a></li>
+									<li><a href="{% url 'leaves-admin' %}">Leaves (Admin) <span class="badge badge-pill bg-primary float-right">1</span></a></li>
+									<li><a href="{% url 'leaves-employee' %}">Leaves (Employee)</a></li>
+									<li><a href="{% url 'leaves-settings' %}">Leave Settings</a></li>
+									<li><a href="{% url 'attendance-admin' %}" >Attendance (Admin)</a></li>
+									<li><a href="{% url 'attendance-employee' %}">Attendance (Employee)</a></li>
+									<li><a href="{% url 'departments' %}">Departments</a></li>
+									<li><a href="{% url 'designations' %}">Designations</a></li>
+									<li><a href="{% url 'timesheet' %}">Timesheet</a></li>
+									<li><a href="{% url 'shift-scheduling' %}">Shift & Schedule</a></li>
+									<li><a href="{% url 'overtime' %}">Overtime</a></li>
 								</ul>
 							</li>
 						<!--	<li> 
@@ -462,8 +443,8 @@
 								<a href="#"><i class="la la-money"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
 									<li><a class="{% if request.path == salary %}active{% endif %}" href="{% url 'salary' %}"> Employee Salary </a></li>
-									<li><a class="{% if request.path == salaryView %}active{% endif %}" href="{% url 'salary-view' %}"> Payslip </a></li>
-									<li><a class="{% if request.path == payrollItems %}active{% endif %}" href="{% url 'payroll-items' %}"> Payroll Items </a></li>
+									<li><a href="{% url 'salary-view' %}"> Payslip </a></li>
+									<li><a href="{% url 'payroll-items' %}"> Payroll Items </a></li>
 								</ul>
 							</li>
 							{% comment %} <li class="submenu">
