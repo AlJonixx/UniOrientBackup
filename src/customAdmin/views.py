@@ -9,6 +9,7 @@ import random
 
 from customAdmin.forms import AccountAuthenticationForm, DepartmentForm, DesignationForm, EmployeeForm
 from .models import *
+from django.db.models import Q
 from django.contrib.auth.hashers import make_password
 
 from django.http import HttpResponse
@@ -63,15 +64,43 @@ def login_screen_view(request):
 
 class all_employee_screen_view(View):
     def get(self, request):
-        department = Department.objects.all()
-        designation = Designation.objects.all()
-        employee = Employee.objects.all()
+        if 'SearchEmp' in request.GET:
+            q1 = request.GET['q1']
+            q2 = request.GET['q2']
+            q3 = request.GET['q3']
+            print(q3)
+            # multiQ = Q(Q(employee_id__icontains=q) & Q(firstname__icontains=q) )
+            if q1 and q3 is not None:
+                employee = Employee.objects.filter(employee_id__icontains=q1).filter(designation__icontains=q3)
+                department = Department.objects.all()
+                designation = Designation.objects.all()            
+            elif q1 and q2 is not None:
+                employee = Employee.objects.filter(employee_id__icontains=q1).filter(Q(Q(firstname__icontains=q2) | Q(lastname__icontains=q2)))
+                department = Department.objects.all()
+                designation = Designation.objects.all()
+            elif q2 and q3 is not None:
+                employee = Employee.objects.filter(Q(Q(firstname__icontains=q2) | Q(lastname__icontains=q2))).filter(designation__icontains=q3)            
+                department = Department.objects.all()
+                designation = Designation.objects.all()
+            else:
+                employee = Employee.objects.filter(Q(employee_id=q1) | Q(firstname=q2) | Q(lastname=q2) | Q(designation=q3))
+                department = Department.objects.all()
+                designation = Designation.objects.all()
+            # print(employee)
+            # department = Department.objects.all()
+            # designation = Designation.objects.all()
+        else:
+            department = Department.objects.all()
+            designation = Designation.objects.all()
+            employee = Employee.objects.all()
+
         context = {
             'dept': department,
             'desig': designation,
             'empl': employee,
         }
-        return render(request, 'admin/employee/employees.html', context)
+
+        return render(request, 'admin/employee/employees.html', context)        
 
     def post(self, request):
         form = EmployeeForm(request.POST)
@@ -124,9 +153,36 @@ class all_employee_screen_view(View):
 
 class employee_list_screen_view(View):
     def get(self, request):
-        department = Department.objects.all()
-        designation = Designation.objects.all()
-        employee = Employee.objects.all()
+        if 'SearchEmp' in request.GET:
+            q1 = request.GET['q1']
+            q2 = request.GET['q2']
+            q3 = request.GET['q3']
+            print(q3)
+            # multiQ = Q(Q(employee_id__icontains=q) & Q(firstname__icontains=q) )
+            if q1 and q3 is not None:
+                employee = Employee.objects.filter(employee_id__icontains=q1).filter(designation__icontains=q3)
+                department = Department.objects.all()
+                designation = Designation.objects.all()            
+            elif q1 and q2 is not None:
+                employee = Employee.objects.filter(employee_id__icontains=q1).filter(Q(Q(firstname__icontains=q2) | Q(lastname__icontains=q2)))
+                department = Department.objects.all()
+                designation = Designation.objects.all()
+            elif q2 and q3 is not None:
+                employee = Employee.objects.filter(Q(Q(firstname__icontains=q2) | Q(lastname__icontains=q2))).filter(designation__icontains=q3)            
+                department = Department.objects.all()
+                designation = Designation.objects.all()
+            else:
+                employee = Employee.objects.filter(Q(employee_id=q1) | Q(firstname=q2) | Q(lastname=q2) | Q(designation=q3))
+                department = Department.objects.all()
+                designation = Designation.objects.all()
+            # print(employee)
+            # department = Department.objects.all()
+            # designation = Designation.objects.all()
+        else:
+            department = Department.objects.all()
+            designation = Designation.objects.all()
+            employee = Employee.objects.all()
+
         context = {
             'dept': department,
             'desig': designation,
