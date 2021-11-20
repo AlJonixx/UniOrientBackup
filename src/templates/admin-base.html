@@ -6,6 +6,21 @@
 {% url 'daily-report' as dailyReport %}
 {% url 'overtime-report' as overtimeReport %}
 
+{% url 'all-employee' as allEmployee %}
+{% url 'employee-list' as employeeList %}
+{% url 'holidays' as holiDays %}
+{% url 'leaves-admin' as leavesAdmin %}
+{% url 'leaves-employee' as leavesEmployee %}
+{% url 'leaves-settings' as leavesSettings %}
+{% url 'attendance-admin' as attendanceAdmin %}
+{% url 'attendance-employee' as attendanceEmployee %}
+{% url 'departments' as departMents %}
+{% url 'designations' as desigNations %}
+{% url 'timesheet' as timeSheet%}
+{% url 'shift-scheduling' as shiftScheduling %}
+{% url 'overtime' as overTime %}
+
+
 {% url 'salary' as salary %}
 
 <!DOCTYPE html>
@@ -385,18 +400,18 @@
 							<li class="submenu">
 								<a href="#" class="noti-dot"><i class="la la-user"></i> <span> Employees</span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
-									<li><a href="{% url 'all-employee' %}">All Employees</a></li>
-									<li><a href="{% url 'holidays' %}">Holidays</a></li>
-									<li><a href="{% url 'leaves-admin' %}">Leaves (Admin) <span class="badge badge-pill bg-primary float-right">1</span></a></li>
-									<li><a href="{% url 'leaves-employee' %}">Leaves (Employee)</a></li>
-									<li><a href="{% url 'leaves-settings' %}">Leave Settings</a></li>
-									<li><a href="{% url 'attendance-admin' %}" >Attendance (Admin)</a></li>
-									<li><a href="{% url 'attendance-employee' %}">Attendance (Employee)</a></li>
-									<li><a href="{% url 'departments' %}">Departments</a></li>
-									<li><a href="{% url 'designations' %}">Designations</a></li>
-									<li><a href="{% url 'timesheet' %}">Timesheet</a></li>
-									<li><a href="{% url 'shift-scheduling' %}">Shift & Schedule</a></li>
-									<li><a href="{% url 'overtime' %}">Overtime</a></li>
+									<li><a class="{% if request.path == allEmployee %}active{% endif %}" href="{% url 'all-employee' %}">All Employees</a></li>
+									<li><a class="{% if request.path == holiDays %}active{% endif %}" href="{% url 'holidays' %}">Holidays</a></li>
+									<li><a class="{% if request.path == leavesAdmin %}active{% endif %}" href="{% url 'leaves-admin' %}">Leaves (Admin) <span class="badge badge-pill bg-primary float-right">1</span></a></li>
+									<li><a class="{% if request.path == leavesEmployee %}active{% endif %}" href="{% url 'leaves-employee' %}">Leaves (Employee)</a></li>
+									<li><a class="{% if request.path == leavesSettings %}active{% endif %}" href="{% url 'leaves-settings' %}">Leave Settings</a></li>
+									<li><a class="{% if request.path == attendanceAdmin %}active{% endif %}" href="{% url 'attendance-admin' %}" >Attendance (Admin)</a></li>
+									<li><a class="{% if request.path == attendanceEmployee %}active{% endif %}" href="{% url 'attendance-employee' %}">Attendance (Employee)</a></li>
+									<li><a class="{% if request.path == departMents %}active{% endif %}" href="{% url 'departments' %}">Departments</a></li>
+									<li><a class="{% if request.path == desigNations %}active{% endif %}" href="{% url 'designations' %}">Designations</a></li>
+									<li><a class="{% if request.path == timeSheet %}active{% endif %}" href="{% url 'timesheet' %}">Timesheet</a></li>
+									<li><a class="{% if request.path == shiftScheduling %}active{% endif %}" href="{% url 'shift-scheduling' %}">Shift & Schedule</a></li>
+									<li><a class="{% if request.path == overTime %}active{% endif %}" href="{% url 'overtime' %}">Overtime</a></li>
 								</ul>
 							</li>
 						<!--	<li> 

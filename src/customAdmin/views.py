@@ -71,19 +71,23 @@ class all_employee_screen_view(View):
             print(q3)
             # multiQ = Q(Q(employee_id__icontains=q) & Q(firstname__icontains=q) )
             if q1 and q3 is not None:
-                employee = Employee.objects.filter(employee_id__icontains=q1).filter(designation__icontains=q3)
+                employee = Employee.objects.filter(
+                    employee_id__icontains=q1).filter(designation__icontains=q3)
                 department = Department.objects.all()
-                designation = Designation.objects.all()            
+                designation = Designation.objects.all()
             elif q1 and q2 is not None:
-                employee = Employee.objects.filter(employee_id__icontains=q1).filter(Q(Q(firstname__icontains=q2) | Q(lastname__icontains=q2)))
+                employee = Employee.objects.filter(employee_id__icontains=q1).filter(
+                    Q(Q(firstname__icontains=q2) | Q(lastname__icontains=q2)))
                 department = Department.objects.all()
                 designation = Designation.objects.all()
             elif q2 and q3 is not None:
-                employee = Employee.objects.filter(Q(Q(firstname__icontains=q2) | Q(lastname__icontains=q2))).filter(designation__icontains=q3)            
+                employee = Employee.objects.filter(Q(Q(firstname__icontains=q2) | Q(
+                    lastname__icontains=q2))).filter(designation__icontains=q3)
                 department = Department.objects.all()
                 designation = Designation.objects.all()
             else:
-                employee = Employee.objects.filter(Q(employee_id=q1) | Q(firstname=q2) | Q(lastname=q2) | Q(designation=q3))
+                employee = Employee.objects.filter(Q(employee_id=q1) | Q(
+                    firstname=q2) | Q(lastname=q2) | Q(designation=q3))
                 department = Department.objects.all()
                 designation = Designation.objects.all()
             # print(employee)
@@ -100,7 +104,7 @@ class all_employee_screen_view(View):
             'empl': employee,
         }
 
-        return render(request, 'admin/employee/employees.html', context)        
+        return render(request, 'admin/employee/employees.html', context)
 
     def post(self, request):
         form = EmployeeForm(request.POST)
@@ -160,19 +164,23 @@ class employee_list_screen_view(View):
             print(q3)
             # multiQ = Q(Q(employee_id__icontains=q) & Q(firstname__icontains=q) )
             if q1 and q3 is not None:
-                employee = Employee.objects.filter(employee_id__icontains=q1).filter(designation__icontains=q3)
+                employee = Employee.objects.filter(
+                    employee_id__icontains=q1).filter(designation__icontains=q3)
                 department = Department.objects.all()
-                designation = Designation.objects.all()            
+                designation = Designation.objects.all()
             elif q1 and q2 is not None:
-                employee = Employee.objects.filter(employee_id__icontains=q1).filter(Q(Q(firstname__icontains=q2) | Q(lastname__icontains=q2)))
+                employee = Employee.objects.filter(employee_id__icontains=q1).filter(
+                    Q(Q(firstname__icontains=q2) | Q(lastname__icontains=q2)))
                 department = Department.objects.all()
                 designation = Designation.objects.all()
             elif q2 and q3 is not None:
-                employee = Employee.objects.filter(Q(Q(firstname__icontains=q2) | Q(lastname__icontains=q2))).filter(designation__icontains=q3)            
+                employee = Employee.objects.filter(Q(Q(firstname__icontains=q2) | Q(
+                    lastname__icontains=q2))).filter(designation__icontains=q3)
                 department = Department.objects.all()
                 designation = Designation.objects.all()
             else:
-                employee = Employee.objects.filter(Q(employee_id=q1) | Q(firstname=q2) | Q(lastname=q2) | Q(designation=q3))
+                employee = Employee.objects.filter(Q(employee_id=q1) | Q(
+                    firstname=q2) | Q(lastname=q2) | Q(designation=q3))
                 department = Department.objects.all()
                 designation = Designation.objects.all()
             # print(employee)
@@ -344,7 +352,7 @@ class designations_screen_view(View):
                 designation = request.POST['designation_text']
                 department = request.POST['department_text']
                 form = Designation(designation_name=designation,
-                                   department_name=department)
+                                   department_name_id=department)
                 form.save()
                 messages.success(request, "Designation successfully Added!")
                 return redirect('designations')
@@ -355,7 +363,7 @@ class designations_screen_view(View):
                 departname = request.POST.get("depart-name")
 
                 Designation.objects.filter(id=desigid).update(
-                    designation_name=designame, department_name=departname)
+                    designation_name=designame, department_name_id=departname)
                 messages.success(request, "Designation successfully Updated!")
                 return redirect('designations')
 

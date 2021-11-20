@@ -73,7 +73,7 @@
 										<tr>
 											<td>{{ designation.id }}</td>
 											<td>{{ designation.designation_name }}</td>
-											<td>{{ designation.department_name }}</td>
+											<td>{{ designation.department_name.department_name}}</td>
 											<td class="text-right">
                                             <div class="dropdown dropdown-action">
 													<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -114,7 +114,7 @@
 										<label>Department <span class="text-danger">*</span></label>
 										<select name="department_text" class="select">
 										{% for department in dept %}
-											<option value="{{ department.department_name }}">{{ department.department_name }}</option>
+											<option value="{{ department.id }}">{{ department.department_name }}</option>
 										{% endfor %}
 											
 
@@ -153,7 +153,7 @@
 										<label>Department <span class="text-danger">*</span></label>
 										<select name="depart-name" class="select">
 											{% for department in dept %}
-												<option value="{{department.department_name}}" {% if designation.department_name == department.department_name %} selected="selected" {% endif %}>{{department.department_name}}</option>
+												<option value="{{ department.id }}" {% if designation.department_name == department.department_name %} selected="selected" {% endif %}>{{department.department_name}}</option>
 											{% endfor %}
 										</select>
 									</div>

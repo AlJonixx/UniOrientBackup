@@ -50,7 +50,8 @@ class Department(models.Model):  # Deparment Model
 
 class Designation(models.Model):  # Designation MOdel
     designation_name = models.CharField(max_length=150, unique=True)
-    department_name = models.CharField(max_length=150)
+    department_name = models.ForeignKey(
+        Department, on_delete=models.CASCADE)
 
 
 class Employee(models.Model):  # Employee Model
@@ -65,6 +66,6 @@ class Employee(models.Model):  # Employee Model
     department = models.CharField(max_length=150, blank=True)
     designation = models.CharField(max_length=150, blank=True)
     gender = models.CharField(max_length=20, blank=True)
-    address = models.CharField( max_length=150, blank=True)
+    address = models.CharField(max_length=150, blank=True)
     state = models.CharField(max_length=150, blank=True)
     country = models.CharField(max_length=150, blank=True)
