@@ -122,10 +122,10 @@ class all_employee_screen_view(View):
                 address = "Edit your Address here"
                 phonePost = request.POST['phone_text']
                 designationPost = request.POST['designation_text']
-                departmentPost = request.POST['department_text']
+                # departmentPost = request.POST['department_text']
                 hashed_pw = make_password(password2)
                 form = Employee(employee_id=finalemp, firstname=firstName, lastname=lastName, username=userName, email=emailPost,
-                                password=hashed_pw, phone=phonePost, department=departmentPost, designation=designationPost, gender=gender, address=address)
+                                password=hashed_pw, phone=phonePost, designation_name_id=designationPost, gender=gender, address=address)
                 form.save()
                 messages.success(request, "Employee successfully Added!")
                 return redirect('all-employee')
@@ -137,12 +137,12 @@ class all_employee_screen_view(View):
                 uname = request.POST.get("username_update")
                 emailUp = request.POST.get("email_update")
                 phoneUp = request.POST.get("phone_update")
-                departmentUp = request.POST.get("department_name")
+                # departmentUp = request.POST.get("department_name")
                 designationUp = request.POST.get("designation_name")
                 idemp = request.POST.get("empid_update")
 
                 Employee.objects.filter(id=eid).update(employee_id=idemp, firstname=fname, lastname=lname,
-                                                       username=uname, email=emailUp, phone=phoneUp, department=departmentUp, designation=designationUp)
+                                                       username=uname, email=emailUp, phone=phoneUp, designation_name_id=designationUp)
                 messages.success(request, "Employee " +
                                  idemp + " successfully Updated!")
                 return redirect('all-employee')
@@ -214,10 +214,10 @@ class employee_list_screen_view(View):
                 address = "Edit your Address here"
                 phonePost = request.POST['phone_text']
                 designationPost = request.POST['designation_text']
-                departmentPost = request.POST['department_text']
+                # departmentPost = request.POST['department_text']
                 hashed_pw = make_password(password2)
                 form = Employee(employee_id=finalemp, firstname=firstName, lastname=lastName, username=userName, email=emailPost,
-                                password=hashed_pw, phone=phonePost, department=departmentPost, designation=designationPost, gender=gender, address=address)
+                                password=hashed_pw, phone=phonePost, designation_name_id=designationPost, gender=gender, address=address)
                 form.save()
                 messages.success(request, "Employee successfully Added!")
                 return redirect('employee-list')
@@ -229,12 +229,12 @@ class employee_list_screen_view(View):
                 uname = request.POST.get("username_update")
                 emailUp = request.POST.get("email_update")
                 phoneUp = request.POST.get("phone_update")
-                departmentUp = request.POST.get("department_name")
+                # departmentUp = request.POST.get("department_name")
                 designationUp = request.POST.get("designation_name")
                 idemp = request.POST.get("empid_update")
 
                 Employee.objects.filter(id=eid).update(employee_id=idemp, firstname=fname, lastname=lname,
-                                                       username=uname, email=emailUp, phone=phoneUp, department=departmentUp, designation=designationUp)
+                                                       username=uname, email=emailUp, phone=phoneUp, designation_name_id=designationUp)
                 messages.success(request, "Employee " +
                                  idemp + " successfully Updated!")
                 return redirect('employee-list')

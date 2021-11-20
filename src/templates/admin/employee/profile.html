@@ -69,7 +69,7 @@
 													<div class="profile-info-left">
 														<h3 class="user-name m-t-0 mb-0">{{employee.firstname}} {{employee.lastname}}</h3>
 														<h6 class="text-muted">{{employee.department}}</h6>
-														<small class="text-muted">{{employee.designation}}</small>
+														<small class="text-muted">{{employee.designation_name.designation_name}}</small>
 														<div class="staff-id">Employee ID : {{employee.employee_id}}</div>
 														<div class="small doj text-muted">Date of Join : 1st Jan 2013</div>
 														{% comment %} <div class="staff-msg"><a class="btn btn-custom" href="chat.html">Send Message</a></div> {% endcomment %}
@@ -954,11 +954,10 @@
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
-												<label>Department <span class="text-danger">*</span></label>
+												<label>Designation <span class="text-danger">*</span></label>
 												<select name="depart_name" class="select">
-													{% for department in dept %}
-													<option value="{{department.department_name}}" {% if employee.department == department.department_name %} 
-														selected="selected"{% endif %}>{{department.department_name}}</option>											
+													{% for employee in empl %}
+													<option>{{employee.designation_name.designation_name}}</option>											
 													{% endfor %}
 												</select>
 											</div>

@@ -106,7 +106,7 @@
 									</div>
 								</div>
 								<h4 class="user-name m-t-10 mb-0 text-ellipsis"><a name="Profile" href="profile/{{employee.id}}">{{employee.firstname}} {{employee.lastname}}</a></h4>
-								<div class="small text-muted">{{employee.designation}}</div>
+								<div class="small text-muted">{{employee.designation_name.designation_name}}</div>
 							</div>
 						</div>
 						{% endfor %}
@@ -182,7 +182,7 @@
 											</div>
 										</div>
 
-										<div class="col-md-6">
+										{% comment %} <div class="col-md-6">
 											<div class="form-group">
 												<label>Department <span class="text-danger">*</span></label>
 												<select name="department_text" class="select">
@@ -191,13 +191,13 @@
 												{% endfor %}
 												</select>
 											</div>
-										</div>
+										</div> {% endcomment %}
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Designation <span class="text-danger">*</span></label>
 												<select name="designation_text" class="select">
 												{% for designation in desig %}
-													<option>{{designation.designation_name}}</option>											
+													<option value="{{designation.id}}">{{designation.designation_name}}</option>											
 												{% endfor %}
 												</select>
 											</div>
@@ -294,7 +294,7 @@
 												</select>
 											</div>
 										</div> {% endcomment %}
-										<div class="col-md-6">
+										{% comment %} <div class="col-md-6">
 											<div class="form-group">
 												<label>Department <span class="text-danger">*</span></label>
 												<select name="department_name" class="select">
@@ -304,13 +304,13 @@
 												{% endfor %}
 												</select>
 											</div>
-										</div>
+										</div> {% endcomment %}
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Designation <span class="text-danger">*</span></label>
 												<select name="designation_name" class="select">
 												{% for designation in desig %}
-													<option value="{{designation.designation_name}}" {% if employee.designation == designation.designation_name %} selected="selected"{% endif %}>{{designation.designation_name}}</option>											
+													<option value="{{designation.id}}" {% if employee.designation_name.designation_name == designation.designation_name %} selected="selected"{% endif %}>{{designation.designation_name}}</option>											
 												{% endfor %}
 												</select>
 											</div>

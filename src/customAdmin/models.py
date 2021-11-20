@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
+
 # Create your models here.
 
 
@@ -50,8 +51,7 @@ class Department(models.Model):  # Deparment Model
 
 class Designation(models.Model):  # Designation MOdel
     designation_name = models.CharField(max_length=150, unique=True)
-    department_name = models.ForeignKey(
-        Department, on_delete=models.CASCADE)
+    department_name = models.ForeignKey(Department, on_delete=models.CASCADE)
 
 
 class Employee(models.Model):  # Employee Model
@@ -63,9 +63,16 @@ class Employee(models.Model):  # Employee Model
     password = models.CharField(max_length=150, blank=True)
     join_date = models.DateTimeField(default=timezone.now)
     phone = models.CharField(max_length=150, blank=True)
-    department = models.CharField(max_length=150, blank=True)
-    designation = models.CharField(max_length=150, blank=True)
     gender = models.CharField(max_length=20, blank=True)
+    designation_name = models.ForeignKey(
+        Designation, on_delete=models.CASCADE, null=True)
     address = models.CharField(max_length=150, blank=True)
     state = models.CharField(max_length=150, blank=True)
     country = models.CharField(max_length=150, blank=True)
+
+
+class EmployeeRole(models.Model):
+    employee_id = models.ForeignKey(
+        Employee, on_delete=models.CASCADE)
+    designation_name = models.ForeignKey(
+        Employee, on_delete=models.CASCADE, related_name='emp_designation_name')

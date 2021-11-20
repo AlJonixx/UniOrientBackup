@@ -121,7 +121,7 @@
 											<td>{{ employee.join_date }}</td>
 											<td>
 												<div class="dropdown">
-													<a href="" class="btn btn-white btn-sm btn-rounded" data-toggle="dropdown" aria-expanded="false">{{ employee.designation }} </a>
+													<a href="" class="btn btn-white btn-sm btn-rounded" data-toggle="dropdown" aria-expanded="false">{{ employee.designation_name.designation_name }} </a>
 													{% comment %} <div class="dropdown-menu">
 														<a class="dropdown-item" href="#">{{ employee.designation }}</a>
 													</div> {% endcomment %}
@@ -212,7 +212,7 @@
 												<input name="phone_text" class="form-control" type="text">
 											</div>
 										</div>
-
+{% comment %} 
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Department <span class="text-danger">*</span></label>
@@ -222,13 +222,13 @@
 												{% endfor %}
 												</select>
 											</div>
-										</div>
+										</div> {% endcomment %}
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Designation <span class="text-danger">*</span></label>
 												<select name="designation_text" class="select">
 												{% for designation in desig %}
-													<option>{{designation.designation_name}}</option>											
+													<option value="{{designation.id}}">{{designation.designation_name}}</option>											
 												{% endfor %}
 												</select>
 											</div>
@@ -325,7 +325,7 @@
 												</select>
 											</div>
 										</div> {% endcomment %}
-										<div class="col-md-6">
+										{% comment %} <div class="col-md-6">
 											<div class="form-group">
 												<label>Department <span class="text-danger">*</span></label>
 												<select name="department_name" class="select">
@@ -335,13 +335,13 @@
 												{% endfor %}
 												</select>
 											</div>
-										</div>
+										</div> {% endcomment %}
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Designation <span class="text-danger">*</span></label>
 												<select name="designation_name" class="select">
 												{% for designation in desig %}
-													<option value="{{designation.designation_name}}" {% if employee.designation == designation.designation_name %} selected="selected"{% endif %}>{{designation.designation_name}}</option>											
+													<option value="{{designation.id}}" {% if employee.designation_name.designation_name == designation.designation_name %} selected="selected"{% endif %}>{{designation.designation_name}}</option>											
 												{% endfor %}
 												</select>
 											</div>
