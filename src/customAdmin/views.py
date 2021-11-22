@@ -68,26 +68,32 @@ class all_employee_screen_view(View):
             q1 = request.GET['q1']
             q2 = request.GET['q2']
             q3 = request.GET['q3']
-            print(q3)
             # multiQ = Q(Q(employee_id__icontains=q) & Q(firstname__icontains=q) )
-            if q1 and q3 is not None:
+            
+            if q1 and q2 != '':
+                employee = Employee.objects.filter(employee_id=q1).filter(
+                    Q(firstname=q2) | Q(lastname=q2))
+                department = Department.objects.all()
+                designation = Designation.objects.all()
+
+            elif q1 and q3 !='':
                 employee = Employee.objects.filter(
                     employee_id=q1).filter(designation_name=q3)
                 department = Department.objects.all()
                 designation = Designation.objects.all()
-            elif q1 and q2 is not None:
-                employee = Employee.objects.filter(employee_id=q1).filter(
-                    Q(Q(firstname=q2) | Q(lastname=q2)))
-                department = Department.objects.all()
-                designation = Designation.objects.all()
-            elif q2 and q3 is not None:
+
+            elif q2 and q3 != '':
                 employee = Employee.objects.filter(Q(Q(firstname=q2) | Q(
                     lastname=q2))).filter(designation_name=q3)
                 department = Department.objects.all()
                 designation = Designation.objects.all()
+
             else:
-                employee = Employee.objects.filter(Q(employee_id=q1) | Q(
-                    firstname=q2) | Q(lastname=q2) | Q(designation_name=q3))
+                if q3 =='':
+                    employee = Employee.objects.filter(Q(Q(employee_id=q1) | Q(
+                        firstname=q2) | Q(lastname=q2)))                    
+                else:
+                    employee = Employee.objects.filter(designation_name=q3)
                 department = Department.objects.all()
                 designation = Designation.objects.all()
             # print(employee)
@@ -163,24 +169,30 @@ class employee_list_screen_view(View):
             q3 = request.GET['q3']
             print(q3)
             # multiQ = Q(Q(employee_id__icontains=q) & Q(firstname__icontains=q) )
-            if q1 and q3 is not None:
+            if q1 and q2 != '':
+                employee = Employee.objects.filter(employee_id=q1).filter(
+                    Q(firstname=q2) | Q(lastname=q2))
+                department = Department.objects.all()
+                designation = Designation.objects.all()
+
+            elif q1 and q3 !='':
                 employee = Employee.objects.filter(
-                    employee_id__icontains=q1).filter(designation__icontains=q3)
+                    employee_id=q1).filter(designation_name=q3)
                 department = Department.objects.all()
                 designation = Designation.objects.all()
-            elif q1 and q2 is not None:
-                employee = Employee.objects.filter(employee_id__icontains=q1).filter(
-                    Q(Q(firstname__icontains=q2) | Q(lastname__icontains=q2)))
+
+            elif q2 and q3 != '':
+                employee = Employee.objects.filter(Q(Q(firstname=q2) | Q(
+                    lastname=q2))).filter(designation_name=q3)
                 department = Department.objects.all()
                 designation = Designation.objects.all()
-            elif q2 and q3 is not None:
-                employee = Employee.objects.filter(Q(Q(firstname__icontains=q2) | Q(
-                    lastname__icontains=q2))).filter(designation__icontains=q3)
-                department = Department.objects.all()
-                designation = Designation.objects.all()
+
             else:
-                employee = Employee.objects.filter(Q(employee_id=q1) | Q(
-                    firstname=q2) | Q(lastname=q2) | Q(designation=q3))
+                if q3 =='':
+                    employee = Employee.objects.filter(Q(Q(employee_id=q1) | Q(
+                        firstname=q2) | Q(lastname=q2)))                    
+                else:
+                    employee = Employee.objects.filter(designation_name=q3)
                 department = Department.objects.all()
                 designation = Designation.objects.all()
             # print(employee)
