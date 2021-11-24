@@ -22,6 +22,8 @@
 
 
 {% url 'salary' as salary %}
+{% url 'salary-view' as salaryView %}
+{% url 'payroll-items' as payrollItems %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -458,8 +460,8 @@
 								<a href="#"><i class="la la-money"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
 									<li><a class="{% if request.path == salary %}active{% endif %}" href="{% url 'salary' %}"> Employee Salary </a></li>
-									<li><a href="{% url 'salary-view' %}"> Payslip </a></li>
-									<li><a href="{% url 'payroll-items' %}"> Payroll Items </a></li>
+									<li><a class="{% if request.path == salaryView %}active{% endif %}"  href="{% url 'salary-view' %}"> Payslip </a></li>
+									<li><a class="{% if request.path == payrollItems %}active{% endif %}"  href="{% url 'payroll-items' %}"> Payroll Items </a></li>
 								</ul>
 							</li>
 							{% comment %} <li class="submenu">

@@ -19,6 +19,8 @@ from . import views
 
 
 from customAdmin.views import (
+    attendance_screen_view,
+
     admin_screen_view,
     login_screen_view,
     logout_screen_view,
@@ -60,10 +62,13 @@ urlpatterns = [
     path('admin-login', login_screen_view, name='admin-login'),
     path('admin-logout', logout_screen_view, name='admin-logout'),
 
+    # ATTENDANCE
+    path('attendance', attendance_screen_view, name='attendance'),
     # EMPLOYEES TAB
     path('all-employee', all_employee_screen_view.as_view(), name='all-employee'),
     path('employee-list', employee_list_screen_view.as_view(), name='employee-list'),
-    path('deleteEmployee/<int:id>', all_employee_screen_view.deleteEmp, name='deleteEmployee'),
+    path('deleteEmployee/<int:id>',
+         all_employee_screen_view.deleteEmp, name='deleteEmployee'),
     path('holidays', holidays_screen_view, name='holidays'),
     path('leaves-admin', leaves_admin_screen_view, name='leaves-admin'),
     path('leaves-employee', leaves_employee_screen_view, name='leaves-employee'),
@@ -86,7 +91,8 @@ urlpatterns = [
     # REPORTS TAB
     path('employee-report', employee_reports_screen_view, name='employee-report'),
     path('payslip-report', payslip_report_screen_view, name='payslip-report'),
-    path('attendance-report', attendance_report_screen_view, name='attendance-report'),
+    path('attendance-report', attendance_report_screen_view,
+         name='attendance-report'),
     path('leave-report', leave_report_screen_view, name='leave-report'),
     path('daily-report', daily_report_screen_view, name='daily-report'),
     path('overtime-report', overtime_report_screen_view, name='overtime-report'),
@@ -94,5 +100,5 @@ urlpatterns = [
     # PAYROLL TAB
     path('salary-view', salary_view_screen_view, name='salary-view'),
     path('payroll-items', payroll_items_screen_view, name='payroll-items'),
-    path('salary', salary_screen_view, name='salary'),
+    path('salary', salary_screen_view.as_view(), name='salary'),
 ]

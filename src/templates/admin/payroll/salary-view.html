@@ -38,11 +38,12 @@
 									<h4 class="payslip-title">Payslip for the month of Feb 2019</h4>
 									<div class="row">
 										<div class="col-sm-6 m-b-20">
-											<img src="assets/img/logo2.png" class="inv-logo" alt="">
+											<img src="{% static '/home/assets/img/uni-logo-transparent.png' %}" class="inv-logo" alt="">
 											<ul class="list-unstyled mb-0">
-												<li>Dreamguy's Technologies</li>
-												<li>3864 Quiet Valley Lane,</li>
-												<li>Sherman Oaks, CA, 91403</li>
+												<li>Capitol Square,</li>
+												<li>Uni-Orient Travel Inc. Cebu</li>
+												<li>82, N Escario St, Cebu City</li>
+												<li>6000 Cebu, Philippines</li>
 											</ul>
 										</div>
 										<div class="col-sm-6 m-b-20">
@@ -129,12 +130,15 @@
 {% endblock content %}
 
 {% block script %}
-<!-- jQuery -->
+		<!-- jQuery -->
         <script src="{% static '/admin/assets/js/jquery-3.5.1.min.js' %}"></script>
-		
+
 		<!-- Bootstrap Core JS -->
         <script src="{% static '/admin/assets/js/popper.min.js' %}"></script>
         <script src="{% static '/admin/assets/js/bootstrap.min.js' %}"></script>
+
+		<!-- Slimscroll JS -->
+		<script src="{% static '/admin/assets/js/jquery.slimscroll.min.js' %}"></script>
 		
 		<!-- Select2 JS -->
 		<script src="{% static '/admin/assets/js/select2.min.js' %}"></script>
@@ -143,13 +147,14 @@
 		<script src="{% static '/admin/assets/js/jquery.dataTables.min.js' %}"></script>
 		<script src="{% static '/admin/assets/js/dataTables.bootstrap4.min.js' %}"></script>
 		
-		<!-- Slimscroll JS -->
-		<script src="{% static '/admin/assets/js/jquery.slimscroll.min.js' %}"></script>
-		
+		<!-- Datetimepicker JS -->
+		<script src="{% static '/admin/assets/js/moment.min.js' %}"></script>
+		<script src="{% static '/admin/assets/js/bootstrap-datetimepicker.min.js' %}"></script>
+
 		<!-- Custom JS -->
 		<script src="{% static '/admin/assets/js/app.js' %}"></script>
 
-    <script>
+		    <script>
     	// Small Sidebar
 
 	$(document).on('click', '#toggle_btn', function() {

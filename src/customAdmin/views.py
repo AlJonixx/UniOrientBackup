@@ -18,6 +18,10 @@ from django.http import HttpResponse
 # Create your views here.
 
 
+def attendance_screen_view(request):
+    return render(request, 'take_attendance_template.html')
+
+
 class admin_screen_view(View):
     def get(self, request):
         return render(request, 'admin/index.html', {})
@@ -69,14 +73,14 @@ class all_employee_screen_view(View):
             q2 = request.GET['q2']
             q3 = request.GET['q3']
             # multiQ = Q(Q(employee_id__icontains=q) & Q(firstname__icontains=q) )
-            
+
             if q1 and q2 != '':
                 employee = Employee.objects.filter(employee_id=q1).filter(
                     Q(firstname=q2) | Q(lastname=q2))
                 department = Department.objects.all()
                 designation = Designation.objects.all()
 
-            elif q1 and q3 !='':
+            elif q1 and q3 != '':
                 employee = Employee.objects.filter(
                     employee_id=q1).filter(designation_name=q3)
                 department = Department.objects.all()
@@ -89,9 +93,9 @@ class all_employee_screen_view(View):
                 designation = Designation.objects.all()
 
             else:
-                if q3 =='':
+                if q3 == '':
                     employee = Employee.objects.filter(Q(Q(employee_id=q1) | Q(
-                        firstname=q2) | Q(lastname=q2)))                    
+                        firstname=q2) | Q(lastname=q2)))
                 else:
                     employee = Employee.objects.filter(designation_name=q3)
                 department = Department.objects.all()
@@ -175,7 +179,7 @@ class employee_list_screen_view(View):
                 department = Department.objects.all()
                 designation = Designation.objects.all()
 
-            elif q1 and q3 !='':
+            elif q1 and q3 != '':
                 employee = Employee.objects.filter(
                     employee_id=q1).filter(designation_name=q3)
                 department = Department.objects.all()
@@ -188,9 +192,9 @@ class employee_list_screen_view(View):
                 designation = Designation.objects.all()
 
             else:
-                if q3 =='':
+                if q3 == '':
                     employee = Employee.objects.filter(Q(Q(employee_id=q1) | Q(
-                        firstname=q2) | Q(lastname=q2)))                    
+                        firstname=q2) | Q(lastname=q2)))
                 else:
                     employee = Employee.objects.filter(designation_name=q3)
                 department = Department.objects.all()
@@ -410,8 +414,13 @@ def salary_view_screen_view(request):
     return render(request, 'admin/payroll/salary-view.html')
 
 
-def salary_screen_view(request):
-    return render(request, 'admin/payroll/salary.html')
+class salary_screen_view(View):
+    def get(self, request):
+        employee = Employee.objects.all()
+        context = {
+            'empl': employee,
+        }
+        return render(request, 'admin/payroll/salary.html', context)
 
 # END PAYROLL
 
