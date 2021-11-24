@@ -126,16 +126,16 @@ class all_employee_screen_view(View):
                 lastName = request.POST['lastname_text']
                 userName = request.POST['username_text']
                 emailPost = request.POST['email_text']
-                passwordPost = request.POST['password_text']
-                password2 = request.POST['password2_text']
+                # passwordPost = request.POST['password_text']
+                # password2 = request.POST['password2_text']
                 gender = request.POST['gender_text']
                 address = "Edit your Address here"
                 phonePost = request.POST['phone_text']
                 designationPost = request.POST['designation_text']
                 # departmentPost = request.POST['department_text']
-                hashed_pw = make_password(password2)
+                # hashed_pw = make_password(password2)
                 form = Employee(employee_id=finalemp, firstname=firstName, lastname=lastName, username=userName, email=emailPost,
-                                password=hashed_pw, phone=phonePost, designation_name_id=designationPost, gender=gender, address=address)
+                                phone=phonePost, designation_name_id=designationPost, gender=gender, address=address)
                 form.save()
                 messages.success(request, "Employee successfully Added!")
                 return redirect('all-employee')
@@ -224,16 +224,16 @@ class employee_list_screen_view(View):
                 lastName = request.POST['lastname_text']
                 userName = request.POST['username_text']
                 emailPost = request.POST['email_text']
-                passwordPost = request.POST['password_text']
-                password2 = request.POST['password2_text']
+                # passwordPost = request.POST['password_text']
+                # password2 = request.POST['password2_text']
                 gender = request.POST['gender_text']
                 address = "Edit your Address here"
                 phonePost = request.POST['phone_text']
                 designationPost = request.POST['designation_text']
                 # departmentPost = request.POST['department_text']
-                hashed_pw = make_password(password2)
+                # hashed_pw = make_password(password2)
                 form = Employee(employee_id=finalemp, firstname=firstName, lastname=lastName, username=userName, email=emailPost,
-                                password=hashed_pw, phone=phonePost, designation_name_id=designationPost, gender=gender, address=address)
+                                phone=phonePost, designation_name_id=designationPost, gender=gender, address=address)
                 form.save()
                 messages.success(request, "Employee successfully Added!")
                 return redirect('employee-list')
