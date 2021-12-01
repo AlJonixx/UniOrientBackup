@@ -63,31 +63,33 @@
 							<br>
 							<h3 style="text-align:center">{% now "jS F Y" %}</h3>
 							<h3 style="text-align:center;" id="timehere"></h3>
-							<br>					                           
+							<br>
+							<form method="POST">
+                            {% csrf_token %}					                           
                             <div class="form-group form-focus select-focus">
-                                <select name="" class="select floating">                       
-									<option value="">Time In</option>                            
-									<option value="">Time out</option>  
+                                <select name="LoginOptions" class="select floating">                       
+									<option value="1">Time In</option>                            
+									<option value="0">Time out</option>  
                                 </select>   
                                 <label class="focus-label">Attendance</label>
                             </div>
                                   
-                        <form method="POST">
-                            {% csrf_token %}
+                        
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
-                                        <input name="firstname_text" class="form-control" type="text">
+                                        <input name="employeeID" class="form-control" type="text">										
                                     </div>
                                 </div>
                                 </div>
-                                </form>
                                 <br>
                                <!-- Button -->
                                 <div class="form-group text-center">
-									<button class="btn btn-primary account-btn" type="submit">Login</button>
+									<input class="btn btn-primary account-btn" name="TimeLogin" type="submit" value="Login">
 								</div>
+								
+                                </form>
 							<!-- /Account Form -->
 							
  

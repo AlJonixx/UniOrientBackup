@@ -1,3 +1,4 @@
+from datetime import datetime
 from django import forms
 from django.contrib import messages
 from django.shortcuts import redirect, render
@@ -18,8 +19,28 @@ from django.http import HttpResponse
 # Create your views here.
 
 
-def attendance_screen_view(request):
-    return render(request, 'take_attendance_template.html')
+class attendance_screen_view(View):
+    def get(self, request):
+        emp = Employee.objects.all()
+        return render(request, 'take_attendance_template.html',{'empl':emp})
+
+    def post(self, request):
+        form = EmployeeAttendance(request.POST)
+        if request.method == 'POST':
+            if 'TimeLogin' in request.POST:
+                empId = request.POST.get("employeeID")
+                InOut = request.POST.get("LoginOptions")
+                # iid = Employee.objects.filter(employee_id=empId)
+                # print(iid)
+                if InOut == '1':
+                    inout = datetime.now().time()
+                    form = EmployeeAttendance(timein=inout, employee_id_id=empId)
+                    form.save()
+                    return redirect('attendance')        
+                else:
+                    inout = datetime.now().time()
+                    EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(employee_id_id=empId).update(timeout = inout, employee_id_id=empId)
+                    return redirect('attendance')          
 
 
 class admin_screen_view(View):
@@ -311,8 +332,22 @@ def attendance_admin_screen_view(request):
     return render(request, 'admin/employee/attendance-admin.html')
 
 
-def attendance_employee_screen_view(request):
-    return render(request, 'admin/employee/attendance-employee.html')
+class attendance_employee_screen_view(View):
+    def get(self, request):        
+        if 'btnAttendanceSearch' in request.GET:
+            searchDate = request.GET['selectDate']
+            print(searchDate)
+            emp = Employee.objects.filter(join_date=searchDate)
+        else:
+            emp = Employee.objects.all()
+            empatt = EmployeeAttendance.objects.all()
+
+        context = {
+            'emp' : emp,
+            'empatt': empatt
+        }
+        return render(request, 'admin/employee/attendance-employee.html', context)
+    
 
 
 class departments_screen_view(View):
