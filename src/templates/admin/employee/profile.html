@@ -56,7 +56,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									{% for employee in empl %}
-									{% if employee.id == id %}
+									{% if employee.employee_id == id %}
 									<div class="profile-view">
 										<div class="profile-img-wrap">
 											<div class="profile-img">
@@ -855,7 +855,7 @@
 				
 				<!-- Profile Modal -->
 				{% for employee in empl %}
-				<div id="profile_info{{employee.id}}" class="modal custom-modal fade" role="dialog">
+				<div id="profile_info{{employee.employee_id}}" class="modal custom-modal fade" role="dialog">
 					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -869,7 +869,7 @@
 								{% csrf_token %}
 									<div class="row">
 										<div class="col-md-12">
-											<input type="hidden" name="profileID" value="{{employee.id}}">
+											<input type="hidden" name="profileID" value="{{employee.employee_id}}">
 											<div class="profile-img-wrap edit-img">
 												<img class="inline-block" src="https://picsum.photos/200" alt="user">
 												<div class="fileupload btn">

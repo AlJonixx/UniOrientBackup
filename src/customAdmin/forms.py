@@ -36,9 +36,9 @@ class EmployeeForm(forms.ModelForm):  # Employee Form
         model = Employee
         fields = "__all__"
 
-class EmployeeAttendaceForm(forms.ModelForm):  # Employee Attendance Form
-    class Meta:
-        model = EmployeeAttendance
-        fields = "__all__"
+# class EmployeeAttendaceForm(forms.ModelForm):  # Employee Attendance Form
+#     class Meta:
+#         model = EmployeeAttendance
+#         fields = "__all__"
     
     

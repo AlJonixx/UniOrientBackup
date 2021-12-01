@@ -57,7 +57,7 @@ class Designation(models.Model):  # Designation MOdel
 
 
 class Employee(models.Model):  # Employee Model
-    employee_id = models.CharField(max_length=150, unique=True)
+    employee_id = models.BigAutoField(primary_key=True, unique=True)
     firstname = models.CharField(max_length=150, blank=True)
     lastname = models.CharField(max_length=150, blank=True)
     username = models.CharField(max_length=150, blank=True, unique=True)
@@ -73,11 +73,11 @@ class Employee(models.Model):  # Employee Model
     country = models.CharField(max_length=150, blank=True)
 
 
-class EmployeeRole(models.Model):
-    employee_id = models.ForeignKey(
-        Employee, on_delete=models.CASCADE)
-    designation_name = models.ForeignKey(
-        Employee, on_delete=models.CASCADE, related_name='emp_designation_name')
+# class EmployeeRole(models.Model):
+#     employee_id = models.ForeignKey(
+#         Employee, on_delete=models.CASCADE)
+#     designation_name = models.ForeignKey(
+#         Employee, on_delete=models.CASCADE, related_name='emp_designation_name')
 
 
 class EmployeeAttendance(models.Model): #Employee Attendance Model
