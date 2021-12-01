@@ -37,11 +37,6 @@ class attendance_screen_view(View):
                         if EmployeeAttendance.objects.filter(timeout__isnull=False).filter(todaydate=datetime.today()):
                             messages.success(request, 'Already Timed In!')
                             return redirect('attendance')
-                        else:
-                            form = EmployeeAttendance(timein=inout, employee_id_id=empId)
-                            form.save()
-                            messages.success(request, 'Timed In Successfully!')
-                            return redirect('attendance')
                     else:
                         form = EmployeeAttendance(timein=inout, employee_id_id=empId)
                         form.save()
