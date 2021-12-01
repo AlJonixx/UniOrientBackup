@@ -30,17 +30,32 @@ class attendance_screen_view(View):
             if 'TimeLogin' in request.POST:
                 empId = request.POST.get("employeeID")
                 InOut = request.POST.get("LoginOptions")
-                # iid = Employee.objects.filter(employee_id=empId)
-                # print(iid)
-                if InOut == '1':
-                    inout = datetime.now().time()
-                    form = EmployeeAttendance(timein=inout, employee_id_id=empId)
-                    form.save()
-                    return redirect('attendance')        
-                else:
-                    inout = datetime.now().time()
-                    EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(employee_id_id=empId).update(timeout = inout, employee_id_id=empId)
-                    return redirect('attendance')          
+                inout = datetime.now().time()
+                if InOut == '1':                   
+                    
+                    if EmployeeAttendance.objects.filter(employee_id_id=empId).exists():
+                        if EmployeeAttendance.objects.filter(timeout__isnull=False).filter(todaydate=datetime.today()):
+                            messages.success(request, 'Already Timed In!')
+                            return redirect('attendance')
+                    else:
+                        form = EmployeeAttendance(timein=inout, employee_id_id=empId)
+                        form.save()
+                        messages.success(request, 'Timed In Successfully!')
+                        return redirect('attendance')
+                        
+                else:                   
+                    if EmployeeAttendance.objects.filter(employee_id_id=empId).exists():
+                        if EmployeeAttendance.objects.filter(timeout__isnull=True).filter(todaydate=datetime.today()):  
+                            EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(employee_id_id=empId).update(timeout = inout, employee_id_id=empId)
+                            messages.success(request, 'Timed Out Successfully!')
+                            return redirect('attendance') 
+                        else:
+                            messages.success(request, 'Already Timed Out!')
+                            return redirect('attendance')
+                    else:
+                        messages.success(request, 'You did not Time In!')
+                        return redirect('attendance')
+                             
 
 
 class admin_screen_view(View):
