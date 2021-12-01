@@ -1,3 +1,5 @@
+
+from datetime import date
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
@@ -76,3 +78,10 @@ class EmployeeRole(models.Model):
         Employee, on_delete=models.CASCADE)
     designation_name = models.ForeignKey(
         Employee, on_delete=models.CASCADE, related_name='emp_designation_name')
+
+
+class EmployeeAttendance(models.Model): #Employee Attendance Model
+    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
+    todaydate = models.DateField(default=date.today)
+    timein = models.TimeField(blank=True, null=True)
+    timeout = models.TimeField(blank=True, null=True)

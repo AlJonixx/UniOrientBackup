@@ -63,7 +63,7 @@ urlpatterns = [
     path('admin-logout', logout_screen_view, name='admin-logout'),
 
     # ATTENDANCE
-    path('attendance', attendance_screen_view, name='attendance'),
+    path('attendance', attendance_screen_view.as_view(), name='attendance'),
     # EMPLOYEES TAB
     path('all-employee', all_employee_screen_view.as_view(), name='all-employee'),
     path('employee-list', employee_list_screen_view.as_view(), name='employee-list'),
@@ -74,8 +74,7 @@ urlpatterns = [
     path('leaves-employee', leaves_employee_screen_view, name='leaves-employee'),
     path('leaves-settings', leaves_settings_screen_view, name='leaves-settings'),
     path('attendance-admin', attendance_admin_screen_view, name='attendance-admin'),
-    path('attendance-employee', attendance_employee_screen_view,
-         name='attendance-employee'),
+    path('attendance-employee', attendance_employee_screen_view.as_view(), name='attendance-employee'),
     path('departments', departments_screen_view.as_view(), name='departments'),
     path('deleteDepart/<int:id>',
          departments_screen_view.deleteDepartment, name='deleteDepartment'),
