@@ -223,7 +223,7 @@
 										{% if empatt.todaydate ==  today_date%}													
 											{% for attendance in empatt %}
 														
-											{% if employee.id == attendance.employee_id_id %}								
+											{% if employee.employee_id == attendance.employee_id_id %}								
 											<tr>
 												<td>{{employee.employee_id}}</td>
 												<td>{{employee.firstname}} {{employee.lastname}}</td>

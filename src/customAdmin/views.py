@@ -141,8 +141,8 @@ class all_employee_screen_view(View):
         form = EmployeeForm(request.POST)
         if request.method == 'POST':
             if 'btnSubmitEmployee' in request.POST:
-                empid = random.randint(1000, 9999)
-                finalemp = "EMP" + str(empid)
+                empid = random.randint(10000000, 99999999)
+                # finalemp = "EMP" + str(empid)
                 firstName = request.POST['firstname_text']
                 lastName = request.POST['lastname_text']
                 userName = request.POST['username_text']
@@ -155,7 +155,7 @@ class all_employee_screen_view(View):
                 designationPost = request.POST['designation_text']
                 # departmentPost = request.POST['department_text']
                 # hashed_pw = make_password(password2)
-                form = Employee(employee_id=finalemp, firstname=firstName, lastname=lastName, username=userName, email=emailPost,
+                form = Employee(employee_id=empid, firstname=firstName, lastname=lastName, username=userName, email=emailPost,
                                 phone=phonePost, designation_name_id=designationPost, gender=gender, address=address)
                 form.save()
                 messages.success(request, "Employee successfully Added!")
