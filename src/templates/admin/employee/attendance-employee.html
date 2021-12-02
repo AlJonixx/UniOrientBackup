@@ -219,11 +219,10 @@
 										</tr>
 									</thead>
 									<tbody>
-										{% for employee in emp %}														
-										{% if empatt.todaydate ==  today_date%}													
+										{% for employee in emp %}																		
 											{% for attendance in empatt %}
-														
-											{% if employee.employee_id == attendance.employee_id_id %}								
+											{% if employee.employee_id == attendance.employee_id_id %}				
+																													
 											<tr>
 												<td>{{employee.employee_id}}</td>
 												<td>{{employee.firstname}} {{employee.lastname}}</td>
@@ -232,10 +231,10 @@
 												<td>{{attendance.timeout|time:"h:i A"}}</td>
 												<td></td>
 												<td></td>
-											</tr>	
-											{% endif %}
-												{% endfor %}
-										{% endif %}
+											</tr>											
+										{% endif %}										
+										{% endfor %}
+										{% comment %} {% endif %} {% endcomment %}
 										{% endfor %}									
 									</tbody>
 								</table>

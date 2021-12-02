@@ -349,17 +349,18 @@ def attendance_admin_screen_view(request):
 
 class attendance_employee_screen_view(View):
     def get(self, request):        
-        if 'btnAttendanceSearch' in request.GET:
-            searchDate = request.GET['selectDate']
-            print(searchDate)
-            emp = Employee.objects.filter(join_date=searchDate)
-        else:
-            emp = Employee.objects.all()
-            empatt = EmployeeAttendance.objects.all()
-
+        # if 'btnAttendanceSearch' in request.GET:
+        #     searchDate = request.GET['selectDate']
+        #     print(searchDate)
+        #     emp = Employee.objects.filter(join_date=searchDate)
+        # else:
+        emp = Employee.objects.all()
+        empatt = EmployeeAttendance.objects.all()
+        today = datetime.today()
+        todays_date = EmployeeAttendance.objects.filter(todaydate = today)
         context = {
             'emp' : emp,
-            'empatt': empatt
+            'empatt': todays_date,
         }
         return render(request, 'admin/employee/attendance-employee.html', context)
     
