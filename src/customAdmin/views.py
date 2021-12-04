@@ -44,7 +44,7 @@ class attendance_screen_view(View):
                         return redirect('attendance')
                         
                 else:                   
-                    if EmployeeAttendance.objects.filter(employee_id_id=empId).exists():
+                    if EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(employee_id_id=empId).exists():
                         if EmployeeAttendance.objects.filter(timeout__isnull=True).filter(todaydate=datetime.today()):  
                             EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(employee_id_id=empId).update(timeout = inout, employee_id_id=empId)
                             messages.success(request, 'Timed Out Successfully!')
