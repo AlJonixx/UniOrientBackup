@@ -361,8 +361,14 @@ class attendance_employee_screen_view(View):
                     'empatt': date,
                 }
                 
-            elif searchYear !='' or searchMonth !='':
-                date = EmployeeAttendance.objects.filter(todaydate__year__gte = searchYear, todaydate__year__lte = searchYear) or EmployeeAttendance.objects.filter(todaydate__month__gte=searchMonth, todaydate__month__lte = searchMonth)
+            elif searchYear != '':
+                date = EmployeeAttendance.objects.filter(todaydate__year__gte = searchYear, todaydate__year__lte = searchYear)
+                context = {
+                    'emp' : emp,
+                    'empatt': date,
+                }
+            elif searchMonth != '':
+                date = EmployeeAttendance.objects.filter(todaydate__month__gte = searchMonth, todaydate__month__lte = searchMonth)
                 context = {
                     'emp' : emp,
                     'empatt': date,
