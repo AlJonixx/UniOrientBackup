@@ -356,38 +356,26 @@ class attendance_employee_screen_view(View):
             emp = Employee.objects.all()
             if searchDate != '':
                 date = EmployeeAttendance.objects.filter(todaydate = searchDate)
-                context = {
-                    'emp' : emp,
-                    'empatt': date,
-                }
                 
             elif searchYear != '':
                 date = EmployeeAttendance.objects.filter(todaydate__year__gte = searchYear, todaydate__year__lte = searchYear)
-                context = {
-                    'emp' : emp,
-                    'empatt': date,
-                }
+                
             elif searchMonth != '':
                 date = EmployeeAttendance.objects.filter(todaydate__month__gte = searchMonth, todaydate__month__lte = searchMonth)
-                context = {
-                    'emp' : emp,
-                    'empatt': date,
-                }
+                
             elif searchYear and searchMonth != '':
                 date = EmployeeAttendance.objects.filter(todaydate__year__gte = searchYear, todaydate__month__gte=searchMonth, todaydate__year__lte = searchYear,todaydate__month__lte = searchMonth)
-                context = {
-                    'emp' : emp,
-                    'empatt': date,
-                }
+                
         else:
             emp = Employee.objects.all()
             # empatt = EmployeeAttendance.objects.all()
             today = datetime.today()
-            todays_date = EmployeeAttendance.objects.filter(todaydate = today)
-            context = {
-                'emp' : emp,
-                'empatt': todays_date,
-            }
+            date = EmployeeAttendance.objects.filter(todaydate = today)
+
+        context = {
+            'emp' : emp,
+            'empatt': date,
+        }    
         return render(request, 'admin/employee/attendance-employee.html', context)
     
 
