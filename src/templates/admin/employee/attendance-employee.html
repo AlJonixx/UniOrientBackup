@@ -165,7 +165,7 @@
 						<div class="col-sm-3"> 
 							<div class="form-group form-focus select-focus">
 								<select name="searchMonth" class="select floating"> 
-									<option>-</option>
+									<option value="">-</option>
 									<option value="1">Jan</option>
 									<option value="2">Feb</option>
 									<option value="3">Mar</option>
@@ -185,12 +185,12 @@
 						<div class="col-sm-3"> 
 							<div class="form-group form-focus select-focus">
 								<select name="searchYear" class="select floating"> 
-									<option>-</option>
+									<option value="">-</option>									
+									<option>2021</option>
+									<option>2020</option>
 									<option>2019</option>
 									<option>2018</option>
 									<option>2017</option>
-									<option>2016</option>
-									<option>2015</option>
 								</select>
 								<label class="focus-label">Select Year</label>
 							</div>
@@ -275,5 +275,11 @@
 
 		<!-- Custom JS -->
 		<script src="{% static '/admin/assets/js/app.js' %}"></script>
+
+		<script>
+			$('.datetimepicker').datetimepicker({
+				format: 'YYYY-MM-DD'
+			 });
+		</script>
 
 {% endblock script %}
