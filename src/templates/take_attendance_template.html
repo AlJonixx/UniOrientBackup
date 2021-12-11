@@ -66,13 +66,22 @@
 							<br>
 							<form method="POST">
                             {% csrf_token %}					                           
-                            <div class="form-group form-focus select-focus">
-                                <select name="LoginOptions" class="select floating">                       
+                            <div class="InOut form-group form-focus select-focus">
+                                <select name="LoginOptions" id="LoginOptions" class="select floating">                       
 									<option value="1">Time In</option>                            
 									<option value="0">Time out</option>  
                                 </select>   
-                                <label class="focus-label">Attendance</label>
+                                <label class="focus-label">Attendance</label>								
                             </div>
+
+							<div class="lunchBreak form-group form-focus select-focus">
+								<select name="LucnhOptions" id="LucnhOptions" class="select floating">                       
+									<option value="2">Break Time In</option>                            
+									<option value="3">Break Time Out</option>  
+                                </select>   
+                                <label class="focus-label">Attendance</label>
+							</div>
+
                                   
                         
                             <div class="row">
@@ -146,7 +155,12 @@
 			m=d.getMinutes();
 			s=d.getSeconds();
 			if (h>11) { ap = "pm"; }
-			if (h>12) { h = h-12; }
+			if (h>11 && h<14) { 
+				$('.InOut').hide(); 
+			} else {				
+				$('.lunchBreak').hide(); 
+			}
+			if (h>12) { h = h-12; }			
 			if (h==0) { h = 12; }
 			if (m<10) { m = "0" + m; }
 			if (s<10) { s = "0" + s; }
