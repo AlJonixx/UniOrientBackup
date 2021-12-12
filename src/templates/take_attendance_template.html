@@ -66,13 +66,22 @@
 							<br>
 							<form method="POST">
                             {% csrf_token %}					                           
-                            <div class="form-group form-focus select-focus">
-                                <select name="LoginOptions" class="select floating">                       
+                            <div class="InOut form-group form-focus select-focus">
+                                <select name="LoginOptions" id="LoginOptions" class="select floating">                       
 									<option value="1">Time In</option>                            
 									<option value="0">Time out</option>  
                                 </select>   
-                                <label class="focus-label">Attendance</label>
+                                <label class="focus-label">Attendance</label>								
                             </div>
+
+							<div class="lunchBreak form-group form-focus select-focus">
+								<select name="LucnhOptions" id="LucnhOptions" class="select floating">                       
+									<option value="2">Break Out</option>                            
+									<option value="3">Break In</option>  
+                                </select>   
+                                <label class="focus-label">Attendance</label>
+							</div>
+
                                   
                         
                             <div class="row">
@@ -138,21 +147,48 @@
 		
 		
 		<script>
-			function mytime()
-			{
-			var d=new Date();
-			ap="am";
-			h=d.getHours();
-			m=d.getMinutes();
-			s=d.getSeconds();
-			if (h>11) { ap = "pm"; }
-			if (h>12) { h = h-12; }
-			if (h==0) { h = 12; }
-			if (m<10) { m = "0" + m; }
-			if (s<10) { s = "0" + s; }
-			document.getElementById('timehere').innerHTML=h + ":" + m + ":" + s + " " + ap;			
-			t=setTimeout('mytime()',500);			
+			function mytime(){
+				var d=new Date();
+				ap="am";
+				h=d.getHours();
+				m=d.getMinutes();
+				s=d.getSeconds();
+				if (h>11) { ap = "pm"; }
+				if (h>=12 && h<=14) { 
+					$('.InOut').hide(); 
+				} else {				
+					$('.lunchBreak').hide(); 
+				}
+				if (h>12) { h = h-12; }			
+				if (h==0) { h = 12; }
+				if (m<10) { m = "0" + m; }
+				if (s<10) { s = "0" + s; }
+				document.getElementById('timehere').innerHTML=h + ":" + m + ":" + s + " " + ap;			
+				t=setTimeout('mytime()',500);			
 			}			
+
+			/*setTimeout(function(){
+				window.location.reload(1);
+			 }, 10000);*/	
+			 function refreshAt(hours, minutes, seconds) {
+				var now = new Date();
+				var then = new Date();
+			
+				if(now.getHours() > hours ||
+				   (now.getHours() == hours && now.getMinutes() > minutes) ||
+					now.getHours() == hours && now.getMinutes() == minutes && now.getSeconds() >= seconds) {
+					then.setDate(now.getDate() + 1);
+				}
+				then.setHours(hours);
+				then.setMinutes(minutes);
+				then.setSeconds(seconds);
+			
+				var timeout = (then.getTime() - now.getTime());
+				setTimeout(function() { window.location.reload(true); }, timeout);
+			}
+
+			$(document).ready(function() { refreshAt(12,0,0); });
+			$(document).ready(function() { refreshAt(14,0,0); });
 		</script>		
     </body>
 </html>
