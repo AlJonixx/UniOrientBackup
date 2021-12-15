@@ -156,6 +156,8 @@ class all_employee_screen_view(View):
         form = EmployeeForm(request.POST)
         if request.method == 'POST':
             if 'btnSubmitEmployee' in request.POST:
+                default_schedStart = datetime.now().replace(hour=8, minute=0,second=0, microsecond=0)
+                default_schedEnd = datetime.now().replace(hour=17, minute=0,second=0, microsecond=0)
                 empid = random.randint(10000000, 99999999)
                 # finalemp = "EMP" + str(empid)
                 firstName = request.POST['firstname_text']
@@ -171,7 +173,7 @@ class all_employee_screen_view(View):
                 # departmentPost = request.POST['department_text']
                 # hashed_pw = make_password(password2)
                 form = Employee(employee_id=empid, firstname=firstName, lastname=lastName, username=userName, email=emailPost,
-                                phone=phonePost, designation_name_id=designationPost, gender=gender, address=address)
+                                phone=phonePost, designation_name_id=designationPost, gender=gender, address=address, sched_start=default_schedStart, sched_end=default_schedEnd)
                 form.save()
                 messages.success(request, "Employee successfully Added!")
                 return redirect('all-employee')
@@ -254,6 +256,8 @@ class employee_list_screen_view(View):
         form = EmployeeForm(request.POST)
         if request.method == 'POST':
             if 'btnSubmitEmployee' in request.POST:
+                default_schedStart = datetime.now().replace(hour=8, minute=0,second=0, microsecond=0)
+                default_schedEnd = datetime.now().replace(hour=17, minute=0,second=0, microsecond=0)
                 empid = random.randint(1000, 9999)
                 finalemp = "EMP" + str(empid)
                 firstName = request.POST['firstname_text']
@@ -269,7 +273,7 @@ class employee_list_screen_view(View):
                 # departmentPost = request.POST['department_text']
                 # hashed_pw = make_password(password2)
                 form = Employee(employee_id=finalemp, firstname=firstName, lastname=lastName, username=userName, email=emailPost,
-                                phone=phonePost, designation_name_id=designationPost, gender=gender, address=address)
+                                phone=phonePost, designation_name_id=designationPost, gender=gender, address=address,sched_start=default_schedStart, sched_end=default_schedEnd)
                 form.save()
                 messages.success(request, "Employee successfully Added!")
                 return redirect('employee-list')

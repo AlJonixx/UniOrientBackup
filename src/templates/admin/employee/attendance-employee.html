@@ -213,9 +213,8 @@
 											<th>Date</th>
 											<th>Punch In</th>
 											<th>Punch Out</th>
-											<th>Production</th>
 											<th>Break</th>
-											<th>Overtime</th>
+											{% comment %} <th>Overtime</th> {% endcomment %}
 										</tr>
 									</thead>
 									<tbody>
@@ -227,10 +226,14 @@
 												<td>{{employee.employee_id}}</td>
 												<td>{{employee.firstname}} {{employee.lastname}}</td>
 												<td>{{attendance.todaydate|date:"M d,Y"}}</td>
-												<td>{{attendance.timein|time:"h:i A"}}</td>
+												<td>{{attendance.timein|time:"h:i A"}} 
+													{% if attendance.timein > employee.sched_start %}
+														<p class="btn-danger">Late</p>
+													{% else %} 
+														<p class="btn-success">On Time</p>
+													{% endif %}
+												</td>
 												<td>{{attendance.timeout|time:"h:i A"}}</td>
-												<td></td>
-												<td></td>
 											</tr>											
 										{% endif %}										
 										{% endfor %}

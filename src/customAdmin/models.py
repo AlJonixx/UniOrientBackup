@@ -62,7 +62,7 @@ class Employee(models.Model):  # Employee Model
     lastname = models.CharField(max_length=150, blank=True)
     username = models.CharField(max_length=150, blank=True, unique=True)
     email = models.EmailField(_('email address'), unique=True, blank=True)
-    password = models.CharField(max_length=150, blank=True)
+    # password = models.CharField(max_length=150, blank=True)
     join_date = models.DateTimeField(default=timezone.now)
     phone = models.CharField(max_length=150, blank=True)
     gender = models.CharField(max_length=20, blank=True)
@@ -71,6 +71,8 @@ class Employee(models.Model):  # Employee Model
     address = models.CharField(max_length=150, blank=True)
     state = models.CharField(max_length=150, blank=True)
     country = models.CharField(max_length=150, blank=True)
+    sched_start = models.TimeField(blank=True, null=True)
+    sched_end = models.TimeField(blank=True, null=True)
 
 
 # class EmployeeRole(models.Model):
