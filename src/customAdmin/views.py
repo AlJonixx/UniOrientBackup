@@ -22,7 +22,7 @@ from django.http import HttpResponse
 class attendance_screen_view(View):
     def get(self, request):
         emp = Employee.objects.all()
-        return render(request, 'take_attendance_template.html',{'empl':emp})
+        return render(request, 'take_attendance_template.html', {'empl': emp})
 
     def post(self, request):
         form = EmployeeAttendance(request.POST)
@@ -31,31 +31,33 @@ class attendance_screen_view(View):
                 empId = request.POST.get("employeeID")
                 InOut = request.POST.get("LoginOptions")
                 inout = datetime.now().time()
-                if InOut == '1':                   
-                    
+                if InOut == '1':
+
                     if EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(employee_id_id=empId).exists():
                         if EmployeeAttendance.objects.filter(timeout__isnull=False).filter(todaydate=datetime.today()):
                             messages.success(request, 'Already Timed In!')
-                            return redirect('attendance')                        
+                            return redirect('attendance')
                     else:
-                        form = EmployeeAttendance(timein=inout, employee_id_id=empId)
+                        form = EmployeeAttendance(
+                            timein=inout, employee_id_id=empId)
                         form.save()
                         messages.success(request, 'Timed In Successfully!')
                         return redirect('attendance')
-                        
-                else:                   
+
+                else:
                     if EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(employee_id_id=empId).exists():
-                        if EmployeeAttendance.objects.filter(timeout__isnull=True).filter(todaydate=datetime.today()):  
-                            EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(employee_id_id=empId).update(timeout = inout, employee_id_id=empId)
-                            messages.success(request, 'Timed Out Successfully!')
-                            return redirect('attendance') 
+                        if EmployeeAttendance.objects.filter(timeout__isnull=True).filter(todaydate=datetime.today()):
+                            EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(
+                                employee_id_id=empId).update(timeout=inout, employee_id_id=empId)
+                            messages.success(
+                                request, 'Timed Out Successfully!')
+                            return redirect('attendance')
                         else:
                             messages.success(request, 'Already Timed Out!')
                             return redirect('attendance')
                     else:
                         messages.success(request, 'You did not Time In!')
                         return redirect('attendance')
-                             
 
 
 class admin_screen_view(View):
@@ -131,7 +133,7 @@ class all_employee_screen_view(View):
             else:
                 if q3 == '':
                     employee = Employee.objects.filter(Q(Q(
-                        firstname=q2) | Q(lastname=q2))) or Employee.objects.filter(Q(employee_id = q1))
+                        firstname=q2) | Q(lastname=q2))) or Employee.objects.filter(Q(employee_id=q1))
                 else:
                     employee = Employee.objects.filter(designation_name=q3)
                 department = Department.objects.all()
@@ -156,9 +158,11 @@ class all_employee_screen_view(View):
         form = EmployeeForm(request.POST)
         if request.method == 'POST':
             if 'btnSubmitEmployee' in request.POST:
-                default_schedStart = datetime.now().replace(hour=8, minute=0,second=0, microsecond=0)
-                default_schedEnd = datetime.now().replace(hour=17, minute=0,second=0, microsecond=0)
-                empid = random.randint(10000000, 99999999)
+                default_schedStart = datetime.now().replace(
+                    hour=8, minute=0, second=0, microsecond=0)
+                default_schedEnd = datetime.now().replace(
+                    hour=17, minute=0, second=0, microsecond=0)
+                empid = request.POST['employee_id']
                 # finalemp = "EMP" + str(empid)
                 firstName = request.POST['firstname_text']
                 lastName = request.POST['lastname_text']
@@ -197,7 +201,7 @@ class all_employee_screen_view(View):
 
     @staticmethod
     def deleteEmp(request, id):
-        emp = Employee.objects.get(id=id)
+        emp = Employee.objects.get(employee_id=id)
         emp.delete()
         messages.success(request, "Employee successfully Deleted!")
         return redirect('all-employee')
@@ -232,7 +236,7 @@ class employee_list_screen_view(View):
             else:
                 if q3 == '':
                     employee = Employee.objects.filter(Q(Q(
-                        firstname=q2) | Q(lastname=q2))) or Employee.objects.filter(Q(employee_id = q1))
+                        firstname=q2) | Q(lastname=q2))) or Employee.objects.filter(Q(employee_id=q1))
                 else:
                     employee = Employee.objects.filter(designation_name=q3)
                 department = Department.objects.all()
@@ -256,10 +260,12 @@ class employee_list_screen_view(View):
         form = EmployeeForm(request.POST)
         if request.method == 'POST':
             if 'btnSubmitEmployee' in request.POST:
-                default_schedStart = datetime.now().replace(hour=8, minute=0,second=0, microsecond=0)
-                default_schedEnd = datetime.now().replace(hour=17, minute=0,second=0, microsecond=0)
-                empid = random.randint(1000, 9999)
-                finalemp = "EMP" + str(empid)
+                default_schedStart = datetime.now().replace(
+                    hour=8, minute=0, second=0, microsecond=0)
+                default_schedEnd = datetime.now().replace(
+                    hour=17, minute=0, second=0, microsecond=0)
+                empid = request.POST['employee_id']
+                #finalemp = "EMP" + str(empid)
                 firstName = request.POST['firstname_text']
                 lastName = request.POST['lastname_text']
                 userName = request.POST['username_text']
@@ -272,8 +278,8 @@ class employee_list_screen_view(View):
                 designationPost = request.POST['designation_text']
                 # departmentPost = request.POST['department_text']
                 # hashed_pw = make_password(password2)
-                form = Employee(employee_id=finalemp, firstname=firstName, lastname=lastName, username=userName, email=emailPost,
-                                phone=phonePost, designation_name_id=designationPost, gender=gender, address=address,sched_start=default_schedStart, sched_end=default_schedEnd)
+                form = Employee(employee_id=empid, firstname=firstName, lastname=lastName, username=userName, email=emailPost,
+                                phone=phonePost, designation_name_id=designationPost, gender=gender, address=address, sched_start=default_schedStart, sched_end=default_schedEnd)
                 form.save()
                 messages.success(request, "Employee successfully Added!")
                 return redirect('employee-list')
@@ -352,36 +358,38 @@ def attendance_admin_screen_view(request):
 
 
 class attendance_employee_screen_view(View):
-    def get(self, request):        
+    def get(self, request):
         if 'btnAttendanceSearch' in request.GET:
-            searchDate = request.GET['selectDate']  
-            searchYear = request.GET['searchYear']  
-            searchMonth = request.GET['searchMonth']        
+            searchDate = request.GET['selectDate']
+            searchYear = request.GET['searchYear']
+            searchMonth = request.GET['searchMonth']
             emp = Employee.objects.all()
             if searchDate != '':
-                date = EmployeeAttendance.objects.filter(todaydate = searchDate)
-                
+                date = EmployeeAttendance.objects.filter(todaydate=searchDate)
+
             elif searchYear != '':
-                date = EmployeeAttendance.objects.filter(todaydate__year__gte = searchYear, todaydate__year__lte = searchYear)
-                
+                date = EmployeeAttendance.objects.filter(
+                    todaydate__year__gte=searchYear, todaydate__year__lte=searchYear)
+
             elif searchMonth != '':
-                date = EmployeeAttendance.objects.filter(todaydate__month__gte = searchMonth, todaydate__month__lte = searchMonth)
-                
+                date = EmployeeAttendance.objects.filter(
+                    todaydate__month__gte=searchMonth, todaydate__month__lte=searchMonth)
+
             elif searchYear and searchMonth != '':
-                date = EmployeeAttendance.objects.filter(todaydate__year__gte = searchYear, todaydate__month__gte=searchMonth, todaydate__year__lte = searchYear,todaydate__month__lte = searchMonth)
-                
+                date = EmployeeAttendance.objects.filter(
+                    todaydate__year__gte=searchYear, todaydate__month__gte=searchMonth, todaydate__year__lte=searchYear, todaydate__month__lte=searchMonth)
+
         else:
             emp = Employee.objects.all()
             # empatt = EmployeeAttendance.objects.all()
             today = datetime.today()
-            date = EmployeeAttendance.objects.filter(todaydate = today)
+            date = EmployeeAttendance.objects.filter(todaydate=today)
 
         context = {
-            'emp' : emp,
+            'emp': emp,
             'empatt': date,
-        }    
+        }
         return render(request, 'admin/employee/attendance-employee.html', context)
-    
 
 
 class departments_screen_view(View):

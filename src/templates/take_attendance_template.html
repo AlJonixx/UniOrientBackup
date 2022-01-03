@@ -36,12 +36,10 @@
 		
 		<!-- Main CSS -->
         <link rel="stylesheet" href="{% static '/admin/assets/css/style.css' %}">
-		
-		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-		<!--[if lt IE 9]>
-			<script src="assets/js/html5shiv.min.js"></script>
-			<script src="assets/js/respond.min.js"></script>
-		<![endif]-->
+
+		<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
     </head>
     <body class="account-page" onload="mytime()">
 	
@@ -64,7 +62,13 @@
 							<h3 style="text-align:center">{% now "jS F Y" %}</h3>
 							<h3 style="text-align:center;" id="timehere"></h3>
 							<br>
-							<form method="POST">
+							<div>
+								<video id="preview" width="100%"></video>
+							</div>
+							<br>
+							<h3 style="text-align:center;">Scan QR Code Here</h3>
+							<br>
+							<form id="attendanceForm" method="POST">
                             {% csrf_token %}					                           
                             <div class="InOut form-group form-focus select-focus">
                                 <select name="LoginOptions" id="LoginOptions" class="select floating">                       
@@ -80,7 +84,7 @@
 									<option value="3">Break In</option>  
                                 </select>   
                                 <label class="focus-label">Attendance</label>
-							</div>
+							</div> 
 
                                   
                         
@@ -88,14 +92,15 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
-                                        <input name="employeeID" class="form-control" type="text">										
+                                        <input id="employeeID" name="employeeID" class="form-control" type="text" readonly>										
                                     </div>
                                 </div>
                                 </div>
                                 <br>
                                <!-- Button -->
                                 <div class="form-group text-center">
-									<input class="btn btn-primary account-btn" name="TimeLogin" type="submit" value="Login">
+									
+									<button id="myBtn" class="btn btn-primary account-btn" name="TimeLogin" type="submit">Login</button>
 								</div>
 								
                                 </form>
@@ -149,7 +154,7 @@
 		<script>
 			function mytime(){
 				var d=new Date();
-				ap="am";
+				ap="am";	
 				h=d.getHours();
 				m=d.getMinutes();
 				s=d.getSeconds();
@@ -188,7 +193,31 @@
 			}
 
 			$(document).ready(function() { refreshAt(12,0,0); });
-			$(document).ready(function() { refreshAt(15,0,0); });
+			$(document).ready(function() { refreshAt(14,0,0); });
 		</script>		
+
+		<script>
+			let scanner = new Instascan.Scanner({ video: document.getElementById('preview')});
+		    var audio = document.getElementById("timeAudio");
+        
+			Instascan.Camera.getCameras().then(function(cameras){
+				if(cameras.length > 0 ){
+					scanner.start(cameras[0]);
+
+				}else {
+					alert("No Cameras Found");
+				}
+			}).catch(function(e){
+				console.error(e);
+			});
+
+			scanner.addListener('scan',function(c){
+				document.getElementById('employeeID').value=c;
+				document.getElementById("myBtn").click();
+			
+			});
+
+		</script>
+
     </body>
 </html>

@@ -1,6 +1,62 @@
 {% extends 'admin-base.html' %}
 {% load static %}
 
+{% block style %}
+
+<style>
+			.id-card-holder {
+			width: 300px;
+		    padding: 4px;
+		    margin: 0 auto;
+		    background-color: #1f1f1f;
+		    border-radius: 5px;
+		    position: relative;
+		}
+		.id-card-holder:after {
+		    content: '';
+		    width: 7px;
+		    display: block;
+		    background-color: #0a0a0a;
+		    height: 100px;
+		    position: absolute;
+		    top: 105px;
+		    border-radius: 0 5px 5px 0;
+		}
+		.id-card-holder:before {
+		    content: '';
+		    width: 7px;
+		    display: block;
+		    background-color: #0a0a0a;
+		    height: 100px;
+		    position: absolute;
+		    top: 105px;
+		    left: 289px;
+		    border-radius: 5px 0 0 5px;
+		}
+		.id-card {
+			
+			background-color: #fff;
+			padding: 10px;
+			border-radius: 10px;
+			text-align: center;
+			box-shadow: 0 0 1.5px 0px #b9b9b9;
+		}
+
+		.id-header img {
+			width: 50px;
+    		margin-top: 15px;
+		}
+		.id-card img {
+			margin: 0 auto;
+		}
+		.photo img {
+			width: 80px;
+    		margin-top: 15px;
+		}
+</style>
+
+{% endblock style %}
+
 {% block content %}			
 			<!-- Page Wrapper -->
             <div class="page-wrapper">
@@ -47,7 +103,7 @@
 								</ul>
 							</div>
 							<div class="col-auto float-right ml-auto">
-								<a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee"><i class="fa fa-plus"></i> Add Employee</a>
+								<a href="#" class="btn add-btn" id="add-btn" data-toggle="modal" data-target="#add_employee"><i class="fa fa-plus"></i> Add Employee</a>
 								<div class="view-icons">
 									<a href="{% url 'all-employee' %}" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
 									<a href="{% url 'employee-list' %}" class="list-view btn btn-link"><i class="fa fa-bars"></i></a>
@@ -126,19 +182,64 @@
 								</button>
 							</div>
 							<div class="modal-body">
+								 <div class="row">
+										<div class="col-sm-12">
+
+											<div class="id-card-holder">
+												<div class="id-card">
+													<div class="id-header">
+														<img src="{% static '/home/assets/img/uni-logo-transparent.png' %}" alt="Logo Uni Orient">
+														<h4>Uni Orient Travel, Inc. (Cebu)</h4>
+													</div>
+													<br>
+													<div class="profile-img">
+														<a href="profile/17841930" class="avatar" name="Profile"><img src="https://picsum.photos/200" alt=""></a>
+													</div>
+													<br>
+													<h4><span id="qrFirstname">First Name</span> <span id="qrLastname">Last Name</span></h4>
+													
+													<br>
+													<div id="qrcode-container">
+															<center><canvas id="qrcode" class="qrcode"></canvas></center>
+													</div>
+													
+													<hr>
+													<p style="font-size:10px;">Capitol Square, <p>
+													<p style="font-size:10px;">82, N Escario St, Cebu City</p>
+													<p style="font-size:10px;">Phone: +63 (032) 253 1866 | E-mail: info@uniorient.com</p>
+
+												</div>
+											</div>
+
+											<br>
+											<center><button class="btn btn-primary" onclick="generateQRCode()">Generate QR Code</button></center>
+											<br>
+										</div>
+									</div>
 								<form method="POST">
 									{% csrf_token %}
+
+
+
 									<div class="row">
+
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
+												<input id="employee_id" name="employee_id" class="form-control" type="text" readonly/>
+											</div>
+										</div>
+
 										<div class="col-sm-6">
 											<div class="form-group">
 												<label class="col-form-label">First Name <span class="text-danger">*</span></label>
-												<input name="firstname_text" class="form-control" type="text">
+												<input id="firstname_text" name="firstname_text" class="form-control" type="text">
 											</div>
 										</div>
 										<div class="col-sm-6">
 											<div class="form-group">
 												<label class="col-form-label">Last Name <span class="text-danger">*</span></label>
-												<input name="lastname_text" class="form-control" type="text">
+												<input id="lastname_text" name="lastname_text" class="form-control" type="text">
 											</div>
 										</div>
 										<div class="col-sm-6">
@@ -385,6 +486,8 @@
 		<!-- Custom JS -->
 		<script src="{% static '/admin/assets/js/app.js' %}"></script>
 
+		<script src="{% static '/admin/assets/js/qrcode.min.js' %}"></script>
+
 		<script type="text/javascript">
 			var password = document.getElementById("password"), confirm_password = document.getElementById("confirm-password");
 
@@ -399,4 +502,45 @@
 				password.onchange = validatePassword;
 				confirm_password.onkeyup = validatePassword;
 		</script>
+
+
+		<script>
+
+			var emp = Math.floor(Math.random() * 9999);
+			var empField = document.getElementById('employee_id').value = emp;
+
+			var firstname = document.getElementById("firstname_text").value;
+			
+			$("#firstname_text").keyup(function() {
+				var qrFirstname = $("#firstname_text").val();
+				$("#qrFirstname").text(qrFirstname);
+			});
+
+			$("#lastname_text").keyup(function() {
+				var qrLastname = $("#lastname_text").val();
+				$("#qrLastname").text(qrLastname);
+			});
+
+		</script>
+
+	 <script type="text/javascript">
+			function generateQRCode() {
+			let empid = document.getElementById("employee_id").value;
+
+			
+			if (empid) {
+				let qrcodeContainer = document.getElementById("qrcode");
+				qrcodeContainer.innerHTML = "";
+				new QRious({
+				element: qrcodeContainer,
+				value: empid,
+				size: 70
+				});
+				document.getElementById("qrcode-container").style.display = "block";
+			} else {
+				alert("Please enter a valid URL");
+			}
+			}
+  </script>
+
 {% endblock script %}

@@ -58,12 +58,20 @@
 		
 		<!-- Main CSS -->
         <link rel="stylesheet" href="{% static '/admin/assets/css/style.css' %}">
+
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 		
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
 			<script src="assets/js/html5shiv.min.js"></script>
 			<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
+
+		{% block style %}
+		
+		{% endblock style %}
+
     </head>
 	
 
