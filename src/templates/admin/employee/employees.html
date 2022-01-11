@@ -185,7 +185,7 @@
 								 <div class="row">
 										<div class="col-sm-12">
 
-											<div class="id-card-holder">
+											<div class="id-card-holder" id="id-card-holder">
 												<div class="id-card">
 													<div class="id-header">
 														<img src="{% static '/home/assets/img/uni-logo-transparent.png' %}" alt="Logo Uni Orient">
@@ -193,7 +193,7 @@
 													</div>
 													<br>
 													<div class="profile-img">
-														<a href="profile/17841930" class="avatar" name="Profile"><img src="https://picsum.photos/200" alt=""></a>
+														<a href="profile/17841930" class="avatar" name="Profile"><img src="{% static '/admin/assets/img/persona.jpeg' %}" alt=""></a>
 													</div>
 													<br>
 													<h4><span id="qrFirstname">First Name</span> <span id="qrLastname">Last Name</span></h4>
@@ -214,13 +214,12 @@
 											<br>
 											<center><button class="btn btn-primary" onclick="generateQRCode()">Generate QR Code</button></center>
 											<br>
+											<center><button class="btn btn-primary" id="saveBtn">Save Image</button></center>
+											<br>
 										</div>
 									</div>
 								<form method="POST">
 									{% csrf_token %}
-
-
-
 									<div class="row">
 
 										<div class="col-sm-6">
@@ -488,6 +487,9 @@
 
 		<script src="{% static '/admin/assets/js/qrcode.min.js' %}"></script>
 
+		<!-- HTML to Image -->
+		<script src="{% static '/admin/assets/js/html2canvas.min.js' %}"></script>
+
 		<script type="text/javascript">
 			var password = document.getElementById("password"), confirm_password = document.getElementById("confirm-password");
 
@@ -541,6 +543,26 @@
 				alert("Please enter a valid URL");
 			}
 			}
-  </script>
+    </script>
+
+	<script type="text/javascript">
+		 $(document).ready(function () {
+
+			  $("#saveBtn").on('click', function () {
+                html2canvas(document.getElementById("id-card-holder")).then(function (canvas) {                   
+                   var anchorTag = document.createElement("a");
+				   var qrLastname = $("#lastname_text").val();
+                    document.body.appendChild(anchorTag);
+                    //document.getElementById("previewImg").appendChild(canvas);
+                    anchorTag.download = ""+qrLastname+".jpg";
+                    anchorTag.href = canvas.toDataURL();
+                    anchorTag.target = '_blank';
+                    anchorTag.click();
+                });
+    		});
+ 
+
+        });
+	</script>
 
 {% endblock script %}
