@@ -40,6 +40,8 @@
 		<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
+
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
     <body class="account-page" onload="mytime()">
 	
@@ -51,7 +53,7 @@
 				
 					<!-- Account Logo -->
 					<div class="account-logo">
-						<a href="index.html"><img src="{% static '/home/assets/img/uni-logo-transparent.png' %}" alt="Logo Uni Orient"></a>
+						<a href=""><img src="{% static '/home/assets/img/uni-logo-transparent.png' %}" alt="Logo Uni Orient"></a>
 					</div>
 					<!-- /Account Logo -->	
 
@@ -92,7 +94,7 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
-                                        <input id="employeeID" name="employeeID" class="form-control" type="text" readonly>										
+                                        <input id="employeeID" name="employeeID" class="form-control" type="text" >										
                                     </div>
                                 </div>
                                 </div>
@@ -110,13 +112,16 @@
                     </div>
                         
 							<!--Message-->
-							<div>
+							{% comment %} <div>
                     			{% for message in messages %}
-								<div class="alert alert-success text-center" role="alert">
-									<strong>{{ message }}</strong>									
-								</div>
+									<div class="alert alert-warning alert-dismissible fade show" role="alert">
+									<strong>{{message}}</strong> 
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true">×</span>
+									</button>
+									</div>
                     			{% endfor %}
-                			</div>
+                			</div> {% endcomment %}
 							<!-- Drop Down -->
 						
 					</div>
@@ -217,6 +222,18 @@
 			
 			});
 
+		</script>
+
+		<script>
+			                {% for message in messages %}
+								Swal.fire({
+								icon: 'success',
+								title: '{{message}}',
+								showConfirmButton: false,
+								timer: 1800
+								});
+
+                    		{% endfor %}
 		</script>
 
     </body>

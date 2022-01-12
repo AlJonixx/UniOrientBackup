@@ -62,7 +62,11 @@ class attendance_screen_view(View):
 
 class admin_screen_view(View):
     def get(self, request):
-        return render(request, 'admin/index.html', {})
+        totalEmp = Employee.objects.count()
+        context = {
+            'totalEmp': totalEmp
+        }
+        return render(request, 'admin/index.html', context)
 
 
 def logout_screen_view(request):
