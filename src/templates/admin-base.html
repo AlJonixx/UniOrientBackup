@@ -382,10 +382,10 @@
 								<a href="#"><i class="la la-dashboard"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
 									<li><a class="active" href="{% url 'admin-dashboard' %}">Admin Dashboard</a></li>
-									<li><a href="employee-dashboard.html">Employee Dashboard</a></li>
+									<!-- <li><a href="employee-dashboard.html">Employee Dashboard</a></li> -->
 								</ul>
 							</li>
-							<li class="submenu">
+							<!-- <li class="submenu">
 								<a href="#"><i class="la la-cube"></i> <span> Apps</span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
 									{% comment %}<li><a href="chat.html">Chat</a></li>
@@ -403,7 +403,7 @@
 									<li><a href="inbox.html">Email</a></li>
 									<li><a href="file-manager.html">File Manager</a></li> {% endcomment %}
 								</ul> 
-							</li>
+							</li> -->
 							<li class="menu-title"> 
 								<span>Employees</span>
 							</li>
@@ -411,17 +411,17 @@
 								<a href="#" class="noti-dot"><i class="la la-user"></i> <span> Employees</span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
 									<li><a class="{% if request.path == allEmployee %}active{% endif %}" href="{% url 'all-employee' %}">All Employees</a></li>
-									<li><a class="{% if request.path == holiDays %}active{% endif %}" href="{% url 'holidays' %}">Holidays</a></li>
+									<!-- <li><a class="{% if request.path == holiDays %}active{% endif %}" href="{% url 'holidays' %}">Holidays</a></li>
 									<li><a class="{% if request.path == leavesAdmin %}active{% endif %}" href="{% url 'leaves-admin' %}">Leaves (Admin) <span class="badge badge-pill bg-primary float-right">1</span></a></li>
 									<li><a class="{% if request.path == leavesEmployee %}active{% endif %}" href="{% url 'leaves-employee' %}">Leaves (Employee)</a></li>
 									<li><a class="{% if request.path == leavesSettings %}active{% endif %}" href="{% url 'leaves-settings' %}">Leave Settings</a></li>
-									<li><a class="{% if request.path == attendanceAdmin %}active{% endif %}" href="{% url 'attendance-admin' %}" >Attendance (Admin)</a></li>
+									<li><a class="{% if request.path == attendanceAdmin %}active{% endif %}" href="{% url 'attendance-admin' %}" >Attendance (Admin)</a></li> -->
 									<li><a class="{% if request.path == attendanceEmployee %}active{% endif %}" href="{% url 'attendance-employee' %}">Attendance (Employee)</a></li>
 									<li><a class="{% if request.path == departMents %}active{% endif %}" href="{% url 'departments' %}">Departments</a></li>
 									<li><a class="{% if request.path == desigNations %}active{% endif %}" href="{% url 'designations' %}">Designations</a></li>
-									<li><a class="{% if request.path == timeSheet %}active{% endif %}" href="{% url 'timesheet' %}">Timesheet</a></li>
+									<!-- <li><a class="{% if request.path == timeSheet %}active{% endif %}" href="{% url 'timesheet' %}">Timesheet</a></li>
 									<li><a class="{% if request.path == shiftScheduling %}active{% endif %}" href="{% url 'shift-scheduling' %}">Shift & Schedule</a></li>
-									<li><a class="{% if request.path == overTime %}active{% endif %}" href="{% url 'overtime' %}">Overtime</a></li>
+									<li><a class="{% if request.path == overTime %}active{% endif %}" href="{% url 'overtime' %}">Overtime</a></li> -->
 								</ul>
 							</li>
 						<!--	<li> 
@@ -464,14 +464,14 @@
 									<li><a href="budget-revenues.html">Budget Revenues</a></li>
 								</ul>
 							</li>-->
-							<li class="submenu">
+							<!-- <li class="submenu">
 								<a href="#"><i class="la la-money"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
 									<li><a class="{% if request.path == salary %}active{% endif %}" href="{% url 'salary' %}"> Employee Salary </a></li>
 									<li><a class="{% if request.path == salaryView %}active{% endif %}"  href="{% url 'salary-view' %}"> Payslip </a></li>
 									<li><a class="{% if request.path == payrollItems %}active{% endif %}"  href="{% url 'payroll-items' %}"> Payroll Items </a></li>
 								</ul>
-							</li>
+							</li> -->
 							{% comment %} <li class="submenu">
 								<a href="#"><i class="la la-money"></i> <span> Clock In/Out </span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
@@ -482,23 +482,23 @@
 						<!--	<li> 
 								<a href="policies.html"><i class="la la-file-pdf-o"></i> <span>Policies</span></a>
 							</li>-->
-							<li class="submenu">
+							<!-- <li class="submenu">
 								<a href="#"><i class="la la-pie-chart"></i> <span> Reports </span> <span class="menu-arrow"></span></a>
-								<ul style="display: none;">
+								<ul style="display: none;"> -->
 								<!--	<li><a href="expense-reports.html"> Expense Report </a></li>
 									<li><a href="invoice-reports.html"> Invoice Report </a></li>
 									<li><a href="payments-reports.html"> Payments Report </a></li>
 									<li><a href="project-reports.html"> Project Report </a></li>
 									<li><a href="task-reports.html"> Task Report </a></li>
 									<li><a href="user-reports.html"> User Report </a></li>-->
-									<li><a class="{% if request.path == employeeReport %}active{% endif %}" href="{% url 'employee-report' %}"> Employee Report </a></li>
+									<!-- <li><a class="{% if request.path == employeeReport %}active{% endif %}" href="{% url 'employee-report' %}"> Employee Report </a></li>
 									<li><a class="{% if request.path == payslipReport %}active{% endif %}" href="{% url 'payslip-report' %}"> Payslip Report </a></li>
 									<li><a class="{% if request.path == attendanceReport %}active{% endif %}" href="{% url 'attendance-report' %}"> Attendance Report </a></li>
 									<li><a class="{% if request.path == leaveReport %}active{% endif %}" href="{% url 'leave-report' %}"> Leave Report </a></li>
 									<li><a class="{% if request.path == dailyReport %}active{% endif %}" href="{% url 'daily-report' %}"> Daily Report </a></li>
 									<li><a class="{% if request.path == overtimeReport %}active{% endif %}" href="{% url 'overtime-report' %}">Overtime Report </a></li>
 								</ul>
-							</li>
+							</li> -->
 							{% comment %}<li class="menu-title"> 
 								<span>Performance</span>
 							</li>
