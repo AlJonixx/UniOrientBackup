@@ -22,7 +22,7 @@
 					</div>
 					<!-- /Page Header -->
 					
-					<div class="row">
+					{% comment %} <div class="row">
 						<div class="col-md-4">
 							<div class="card punch-status">
 								<div class="card-body">
@@ -148,7 +148,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> {% endcomment %}
 
 					<!-- Search Filter -->
 					<div class="row filter-row">						
@@ -205,39 +205,50 @@
                     <div class="row">
                         <div class="col-lg-12">
 							<div class="table-responsive">
-								<table class="table table-striped custom-table mb-0">
+								<table class="table-attendance table table-striped custom-table mb-0">
 									<thead>
 										<tr>
+											
 											<th>Employee ID</th>
 											<th>Employee Name</th>
 											<th>Date</th>
 											<th>Punch In</th>
 											<th>Punch Out</th>
-											<th>Break</th>
+											<th>Total Minutes</th>
+											<th>Total Hours</th>
 											{% comment %} <th>Overtime</th> {% endcomment %}
 										</tr>
 									</thead>
 									<tbody>
+				
 										{% for employee in emp %}																		
 											{% for attendance in empatt %}
+							
 											{% if employee.employee_id == attendance.employee_id_id %}				
-																													
+											
+											
 											<tr>
 												<td>{{employee.employee_id}}</td>
 												<td>{{employee.firstname}} {{employee.lastname}}</td>
 												<td>{{attendance.todaydate|date:"M d,Y"}}</td>
-												<td>{{attendance.timein|time:"h:i A"}} 
+												<td><p style="display:inline" >{{attendance.timein|time:"h:i A"}} </p>
+													<p style="display:inline; visibility:hidden" class="empTimeIn-{{ forloop.counter }}">{{attendance.timein|time:"H:i"}}</p>
 													{% if attendance.timein > employee.sched_start %}
-														<p class="btn-danger">Late</p>
+														<p style="display:inline" class="btn-danger">Late</p>
 													{% else %} 
-														<p class="btn-success">On Time</p>
+														<p style="display:inline"  class="btn-success">On Time</p>
 													{% endif %}
 												</td>
-												<td>{{attendance.timeout|time:"h:i A"}}</td>
+												<td><p style="display:inline">{{attendance.timeout|time:"h:i A"}}</p>
+													<p style="display:inline; visibility:hidden" class="empTimeOut-{{ forloop.counter }}">{{attendance.timeout|time:"H:i"}}</p></td>
+												<td><p id="totalMin" class="total-min-{{ forloop.counter }}"></p></td>
+												<td><p id="totalHr" class="total-hr-{{ forloop.counter }}"></p></td>
+												
 											</tr>											
 										{% endif %}										
 										{% endfor %}
 										{% comment %} {% endif %} {% endcomment %}
+									
 										{% endfor %}									
 									</tbody>
 								</table>
@@ -280,6 +291,33 @@
 		<script src="{% static '/admin/assets/js/app.js' %}"></script>
 
 		<script>
+
+			function roundOff(x) {
+			return Number.parseFloat(x).toFixed(2);
+			}
+
+
+			$( document ).ready(function() {
+			
+				
+				var totalRow = $('table.table-attendance tr:last').index() + 1;
+				
+				for(let i = 1; i <= totalRow; i++){
+					var timeIn = $('p.empTimeIn-'+i).text();
+					var timeOut = $('p.empTimeOut-'+i).text();
+					
+					
+					timeIn = timeIn.replace(/:/g, "");
+					timeOut = timeOut.replace(/:/g, "");
+					var totalMin = timeOut-timeIn;
+					var totalHr = totalMin/60;
+					//alert(totalMin);
+					$('.total-min-'+i).text(roundOff(totalMin));
+					$('.total-hr-'+i).text(roundOff(totalHr));
+				}
+				
+			});
+
 			$('.datetimepicker').datetimepicker({
 				format: 'YYYY-MM-DD'
 			 });

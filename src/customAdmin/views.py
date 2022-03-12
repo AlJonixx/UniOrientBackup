@@ -388,10 +388,13 @@ class attendance_employee_screen_view(View):
             # empatt = EmployeeAttendance.objects.all()
             today = datetime.today()
             date = EmployeeAttendance.objects.filter(todaydate=today)
+            totalMin = EmployeeAttendance.objects.values('timein')
 
         context = {
             'emp': emp,
             'empatt': date,
+
+
         }
         return render(request, 'admin/employee/attendance-employee.html', context)
 
