@@ -25,7 +25,7 @@ from home.views import (
 
 urlpatterns = [
 
-    path('', home_screen_view.as_view(), name='home'),
+    # path('', home_screen_view.as_view(), name='home'),
 
 
 ]

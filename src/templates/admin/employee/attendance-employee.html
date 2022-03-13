@@ -234,15 +234,15 @@
 												<td><p style="display:inline" >{{attendance.timein|time:"h:i A"}} </p>
 													<p style="display:inline; visibility:hidden" class="empTimeIn-{{ forloop.counter }}">{{attendance.timein|time:"H:i"}}</p>
 													{% if attendance.timein > employee.sched_start %}
-														<p style="display:inline" class="btn-danger">Late</p>
+														<p style="display:inline; padding:2px 10px; border-radius:50px" class="btn-danger">Late</p>
 													{% else %} 
-														<p style="display:inline"  class="btn-success">On Time</p>
+														<p style="display:inline; padding:2px 10px; border-radius:50px"  class="btn-success">On Time</p>
 													{% endif %}
 												</td>
 												<td><p style="display:inline">{{attendance.timeout|time:"h:i A"}}</p>
 													<p style="display:inline; visibility:hidden" class="empTimeOut-{{ forloop.counter }}">{{attendance.timeout|time:"H:i"}}</p></td>
-												<td><p id="totalMin" class="total-min-{{ forloop.counter }}"></p></td>
-												<td><p id="totalHr" class="total-hr-{{ forloop.counter }}"></p></td>
+												<td><p id="totalMin" style="display:inline" class="total-min-{{ forloop.counter }}"></p></td>
+												<td><p id="totalHr" style="display:inline" class="total-hr-{{ forloop.counter }}"></p></td>
 												
 											</tr>											
 										{% endif %}										

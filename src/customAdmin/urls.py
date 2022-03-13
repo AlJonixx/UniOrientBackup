@@ -58,9 +58,10 @@ from customAdmin.views import (
 
 
 urlpatterns = [
+
     path('admin-dashboard', admin_screen_view.as_view(), name='admin-dashboard'),
     path('admin-login', login_screen_view, name='admin-login'),
-    path('admin-logout', logout_screen_view, name='admin-logout'),
+    path('', logout_screen_view, name='admin-logout'),
 
     # ATTENDANCE
     path('attendance', attendance_screen_view.as_view(), name='attendance'),
@@ -74,7 +75,8 @@ urlpatterns = [
     path('leaves-employee', leaves_employee_screen_view, name='leaves-employee'),
     path('leaves-settings', leaves_settings_screen_view, name='leaves-settings'),
     path('attendance-admin', attendance_admin_screen_view, name='attendance-admin'),
-    path('attendance-employee', attendance_employee_screen_view.as_view(), name='attendance-employee'),
+    path('attendance-employee', attendance_employee_screen_view.as_view(),
+         name='attendance-employee'),
     path('departments', departments_screen_view.as_view(), name='departments'),
     path('deleteDepart/<int:id>',
          departments_screen_view.deleteDepartment, name='deleteDepartment'),

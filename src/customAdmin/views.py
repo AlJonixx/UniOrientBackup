@@ -60,7 +60,10 @@ class attendance_screen_view(View):
                         return redirect('attendance')
 
 
-class admin_screen_view(View):
+class admin_screen_view(LoginRequiredMixin, View):
+    login_url = 'admin-login'
+    redirect_field_name = 'redirect_to'
+
     def get(self, request):
         totalEmp = Employee.objects.count()
         context = {
@@ -108,7 +111,11 @@ def login_screen_view(request):
 # EMPLOYEE
 
 
-class all_employee_screen_view(View):
+class all_employee_screen_view(LoginRequiredMixin, View):
+
+    login_url = 'admin-login'
+    redirect_field_name = 'redirect_to'
+
     def get(self, request):
         if 'SearchEmp' in request.GET:
             q1 = request.GET['q1']
@@ -211,7 +218,10 @@ class all_employee_screen_view(View):
         return redirect('all-employee')
 
 
-class employee_list_screen_view(View):
+class employee_list_screen_view(LoginRequiredMixin, View):
+    login_url = 'admin-login'
+    redirect_field_name = 'redirect_to'
+
     def get(self, request):
         if 'SearchEmp' in request.GET:
             q1 = request.GET['q1']
@@ -306,7 +316,11 @@ class employee_list_screen_view(View):
                 return redirect('employee-list')
 
 
-class profile_screen_view(View):
+class profile_screen_view(LoginRequiredMixin, View):
+
+    login_url = 'admin-login'
+    redirect_field_name = 'redirect_to'
+
     def get(self, request, id):
         employee = Employee.objects.all()
         department = Department.objects.all()
@@ -361,7 +375,10 @@ def attendance_admin_screen_view(request):
     return render(request, 'admin/employee/attendance-admin.html')
 
 
-class attendance_employee_screen_view(View):
+class attendance_employee_screen_view(LoginRequiredMixin, View):
+    login_url = 'admin-login'
+    redirect_field_name = 'redirect_to'
+
     def get(self, request):
         if 'btnAttendanceSearch' in request.GET:
             searchDate = request.GET['selectDate']
@@ -399,7 +416,10 @@ class attendance_employee_screen_view(View):
         return render(request, 'admin/employee/attendance-employee.html', context)
 
 
-class departments_screen_view(View):
+class departments_screen_view(LoginRequiredMixin, View):
+    login_url = 'admin-login'
+    redirect_field_name = 'redirect_to'
+
     def get(self, request):
         dept = Department.objects.all()
         context = {
@@ -435,7 +455,10 @@ class departments_screen_view(View):
         return redirect('departments')
 
 
-class designations_screen_view(View):
+class designations_screen_view(LoginRequiredMixin, View):
+    login_url = 'admin-login'
+    redirect_field_name = 'redirect_to'
+
     def get(self, request):
         designation = Designation.objects.all()
         department = Department.objects.all()
