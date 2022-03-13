@@ -307,9 +307,9 @@ class employee_list_screen_view(LoginRequiredMixin, View):
                 phoneUp = request.POST.get("phone_update")
                 # departmentUp = request.POST.get("department_name")
                 designationUp = request.POST.get("designation_name")
-                idemp = request.POST.get("empid_update")
+                # idemp = request.POST.get("empid_update")
 
-                Employee.objects.filter(id=eid).update(employee_id=idemp, firstname=fname, lastname=lname,
+                Employee.objects.filter(employee_id=eid).update(firstname=fname, lastname=lname,
                                                        username=uname, email=emailUp, phone=phoneUp, designation_name_id=designationUp)
                 messages.success(request, "Employee " +
                                  idemp + " successfully Updated!")
