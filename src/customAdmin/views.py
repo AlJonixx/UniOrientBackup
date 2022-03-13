@@ -312,7 +312,7 @@ class employee_list_screen_view(LoginRequiredMixin, View):
                 Employee.objects.filter(employee_id=eid).update(firstname=fname, lastname=lname,
                                                        username=uname, email=emailUp, phone=phoneUp, designation_name_id=designationUp)
                 messages.success(request, "Employee " +
-                                 idemp + " successfully Updated!")
+                                 eid + " successfully Updated!")
                 return redirect('employee-list')
 
 
