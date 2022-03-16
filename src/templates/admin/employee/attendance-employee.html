@@ -17,6 +17,8 @@
 									<li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
 									<li class="breadcrumb-item active">Attendance</li>
 								</ul>
+								 <br>
+								
 							</div>
 						</div>
 					</div>
@@ -197,10 +199,12 @@
 						</div>
 						<div class="col-sm-3">  
 							<input type="submit" name="btnAttendanceSearch" class="btn btn-success btn-block" value="Submit">  
-						</div>
+						</div>				
+
 						</form>     
                     </div>
 					<!-- /Search Filter -->
+					<button style="margin:20px 0;" id="btnExport" class="btn btn-danger"> Export Table</button>
 					
                     <div class="row">
                         <div class="col-lg-12">
@@ -290,6 +294,12 @@
 		<!-- Custom JS -->
 		<script src="{% static '/admin/assets/js/app.js' %}"></script>
 
+				<!-- Table Export -->
+		<script src="{% static '/admin/assets/js/jquery.table2excel.js' %}"></script>
+
+
+
+
 		<script>
 
 			function roundOff(x) {
@@ -299,6 +309,17 @@
 
 			$( document ).ready(function() {
 			
+
+				//Export Table
+				
+				$("#btnExport").click(function(){
+						$(".table-attendance").table2excel({
+						exclude:".noExl",
+						name:"Worksheet Name",
+						filename:"UniOrient-Attendance",//do not include extension
+						fileext:".xlsx" // file extension
+					});
+				});
 				
 				var totalRow = $('table.table-attendance tr:last').index() + 1;
 				
