@@ -19,7 +19,10 @@ from django.http import HttpResponse
 # Create your views here.
 
 
-class attendance_screen_view(View):
+class attendance_screen_view(LoginRequiredMixin, View):
+    login_url = 'admin-login'
+    redirect_field_name = 'redirect_to'
+
     def get(self, request):
         emp = Employee.objects.all()
         return render(request, 'take_attendance_template.html', {'empl': emp})
@@ -205,7 +208,7 @@ class all_employee_screen_view(LoginRequiredMixin, View):
                 # idemp = request.POST.get("empid_update")
 
                 Employee.objects.filter(employee_id=eid).update(firstname=fname, lastname=lname,
-                                                       username=uname, email=emailUp, phone=phoneUp, designation_name_id=designationUp)
+                                                                username=uname, email=emailUp, phone=phoneUp, designation_name_id=designationUp)
                 messages.success(request, "Employee " +
                                  eid + " successfully Updated!")
                 return redirect('all-employee')
@@ -310,7 +313,7 @@ class employee_list_screen_view(LoginRequiredMixin, View):
                 # idemp = request.POST.get("empid_update")
 
                 Employee.objects.filter(employee_id=eid).update(firstname=fname, lastname=lname,
-                                                       username=uname, email=emailUp, phone=phoneUp, designation_name_id=designationUp)
+                                                                username=uname, email=emailUp, phone=phoneUp, designation_name_id=designationUp)
                 messages.success(request, "Employee " +
                                  eid + " successfully Updated!")
                 return redirect('employee-list')
