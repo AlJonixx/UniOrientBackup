@@ -61,7 +61,9 @@
           <li><a class="nav-link scrollto" href="#about">About</a></li>
           {% comment %}<li><a class="nav-link scrollto" href="#services">Services</a></li>{% endcomment %}
           {% comment %}<li><a class="nav-link scrollto" href="#portfolio">Portfolio</a></li>{% endcomment%}
+          <li><a class="nav-link scrollto" href="#contact-us">Contact Us</a></li>
           <li><a class="nav-link scrollto" href="#team">Team</a></li>
+          
           {% comment %} <li><a href="blog.html">Blog</a></li> {% endcomment %}
           {% comment %} <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
@@ -541,7 +543,7 @@
     </section><!-- End Features Section -->
 
     <!-- ======= Services Section ======= -->
-    <section id="services" class="services">
+    {% comment %} <section id="services" class="services">
 
       <div class="container" data-aos="fade-up">
 
@@ -610,10 +612,10 @@
 
       </div>
 
-    </section><!-- End Services Section -->
+    </section><!-- End Services Section --> {% endcomment %}
 
     <!-- ======= Pricing Section ======= -->
-    <section id="pricing" class="pricing">
+    {% comment %} <section id="pricing" class="pricing">
 
       <div class="container" data-aos="fade-up">
 
@@ -693,7 +695,7 @@
 
       </div>
 
-    </section><!-- End Pricing Section -->
+    </section><!-- End Pricing Section --> {% endcomment %}
 
     <!-- ======= F.A.Q Section ======= -->
     <section id="faq" class="faq">
@@ -1515,17 +1517,30 @@ Uni Orient wants to support a variety of local companies, so we usually have a f
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
 
-    <div class="footer-newsletter">
+    <div class="footer-newsletter" id="contact-us">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-12 text-center">
-            <h4>Our Newsletter</h4>
+            <h4>Contact Us Now</h4>
             <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
           </div>
           <div class="col-lg-6">
-            <form action="" method="post">
-              <input type="email" name="email"><input type="submit" value="Subscribe">
-            </form>
+              <form>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email address</label>
+                  <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                  {% comment %} <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> {% endcomment %}
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Fullname</label>
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Fullname">
+                </div>
+                <div class="form-group">
+                  <label for="exampleFormControlTextarea1">Message</label>
+                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Your message"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
           </div>
         </div>
       </div>

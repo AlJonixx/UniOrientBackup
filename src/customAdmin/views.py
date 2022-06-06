@@ -561,3 +561,9 @@ def overtime_report_screen_view(request):
     return render(request, 'admin/reports/overtime_report.html', {})
 
 # END OF REPORT VIEWS
+
+# Final Exam Requirement
+
+
+def landing_page_view(request):
+    return render(request, 'home/home.html', {})

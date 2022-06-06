@@ -54,10 +54,16 @@ from customAdmin.views import (
     salary_screen_view,
     salary_view_screen_view,
     payroll_items_screen_view,
+
+    # Final Exam Rquirement
+    landing_page_view,
 )
 
 
 urlpatterns = [
+
+    # FINAL EXAM REQUIREMENT
+    path('landing-page', landing_page_view, name='landing-page'),
 
     path('admin-dashboard', admin_screen_view.as_view(), name='admin-dashboard'),
     path('admin-login', login_screen_view, name='admin-login'),
