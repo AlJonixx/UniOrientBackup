@@ -37,11 +37,20 @@
 		<!-- Main CSS -->
         <link rel="stylesheet" href="{% static '/admin/assets/css/style.css' %}">
 
+		<!-- Face API -->
+		<script src="{% static '/admin/assets/js/face-api.min.js' %}"></script>
+
 		<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
 
 		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+		<style>
+ 		canvas {
+     			 position: absolute;
+    		}
+		</style>
     </head>
     <body class="account-page" onload="mytime()">
 	
@@ -64,8 +73,9 @@
 							<h3 style="text-align:center">{% now "jS F Y" %}</h3>
 							<h3 style="text-align:center;" id="timehere"></h3>
 							<br>
-							<div>
-								<video playsinline id="preview" width="100%"></video>
+							<div id="videoSection">
+								{% comment %} <video playsinline id="preview" width="100%"></video> {% endcomment %}
+								 <video  id="video"  width="400px" height="500px" autoplay muted></video>
 							</div>
 							<br>
 							<h3 style="text-align:center;">Scan Face Here</h3>
@@ -154,8 +164,43 @@
 		<!-- Custom JS -->
 		<script src="{% static '/admin/assets/js/app.js' %}"></script>
 
+				{% comment %} Realtime face video {% endcomment %}
+		<script>
+			const video = document.getElementById("video");
+			videosec = document.getElementById("videoSection");
+
+			Promise.all([
+			faceapi.nets.tinyFaceDetector.loadFromUri('{% static "/admin/assets/models" %}'),
+			faceapi.nets.faceLandmark68Net.loadFromUri('{% static "/admin/assets/models" %}'),
+			faceapi.nets.faceRecognitionNet.loadFromUri('{% static "/admin/assets/models" %}'),
+			faceapi.nets.faceExpressionNet.loadFromUri('{% static "/admin/assets/models" %}')
+			]).then(startVideo)
+
+			function startVideo() {
+				navigator.getUserMedia(
+					{ video: {} },
+					stream => video.srcObject = stream,
+					err => console.error(err)
+				)
+			}
+
+			video.addEventListener('play', () => {
+			const canvas = faceapi.createCanvasFromMedia(video)
+			videosec.append(canvas)
+			const displaySize = { width: video.width, height: video.height }
+			faceapi.matchDimensions(canvas, displaySize)
+			setInterval(async () => {
+				const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
+				const resizedDetections = faceapi.resizeResults(detections, displaySize)
+				canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+				faceapi.draw.drawDetections(canvas, resizedDetections)
+				faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
+				faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
+			}, 100)
+			})
+		</script>
 		
-		
+		{% comment %} Realtime clock {% endcomment %}
 		<script>
 			function mytime(){
 				var d=new Date();
@@ -201,6 +246,7 @@
 			$(document).ready(function() { refreshAt(14,0,0); });
 		</script>		
 
+		{% comment %} QR Code Scanner {% endcomment %}
 		<script>
 			let scanner = new Instascan.Scanner({ video: document.getElementById('preview')});
 		    var audio = document.getElementById("timeAudio");
@@ -224,17 +270,20 @@
 
 		</script>
 
+		{% comment %} For pop up message {% endcomment %}
 		<script>
-			                {% for message in messages %}
-								Swal.fire({
-								icon: 'success',
-								title: '{{message}}',
-								showConfirmButton: false,
-								timer: 1800
-								});
+			{% for message in messages %}
+				Swal.fire({
+				icon: 'success',
+				title: '{{message}}',
+				showConfirmButton: false,
+				timer: 1800
+				});
 
-                    		{% endfor %}
+			{% endfor %}
 		</script>
+
+
 
     </body>
 </html>
