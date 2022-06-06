@@ -567,3 +567,7 @@ def overtime_report_screen_view(request):
 
 def landing_page_view(request):
     return render(request, 'home/home.html', {})
+
+
+def gallery_view(request):
+    return render(request, 'admin/employees/', {})

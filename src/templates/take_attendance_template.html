@@ -49,11 +49,13 @@
 		<style>
  		canvas {
      			 position: absolute;
+				 left: 35.3%;
+				 z-index: 999999;
     		}
 		</style>
     </head>
     <body class="account-page" onload="mytime()">
-	
+
 		<!-- Main Wrapper -->
         <div class="main-wrapper">
 			<div class="account-content">
@@ -73,9 +75,9 @@
 							<h3 style="text-align:center">{% now "jS F Y" %}</h3>
 							<h3 style="text-align:center;" id="timehere"></h3>
 							<br>
-							<div id="videoSection">
+								<div id="videoSection">
 								{% comment %} <video playsinline id="preview" width="100%"></video> {% endcomment %}
-								 <video  id="video"  width="400px" height="500px" autoplay muted></video>
+								 <video  id="video"  width="400" height="500" autoplay muted></video>
 							</div>
 							<br>
 							<h3 style="text-align:center;">Scan Face Here</h3>
@@ -173,7 +175,8 @@
 			faceapi.nets.tinyFaceDetector.loadFromUri('{% static "/admin/assets/models" %}'),
 			faceapi.nets.faceLandmark68Net.loadFromUri('{% static "/admin/assets/models" %}'),
 			faceapi.nets.faceRecognitionNet.loadFromUri('{% static "/admin/assets/models" %}'),
-			faceapi.nets.faceExpressionNet.loadFromUri('{% static "/admin/assets/models" %}')
+			faceapi.nets.faceExpressionNet.loadFromUri('{% static "/admin/assets/models" %}'),
+			faceapi.nets.ssdMobilenetv1.loadFromUri('{% static "/admin/assets/models" %}')
 			]).then(startVideo)
 
 			function startVideo() {
@@ -190,14 +193,39 @@
 			const displaySize = { width: video.width, height: video.height }
 			faceapi.matchDimensions(canvas, displaySize)
 			setInterval(async () => {
-				const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
+				const labeledFaceDescriptors = await loadLabeledImages()
+  				const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6)
+				const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions().withFaceDescriptors()
 				const resizedDetections = faceapi.resizeResults(detections, displaySize)
 				canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-				faceapi.draw.drawDetections(canvas, resizedDetections)
-				faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
-				faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
-			}, 100)
+				//faceapi.draw.drawDetections(canvas, resizedDetections)
+				//faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
+				//faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
+				const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor))
+				results.forEach((result, i) => {
+				const box = resizedDetections[i].detection.box
+				const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
+				drawBox.draw(canvas)
+				})
+			}, 1000)
+			
 			})
+
+			function loadLabeledImages() {
+				const labels = ['Black Widow', 'Captain America', 'Captain Marvel', 'Hawkeye', 'Jim Rhodes', 'Thor', 'Tony Stark']
+				return Promise.all(
+					labels.map(async label => {
+					const descriptions = []
+					for (let i = 1; i <= 2; i++) {
+						const img = await faceapi.fetchImage(`https://raw.githubusercontent.com/WebDevSimplified/Face-Recognition-JavaScript/master/labeled_images/${label}/${i}.jpg`)
+						const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
+						descriptions.push(detections.descriptor)
+					}
+
+					return new faceapi.LabeledFaceDescriptors(label, descriptions)
+					})
+				)
+			}
 		</script>
 		
 		{% comment %} Realtime clock {% endcomment %}

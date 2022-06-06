@@ -57,6 +57,9 @@ from customAdmin.views import (
 
     # Final Exam Rquirement
     landing_page_view,
+
+    # Face Recog Images
+    gallery_view,
 )
 
 
@@ -64,6 +67,9 @@ urlpatterns = [
 
     # FINAL EXAM REQUIREMENT
     path('landing-page', landing_page_view, name='landing-page'),
+
+    # Face Recog Images
+    path('gallery', gallery_view, name="gallery"),
 
     path('admin-dashboard', admin_screen_view.as_view(), name='admin-dashboard'),
     path('admin-login', login_screen_view, name='admin-login'),
