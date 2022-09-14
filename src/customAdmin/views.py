@@ -570,4 +570,4 @@ def landing_page_view(request):
 
 
 def gallery_view(request):
-    return render(request, 'admin/employees/', {})
+    return render(request, 'admin/employees/Chua', {})
