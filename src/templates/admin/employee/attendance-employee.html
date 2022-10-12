@@ -204,8 +204,11 @@
 						</form>     
                     </div>
 					<!-- /Search Filter -->
-					<button style="margin:20px 0;" id="btnExport" class="btn btn-danger"> Export Table</button>
-					
+		
+								<button style="margin:20px 0;" id="btnExport" class="btn btn-success"> Export Excel</button>
+								<button style="margin:20px 0;" id="btnExportCSV" class="btn btn-info"> Export CSV</button>
+								<button style="margin:20px 0;" id="btnExportPDF" class="btn btn-danger"> Export PDF</button>
+			
                     <div class="row">
                         <div class="col-lg-12">
 							<div class="table-responsive">
@@ -218,8 +221,8 @@
 											<th>Date</th>
 											<th>Punch In</th>
 											<th>Punch Out</th>
-											<th>Total Minutes</th>
 											<th>Total Hours</th>
+											<th>Status</th>
 											{% comment %} <th>Overtime</th> {% endcomment %}
 										</tr>
 									</thead>
@@ -237,16 +240,17 @@
 												<td>{{attendance.todaydate|date:"M d,Y"}}</td>
 												<td><p style="display:inline" >{{attendance.timein|time:"h:i A"}} </p>
 													<p style="display:inline; visibility:hidden" class="empTimeIn-{{ forloop.counter }}">{{attendance.timein|time:"H:i"}}</p>
+												</td>
+												<td><p style="display:inline">{{attendance.timeout|time:"h:i A"}}</p>
+													<p style="display:inline; visibility:hidden" class="empTimeOut-{{ forloop.counter }}">{{attendance.timeout|time:"H:i"}}</p></td>
+												<td><p id="totalHr" style="display:inline" class="total-hr-{{ forloop.counter }}"></p></td>
+												<td>
 													{% if attendance.timein > employee.sched_start %}
 														<p style="display:inline; padding:2px 10px; border-radius:50px" class="btn-danger empLate-{{ forloop.counter }}">Late</p>
 													{% else %} 
 														<p style="display:inline; padding:2px 10px; border-radius:50px"  class="btn-success">On Time</p>
 													{% endif %}
 												</td>
-												<td><p style="display:inline">{{attendance.timeout|time:"h:i A"}}</p>
-													<p style="display:inline; visibility:hidden" class="empTimeOut-{{ forloop.counter }}">{{attendance.timeout|time:"H:i"}}</p></td>
-												<td><p id="totalMin" style="display:inline" class="total-min-{{ forloop.counter }}"></p></td>
-												<td><p id="totalHr" style="display:inline" class="total-hr-{{ forloop.counter }}"></p></td>
 												
 											</tr>											
 										{% endif %}										
@@ -297,8 +301,9 @@
 				<!-- Table Export -->
 		<script src="{% static '/admin/assets/js/jquery.table2excel.js' %}"></script>
 
+		<script src="{% static '/admin/assets/js/tableHTMLExport.js' %}"></script>
 
-
+		<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
 
 		<script>
 
@@ -310,7 +315,7 @@
 			$( document ).ready(function() {
 			
 
-				//Export Table
+				//Export Excel Table
 				
 				$("#btnExport").click(function(){
 						$(".table-attendance").table2excel({
@@ -320,7 +325,50 @@
 						fileext:".xlsx" // file extension
 					});
 				});
-				
+
+				$("#btnExportCSV").click(function(){
+					$(".table-attendance").tableHTMLExport({
+
+						// csv, txt, json, pdf
+						type:'csv',
+
+						// default file name
+						filename: 'UniOrient-Attendance.csv',
+
+						// for csv
+						separator: ',',
+						newline: '\r\n',
+						trimContent: true,
+						quoteFields: true,
+
+						// CSS selector(s)
+						ignoreColumns: '',
+						ignoreRows: '',
+										
+						// your html table has html content?
+						htmlContent: false,
+						
+						// debug
+						consoleLog: false,  
+											
+					});
+				});
+
+				function downloadPDFWithjsPDF() {
+					const element = document.querySelector(".table-attendance");
+					var opt = {
+						margin: 1,
+						filename: 'UniOrient-Attendance',
+						image:        { type: 'jpeg', quality: 0.98 },
+						html2canvas:  { scale: 2 },
+						jsPDF:        { unit: 'in', format: 'legal', orientation: 'landscape' }
+					};
+
+					html2pdf().set(opt).from(element).save();
+				}
+
+				document.querySelector('#btnExportPDF').addEventListener('click', downloadPDFWithjsPDF);
+
 				var totalRow = $('table.table-attendance tr:last').index() + 1;
 				var officialTimeIn = "08:00	".split(':');
 
