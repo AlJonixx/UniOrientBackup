@@ -80,7 +80,7 @@
 								 {% comment %} <video  id="video"  width="400" height="500" autoplay muted></video> {% endcomment %}
 							</div>
 							<br>
-							<h3 style="text-align:center;">Scan Face Here</h3>
+							<h3 style="text-align:center;">Scan QR Code Here</h3>
 							<br>
 							<form id="attendanceForm" method="POST">
                             {% csrf_token %}					                           
@@ -105,19 +105,14 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
-                                        <input id="employeeID" name="employeeID" class="form-control" type="text" >										
+										 <label class="focus-label">Employee ID</label>
+                                        <input  id="employeeID" name="employeeID" class="form-control" type="text" readonly>	
+										<button style="visibility:hidden"  id="myBtn" class="btn btn-primary account-btn" name="TimeLogin" type="submit">Login</button>									
                                     </div>
                                 </div>
-                                </div>
-                                <br>
-                               <!-- Button -->
-                                <div class="form-group text-center">
-									
-									<button id="myBtn" class="btn btn-primary account-btn" name="TimeLogin" type="submit">Login</button>
-								</div>
-								
-                                </form>
+                            </div>
+           
+                             </form>
 							<!-- /Account Form -->
 							
  

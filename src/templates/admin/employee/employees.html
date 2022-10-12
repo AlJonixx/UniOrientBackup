@@ -278,7 +278,7 @@
 										<div class="col-sm-6">
 											<div class="form-group">
 												<label class="col-form-label">Phone <span class="text-danger">*</span></label>
-												<input name="phone_text" class="form-control" type="text">
+												<input id="phone" name="phone_text" class="form-control" type="tel"  pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}">
 											</div>
 										</div>
 
@@ -563,6 +563,25 @@
  
 
         });
+	</script>
+
+	<script>
+		var phone_input = document.getElementById("phone");
+
+		phone_input.addEventListener('input', () => {
+		phone_input.setCustomValidity('');
+		phone_input.checkValidity();
+		});
+
+		phone_input.addEventListener('invalid', () => {
+		if(phone_input.value === '') {
+			phone_input.setCustomValidity('Enter phone number!');
+		} else {
+			phone_input.setCustomValidity('Enter phone number in this format: 1234-567-7890');
+		}
+		});
+
+
 	</script>
 
 {% endblock script %}
