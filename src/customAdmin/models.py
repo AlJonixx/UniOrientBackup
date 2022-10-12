@@ -1,5 +1,7 @@
 
 from datetime import date
+from operator import truediv
+from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
@@ -71,6 +73,13 @@ class Employee(models.Model):  # Employee Model
     address = models.CharField(max_length=150, blank=True)
     state = models.CharField(max_length=150, blank=True)
     country = models.CharField(max_length=150, blank=True)
+    birthDate = models.DateField(blank=True, null=True)
+    passNo = models.CharField(max_length=150, blank=True)
+    passExp = models.DateField(blank=True, null=True)
+    nationality = models.CharField(max_length=50, blank=True)
+    religion = models.CharField(max_length=50, blank=True)
+    maritalStatus = models.CharField(max_length=20, blank=True)
+    children = models.CharField(max_length=20, blank=True)
     sched_start = models.TimeField(blank=True, null=True)
     sched_end = models.TimeField(blank=True, null=True)
 
@@ -80,6 +89,12 @@ class Employee(models.Model):  # Employee Model
 #         Employee, on_delete=models.CASCADE)
 #     designation_name = models.ForeignKey(
 #         Employee, on_delete=models.CASCADE, related_name='emp_designation_name')
+
+class PrimaryEmergencyContacts(models.Model):
+    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
+    name = models.CharField(max_length=150, blank=True)
+    relationship = models.CharField(max_length=50, blank=True)
+    phone = models.CharField(max_length=20, blank=True)
 
 
 class EmployeeAttendance(models.Model): #Employee Attendance Model

@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 import random
 
-from customAdmin.forms import AccountAuthenticationForm, DepartmentForm, DesignationForm, EmployeeForm
+from customAdmin.forms import AccountAuthenticationForm, DepartmentForm, DesignationForm, EmergencyContactForm, EmployeeForm
 from .models import *
 from django.db.models import Q
 from django.contrib.auth.hashers import make_password
@@ -188,7 +188,7 @@ class all_employee_screen_view(LoginRequiredMixin, View):
                 # passwordPost = request.POST['password_text']
                 # password2 = request.POST['password2_text']
                 gender = request.POST['gender_text']
-                address = "Edit your Address here"
+                address = "Edit your Address"
                 phonePost = request.POST['phone_text']
                 designationPost = request.POST['designation_text']
                 # departmentPost = request.POST['department_text']
@@ -331,15 +331,18 @@ class profile_screen_view(LoginRequiredMixin, View):
         employee = Employee.objects.all()
         department = Department.objects.all()
         designation = Designation.objects.all()
+        emergency = PrimaryEmergencyContacts.objects.all()
         context = {
             'id': id,
             'dept': department,
             'desig': designation,
             'empl': employee,
+            'eme': emergency,
         }
         return render(request, 'admin/employee/profile.html', context)
 
     def post(self, request, id):
+        form = EmergencyContactForm(request.POST)
         if request.method == 'POST':
             if 'btnEditProfile' in request.POST:
                 fname = request.POST.get("firstname_profile")
@@ -347,19 +350,46 @@ class profile_screen_view(LoginRequiredMixin, View):
                 # uname = request.POST.get("username_profile")
                 # emailProf = request.POST.get("email_update")
                 phoneProf = request.POST.get("phone_profile")
-                departmentProf = request.POST.get("depart_name")
+                # departmentProf = request.POST.get("depart_name")
                 designationProf = request.POST.get("desig_name")
                 # idempProf = request.POST.get("empid_update")
                 gender = request.POST.get("gender")
+                birthD = request.POST.get("BirthDate")
                 address = request.POST.get("address")
                 state = request.POST.get("state")
                 country = request.POST.get("country")
 
-                Employee.objects.filter(id=id).update(firstname=fname, lastname=lname, phone=phoneProf, department=departmentProf,
-                                                      designation=designationProf, gender=gender, address=address, state=state, country=country)
+                Employee.objects.filter(employee_id=id).update(firstname=fname, lastname=lname, phone=phoneProf,
+                                                      designation_name_id=designationProf, gender=gender, address=address, state=state, country=country, birthDate=birthD)
                 messages.success(request, "Profile successfully Updated!")
                 return redirect('profile', id)
 
+            if 'btnEditPersonal' in request.POST:
+                passNum = request.POST.get("passportNo")
+                passExpiry = request.POST['passExpiryDate']
+                Nationality = request.POST.get("nationality")
+                Religion = request.POST.get("religion")
+                MStatus = request.POST.get("MaritalStatus")
+                child = request.POST.get("Children")
+
+                Employee.objects.filter(employee_id=id).update(passNo=passNum, passExp=passExpiry, nationality=Nationality, religion=Religion, maritalStatus=MStatus, children=child)
+                messages.success(request, "Personal Information successfully Updated!")
+                return redirect('profile', id)
+
+            if 'btnEditEmergency' in request.POST:
+                Name = request.POST.get("Name")
+                relation = request.POST.get("Relationship")
+                Phone = request.POST.get("Phone")
+
+                if PrimaryEmergencyContacts.objects.filter(employee_id_id = id).exists():
+                    PrimaryEmergencyContacts.objects.filter(employee_id_id = id).update(name=Name, relationship=relation, phone=Phone)
+                    messages.success(request, "Personal Information successfully Updated!")
+                    return redirect('profile', id)
+                else:
+                    form = PrimaryEmergencyContacts(employee_id_id = id, name=Name, relationship=relation, phone=Phone)
+                    form.save()
+                    messages.success(request, "Personal Information successfully Updated!")
+                    return redirect('profile', id)
 
 def holidays_screen_view(request):
     return render(request, 'admin/employee/holidays.html')
