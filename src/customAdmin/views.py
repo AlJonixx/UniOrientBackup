@@ -173,6 +173,7 @@ class all_employee_screen_view(LoginRequiredMixin, View):
 
     def post(self, request):
         form = EmployeeForm(request.POST)
+        formEme = PrimaryEmergencyContacts(request.POST)
         if request.method == 'POST':
             if 'btnSubmitEmployee' in request.POST:
                 default_schedStart = datetime.now().replace(
@@ -185,17 +186,19 @@ class all_employee_screen_view(LoginRequiredMixin, View):
                 lastName = request.POST['lastname_text']
                 userName = request.POST['username_text']
                 emailPost = request.POST['email_text']
-                # passwordPost = request.POST['password_text']
-                # password2 = request.POST['password2_text']
                 gender = request.POST['gender_text']
                 address = "Edit your Address"
                 phonePost = request.POST['phone_text']
                 designationPost = request.POST['designation_text']
-                # departmentPost = request.POST['department_text']
-                # hashed_pw = make_password(password2)
+                EmeName = "Edit Emergency Contact"
+                EmeRela = "Edit Emergency Contact"
+                EmePhone = "Edit Emergency Contact"
+
                 form = Employee(employee_id=empid, firstname=firstName, lastname=lastName, username=userName, email=emailPost,
                                 phone=phonePost, designation_name_id=designationPost, gender=gender, address=address, sched_start=default_schedStart, sched_end=default_schedEnd)
                 form.save()
+                formEme = PrimaryEmergencyContacts(employee_id_id=empid, name=EmeName, relationship=EmeRela, phone=EmePhone)
+                formEme.save()
                 messages.success(request, "Employee successfully Added!")
                 return redirect('all-employee')
 

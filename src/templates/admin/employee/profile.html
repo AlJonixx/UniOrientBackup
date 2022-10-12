@@ -71,7 +71,7 @@
 														<h6 class="text-muted">{{employee.department}}</h6>
 														<small class="text-muted">{{employee.designation_name.designation_name}}</small>
 														<div class="staff-id">Employee ID : {{employee.employee_id}}</div>
-														<div class="small doj text-muted">Date of Join : 1st Jan 2013</div>
+														<div class="small doj text-muted">Date of Joined : {{employee.join_date.date}}</div>
 														{% comment %} <div class="staff-msg"><a class="btn btn-custom" href="chat.html">Send Message</a></div> {% endcomment %}
 													</div>
 												</div>
@@ -225,15 +225,13 @@
 								{% endif %}
 								{% endfor %}
 								<!--Emergency Contact-->
-									{%for employee in empl%}
-									{%if employee.employee_id == id%}
 									<div class="col-md-6 d-flex">
 										<div class="card profile-box flex-fill">
 											<div class="card-body">
 												<h3 class="card-title">Emergency Contact <a href="#" class="edit-icon" data-toggle="modal" data-target="#emergency_contact_modal"><i class="fa fa-pencil"></i></a></h3>
 												
 												{%for emergency in eme%}
-													{%if emergency.employee_id_id == id%}
+													{%if emergency.employee_id_id == id %}
 													<hr>
 														<ul class="personal-info mt-5">
 															<li>
@@ -254,8 +252,6 @@
 											</div>
 										</div>
 									</div>
-									{%endif%}
-									{%endfor%}
 							</div>
 							
 							{% comment %} <div class="row">
@@ -1239,7 +1235,7 @@
 												<div class="col-md-6">
 													<div class="form-group">
 														<label>Phone <span class="text-danger">*</span></label>
-														<input name="Phone" class="form-control" type="text" required>
+														<input id="Phone" name="Phone" class="form-control" type="text" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" required>
 													</div>
 												</div>
 											</div>
@@ -1520,6 +1516,25 @@
 			$('.datetimepicker').datetimepicker({
 				format: 'YYYY-MM-DD'
 			});
+		</script>
+
+		<script>
+			var phone_input = document.getElementById("Phone");
+	
+			phone_input.addEventListener('input', () => {
+			phone_input.setCustomValidity('');
+			phone_input.checkValidity();
+			});
+	
+			phone_input.addEventListener('invalid', () => {
+			if(phone_input.value === '') {
+				phone_input.setCustomValidity('Enter phone number!');
+			} else {
+				phone_input.setCustomValidity('Enter phone number in this format: 1234-567-7890');
+			}
+			});
+	
+	
 		</script>
 
 

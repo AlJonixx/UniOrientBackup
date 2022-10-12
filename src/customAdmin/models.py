@@ -94,7 +94,7 @@ class PrimaryEmergencyContacts(models.Model):
     employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=150, blank=True)
     relationship = models.CharField(max_length=50, blank=True)
-    phone = models.CharField(max_length=20, blank=True)
+    phone = models.CharField(max_length=50, blank=True)
 
 
 class EmployeeAttendance(models.Model): #Employee Attendance Model
