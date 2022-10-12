@@ -62,7 +62,7 @@
 											<div class="profile-img">
 												<a href="#"><img alt="" src="https://picsum.photos/200"></a>
 											</div>
-										</div>
+										</div> 
 										<div class="profile-basic">
 											<div class="row">
 												<div class="col-md-5">
@@ -83,12 +83,16 @@
 														</li>
 														<li>
 															<div class="title">Email:</div>
-															<div class="text"><a href="">{{employee.email}}</a></div>
+															<div class="text"><a href="{{employee.email}}">{{employee.email}}</a></div>
 														</li>
 
-														 <li>
+														<li>
 															<div class="title">Birthday:</div>
-															<div class="text">24th July</div>
+															{%if employee.birthDate == Null%}
+															<div class="text">Edit BirthDate</div>
+															{%else%}
+															<div class="text">{{employee.birthDate}}</div>
+															{%endif%}
 														</li>
 
 														<li>
@@ -111,13 +115,13 @@
 														</li> {% endcomment %}
 														{% comment %} <li>
 															<div class="title">Reports to:</div>
-															<div class="text">
-															   <div class="avatar-box">
-																  <div class="avatar avatar-xs">
-																	 <img src="assets/img/profiles/avatar-16.jpg" alt="">
-																  </div>
-															   </div>
-															   <a href="profile.html">
+																<div class="text">
+																<div class="avatar-box">
+																	<div class="avatar avatar-xs">
+																		<img src="assets/img/profiles/avatar-16.jpg" alt="">
+																	</div>
+																</div>
+															    <a href="profile.html">
 																	Jeffery Lalor
 																</a>
 															</div>
@@ -147,91 +151,115 @@
 					</div>
 					
 					<div class="tab-content">
-					
+							
 						<!-- Profile Info Tab -->
 						<div id="emp_profile" class="pro-overview tab-pane fade show active">
 							<div class="row">
+								{% for employee in empl %}
+								{% if employee.employee_id == id %}
 								<div class="col-md-6 d-flex">
 									<div class="card profile-box flex-fill">
 										<div class="card-body">
-											<h3 class="card-title">Personal Informations <a href="#" class="edit-icon" data-toggle="modal" data-target="#personal_info_modal"><i class="fa fa-pencil"></i></a></h3>
+											<h3 class="card-title">Personal Informations <a href="#" class="edit-icon" data-toggle="modal" data-target="#personal_info_modal{{employee.employee_id}}"><i class="fa fa-pencil"></i></a></h3>
 											<ul class="personal-info">
 												<li>
 													<div class="title">Passport No.</div>
-													<div class="text">9876543210</div>
+													{% if employee.passNo == ""%}
+													<div class="text">Edit Passport No.</div>
+													{%else%}
+													<div class="text">{{employee.passNo}}</div>
+													{% endif %}
 												</li>
 												<li>
 													<div class="title">Passport Exp Date.</div>
-													<div class="text">9876543210</div>
+													{% if employee.passExp == Null%}
+													<div class="text">Edit Passport Expiry Date</div>
+													{%else%}
+													<div class="text">{{employee.passExp}}</div>
+													{% endif %}
 												</li>
-												<li>
+												{% comment %} <li>
 													<div class="title">Tel</div>
 													<div class="text"><a href="">9876543210</a></div>
-												</li>
+												</li> {% endcomment %}
 												<li>
 													<div class="title">Nationality</div>
-													<div class="text">Indian</div>
+													{%if employee.nationality == ""%}
+													<div class="text">Edit Nationality</div>
+													{% else %}
+													<div class="text">{{employee.nationality}}</div>
+													{% endif %}
 												</li>
 												<li>
 													<div class="title">Religion</div>
-													<div class="text">Christian</div>
+													{%if employee.religion == ""%}
+													<div class="text">Edit Religion</div>
+													{% else %}
+													<div class="text">{{employee.religion}}</div>
+													{% endif %}
 												</li>
 												<li>
 													<div class="title">Marital status</div>
-													<div class="text">Married</div>
-												</li>
-												<li>
-													<div class="title">Employment of spouse</div>
-													<div class="text">No</div>
+													{%if employee.maritalStatus == ""%}
+													<div class="text">Edit Status</div>
+													{% else %}
+													<div class="text">{{employee.maritalStatus}}</div>
+													{% endif %}
 												</li>
 												<li>
 													<div class="title">No. of children</div>
-													<div class="text">2</div>
+													{%if employee.children == ""%}
+													<div class="text">Edit No. of children</div>
+													{% else %}
+														{%if employee.children == "0"%}
+															<div class="text">None</div>
+														{%else%}
+															<div class="text">{{employee.children}}</div>
+														{%endif%}
+													{% endif %}
 												</li>
 											</ul>
 										</div>
 									</div>
 								</div>
-								<div class="col-md-6 d-flex">
-									<div class="card profile-box flex-fill">
-										<div class="card-body">
-											<h3 class="card-title">Emergency Contact <a href="#" class="edit-icon" data-toggle="modal" data-target="#emergency_contact_modal"><i class="fa fa-pencil"></i></a></h3>
-											<h5 class="section-title">Primary</h5>
-											<ul class="personal-info">
-												<li>
-													<div class="title">Name</div>
-													<div class="text">John Doe</div>
-												</li>
-												<li>
-													<div class="title">Relationship</div>
-													<div class="text">Father</div>
-												</li>
-												<li>
-													<div class="title">Phone </div>
-													<div class="text">9876543210, 9876543210</div>
-												</li>
-											</ul>
-											<hr>
-											<h5 class="section-title">Secondary</h5>
-											<ul class="personal-info">
-												<li>
-													<div class="title">Name</div>
-													<div class="text">Karen Wills</div>
-												</li>
-												<li>
-													<div class="title">Relationship</div>
-													<div class="text">Brother</div>
-												</li>
-												<li>
-													<div class="title">Phone </div>
-													<div class="text">9876543210, 9876543210</div>
-												</li>
-											</ul>
+								{% endif %}
+								{% endfor %}
+								<!--Emergency Contact-->
+									{%for employee in empl%}
+									{%if employee.employee_id == id%}
+									<div class="col-md-6 d-flex">
+										<div class="card profile-box flex-fill">
+											<div class="card-body">
+												<h3 class="card-title">Emergency Contact <a href="#" class="edit-icon" data-toggle="modal" data-target="#emergency_contact_modal"><i class="fa fa-pencil"></i></a></h3>
+												
+												{%for emergency in eme%}
+													{%if emergency.employee_id_id == id%}
+													<hr>
+														<ul class="personal-info mt-5">
+															<li>
+																<div class="title">Name</div>
+																<div class="text">{{emergency.name}}</div>														
+															</li>
+															<li>
+																<div class="title">Relationship</div>
+																<div class="text">{{emergency.relationship}}</div>
+															</li>
+															<li>
+																<div class="title">Phone</div>
+																	<div class="text">{{emergency.phone}}</div>
+															</li>
+														</ul>
+													{%endif%}
+												{%endfor%}
+											</div>
 										</div>
 									</div>
-								</div>
+									{%endif%}
+									{%endfor%}
 							</div>
-							<div class="row">
+							
+							{% comment %} <div class="row">
+								<!--Bank Information-->
 								<div class="col-md-6 d-flex">
 									<div class="card profile-box flex-fill">
 										<div class="card-body">
@@ -257,6 +285,7 @@
 										</div>
 									</div>
 								</div>
+								<!--Family Information-->
 								<div class="col-md-6 d-flex">
 									<div class="card profile-box flex-fill">
 										<div class="card-body">
@@ -294,8 +323,8 @@
 										</div>
 									</div>
 								</div>
-							</div>
-							<div class="row">
+							</div> {% endcomment %}
+							{% comment %} <div class="row">
 								<div class="col-md-6 d-flex">
 									<div class="card profile-box flex-fill">
 										<div class="card-body">
@@ -375,7 +404,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> {% endcomment %}
 						</div>
 						<!-- /Profile Info Tab -->
 						
@@ -654,7 +683,7 @@
 														<option>Weekly</option>
 														<option>Monthly</option>
 													</select>
-											   </div>
+											    </div>
 											</div>
 											<div class="col-sm-4">
 												<div class="form-group">
@@ -676,7 +705,7 @@
 														<option>Check</option>
 														<option>Cash</option>
 													</select>
-											   </div>
+											    </div>
 											</div>
 										</div>
 										<hr>
@@ -739,7 +768,7 @@
 													<input type="text" class="form-control" placeholder="N/A" value="11%">
 												</div>
 											</div>
-									   </div>
+									    </div>
 										<div class="row">
 											<div class="col-sm-4">
 												<div class="form-group">
@@ -838,7 +867,7 @@
 													<input type="text" class="form-control" placeholder="N/A" value="11%">
 												</div>
 											</div>
-									   </div>
+									    </div>
 										
 										<div class="submit-section">
 											<button class="btn btn-primary submit-btn" type="submit">Save</button>
@@ -894,7 +923,7 @@
 													<div class="form-group">
 														<label>Birth Date</label>
 														<div class="cal-icon">
-															<input class="form-control datetimepicker" type="text" value="05/06/1985">
+															<input name="BirthDate" class="form-control floating datetimepicker" value="{{employee.birthDate|date:'Y/m/d'}}" type="text">
 														</div>
 													</div>
 												</div>
@@ -967,7 +996,7 @@
 												<label>Designation <span class="text-danger">*</span></label>
 												<select name="desig_name" class="select">
 													{% for designation in desig %}
-													<option value="{{designation.designation_name}}" {% if employee.designation == designation.designation_name %} selected="selected"{% endif %}>{{designation.designation_name}}</option>											
+													<option value="{{designation.id}}" {% if employee.designation_name.designation_name == designation.designation_name %} selected="selected"{% endif %}>{{designation.designation_name}}</option>											
 													{% endfor %}
 												</select>
 											</div>
@@ -996,7 +1025,8 @@
 				<!-- /Profile Modal -->
 				
 				<!-- Personal Info Modal -->
-				<div id="personal_info_modal" class="modal custom-modal fade" role="dialog">
+				{% for employee in empl %}
+				<div id="personal_info_modal{{employee.employee_id}}" class="modal custom-modal fade" role="dialog">
 					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -1006,77 +1036,89 @@
 								</button>
 							</div>
 							<div class="modal-body">
-								<form>
+								<form method="POST">
+								{% csrf_token %}
 									<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Passport No</label>
-												<input type="text" class="form-control">
+												<input name="passportNo" type="text" class="form-control" value="{{employee.passNo}}">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Passport Expiry Date</label>
 												<div class="cal-icon">
-													<input class="form-control datetimepicker" type="text">
+													<input name="passExpiryDate" class="form-control floating datetimepicker" value="{{employee.passExp|date:'Y/m/d'}}" type="text">
 												</div>
 											</div>
 										</div>
-										<div class="col-md-6">
+										{% comment %} <div class="col-md-6">
 											<div class="form-group">
 												<label>Tel</label>
 												<input class="form-control" type="text">
 											</div>
-										</div>
+										</div> {% endcomment %}
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Nationality <span class="text-danger">*</span></label>
-												<input class="form-control" type="text">
+												<input name="nationality" class="form-control" value="{{employee.nationality}}" type="text" required>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Religion</label>
-												<div class="cal-icon">
-													<input class="form-control" type="text">
+												<div class="form-group">
+													<input name="religion" class="form-control" value="{{employee.religion}}" type="text">
 												</div>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Marital status <span class="text-danger">*</span></label>
-												<select class="select form-control">
-													<option>-</option>
-													<option>Single</option>
-													<option>Married</option>
+												<select name="MaritalStatus" class="select form-control">
+													{% if employee.maritalStatus == "Single" %}
+														<option>-</option>
+														<option selected="selected">Single</option>
+														<option>Married</option>
+													{% elif employee.maritalStatus == "Married" %}
+														<option>-</option>
+														<option>Single</option>
+														<option selected="selected">Married</option>
+													{% else %}
+														<option selected="selected">-</option>
+														<option>Single</option>
+														<option>Married</option>
+													{%endif%}
 												</select>
 											</div>
 										</div>
-										<div class="col-md-6">
+										{% comment %} <div class="col-md-6">
 											<div class="form-group">
 												<label>Employment of spouse</label>
 												<input class="form-control" type="text">
 											</div>
-										</div>
+										</div> {% endcomment %}
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>No. of children </label>
-												<input class="form-control" type="text">
+												<input name="Children" class="form-control" value="{{employee.children}}" type="text">
 											</div>
 										</div>
 									</div>
 									<div class="submit-section">
-										<button class="btn btn-primary submit-btn">Submit</button>
+										<input type="submit" name="btnEditPersonal" class="btn btn-primary submit-btn" value="Submit">
 									</div>
 								</form>
 							</div>
 						</div>
 					</div>
 				</div>
+				{%endfor%}
 				<!-- /Personal Info Modal -->
 				
 				<!-- Family Info Modal -->
-				<div id="family_info_modal" class="modal custom-modal fade" role="dialog">
+				{% comment %} <div id="family_info_modal" class="modal custom-modal fade" role="dialog">
 					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -1162,7 +1204,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> {% endcomment %}
 				<!-- /Family Info Modal -->
 				
 				<!-- Emergency Contact Modal -->
@@ -1176,72 +1218,35 @@
 								</button>
 							</div>
 							<div class="modal-body">
-								<form>
+								<form method="POST">
+									{% csrf_token %}
 									<div class="card">
 										<div class="card-body">
-											<h3 class="card-title">Primary Contact</h3>
+											<h3 class="card-title">Emergency Contact</h3>
 											<div class="row">
 												<div class="col-md-6">
 													<div class="form-group">
 														<label>Name <span class="text-danger">*</span></label>
-														<input type="text" class="form-control">
+														<input name="Name" type="text" class="form-control" required>
 													</div>
 												</div>
 												<div class="col-md-6">
 													<div class="form-group">
 														<label>Relationship <span class="text-danger">*</span></label>
-														<input class="form-control" type="text">
+														<input name="Relationship" class="form-control" type="text" required>
 													</div>
 												</div>
 												<div class="col-md-6">
 													<div class="form-group">
 														<label>Phone <span class="text-danger">*</span></label>
-														<input class="form-control" type="text">
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-														<label>Phone 2</label>
-														<input class="form-control" type="text">
+														<input name="Phone" class="form-control" type="text" required>
 													</div>
 												</div>
 											</div>
 										</div>
-									</div>
-									
-									<div class="card">
-										<div class="card-body">
-											<h3 class="card-title">Primary Contact</h3>
-											<div class="row">
-												<div class="col-md-6">
-													<div class="form-group">
-														<label>Name <span class="text-danger">*</span></label>
-														<input type="text" class="form-control">
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-														<label>Relationship <span class="text-danger">*</span></label>
-														<input class="form-control" type="text">
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-														<label>Phone <span class="text-danger">*</span></label>
-														<input class="form-control" type="text">
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-group">
-														<label>Phone 2</label>
-														<input class="form-control" type="text">
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
+									</div>									
 									<div class="submit-section">
-										<button class="btn btn-primary submit-btn">Submit</button>
+										<input type="submit" name="btnEditEmergency" class="btn btn-primary submit-btn" value="Submit">
 									</div>
 								</form>
 							</div>
@@ -1510,6 +1515,12 @@
 
 		<!-- Custom JS -->
 		<script src="{% static '/admin/assets/js/app.js' %}"></script>
+
+		<script>
+			$('.datetimepicker').datetimepicker({
+				format: 'YYYY-MM-DD'
+			});
+		</script>
 
 
 {% endblock script %}
