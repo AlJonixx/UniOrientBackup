@@ -211,9 +211,12 @@
 			
                     <div class="row">
                         <div class="col-lg-12">
-							<div class="table-responsive">
+							<div class="table-responsive attendance-section">
 								<table class="table-attendance table table-striped custom-table mb-0">
 									<thead>
+										<tr>
+											<th colspan=7 style="text-align:center; border-bottom:none; border-top:none; font-size: 22px; background: #14007d; color: #FFF;">Uni Orient Travel, Inc. Cebu Attendance</th>
+										</tr>
 										<tr>
 											
 											<th>Employee ID</th>
@@ -257,7 +260,8 @@
 										{% endfor %}
 										{% comment %} {% endif %} {% endcomment %}
 									
-										{% endfor %}									
+										{% endfor %}	
+																		
 									</tbody>
 								</table>
 							</div>
@@ -326,8 +330,12 @@
 					});
 				});
 				
+				$("#test-append").click(function(){
+						
+				});
 				
 				$("#btnExportCSV").click(function(){
+					
 					$(".table-attendance").tableHTMLExport({
 
 						// csv, txt, json, pdf
@@ -355,10 +363,14 @@
 					});
 				});
 
+				
 				function downloadPDFWithjsPDF() {
-					const element = document.querySelector(".table-attendance");
+					const element = document.querySelector(".attendance-section");
+					
+					alert(element.offsetHeight+"px");
+					
 					var opt = {
-						margin: 1,
+						margin: 0.2,
 						filename: 'UniOrient-Attendance',
 						image:        { type: 'jpeg', quality: 0.98 },
 						html2canvas:  { scale: 2 },
