@@ -335,12 +335,41 @@ class profile_screen_view(LoginRequiredMixin, View):
         department = Department.objects.all()
         designation = Designation.objects.all()
         emergency = PrimaryEmergencyContacts.objects.all()
+
+        if 'btnAttendanceSearch' in request.GET:
+            searchDate = request.GET['selectDate']
+            searchYear = request.GET['searchYear']
+            searchMonth = request.GET['searchMonth']
+            employee = Employee.objects.all()
+            if searchDate != '':
+                date = EmployeeAttendance.objects.filter(todaydate=searchDate)
+
+            elif searchYear != '':
+                date = EmployeeAttendance.objects.filter(
+                    todaydate__year__gte=searchYear, todaydate__year__lte=searchYear)
+
+            elif searchMonth != '':
+                date = EmployeeAttendance.objects.filter(
+                    todaydate__month__gte=searchMonth, todaydate__month__lte=searchMonth)
+
+            elif searchYear and searchMonth != '':
+                date = EmployeeAttendance.objects.filter(
+                    todaydate__year__gte=searchYear, todaydate__month__gte=searchMonth, todaydate__year__lte=searchYear, todaydate__month__lte=searchMonth)
+
+        else:
+            employee = Employee.objects.all()
+            # empatt = EmployeeAttendance.objects.all()
+            today = datetime.today()
+            date = EmployeeAttendance.objects.filter(todaydate=today)
+            totalMin = EmployeeAttendance.objects.values('timein')
+
         context = {
             'id': id,
             'dept': department,
             'desig': designation,
             'empl': employee,
             'eme': emergency,
+            'empatt': date,
         }
         return render(request, 'admin/employee/profile.html', context)
 

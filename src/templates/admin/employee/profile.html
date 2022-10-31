@@ -705,175 +705,120 @@
 											</div>
 										</div>
 										<hr>
-										<h3 class="card-title"> PF Information</h3>
-										<div class="row">
-											<div class="col-sm-4">
-												<div class="form-group">
-													<label class="col-form-label">PF contribution</label>
-													<select class="select">
-														<option>Select PF contribution</option>
-														<option>Yes</option>
-														<option>No</option>
+
+										<!-- Search Filter -->
+										<div class="row filter-row">						
+											<div class="col-sm-3">  
+											<form method="GET">
+											{% csrf_token %}
+												<div class="form-group form-focus">
+													<div class="cal-icon">
+														<input type="text" name="selectDate" class="form-control floating datetimepicker">
+													</div>
+													<label class="focus-label">Date</label>
+													</div>
+												</div>
+											<div class="col-sm-3"> 
+												<div class="form-group form-focus select-focus">
+													<select name="searchMonth" class="select floating"> 
+														<option value="">-</option>
+														<option value="1">Jan</option>
+														<option value="2">Feb</option>
+														<option value="3">Mar</option>
+														<option value="4">Apr</option>
+														<option value="5">May</option>
+														<option value="6">Jun</option>
+														<option value="7">Jul</option>
+														<option value="8">Aug</option>
+														<option value="9">Sep</option>
+														<option value="10">Oct</option>
+														<option value="11">Nov</option>
+														<option value="12">Dec</option>
 													</select>
+													<label class="focus-label">Select Month</label>
 												</div>
 											</div>
-											<div class="col-sm-4">
-												<div class="form-group">
-													<label class="col-form-label">PF No. <span class="text-danger">*</span></label>
-													<select class="select">
-														<option>Select PF contribution</option>
-														<option>Yes</option>
-														<option>No</option>
+											<div class="col-sm-3"> 
+												<div class="form-group form-focus select-focus">
+													<select name="searchYear" class="select floating"> 
+														<option value="">-</option>	
+														<option>2022</option>								
+														<option>2021</option>
+														<option>2020</option>
+														<option>2019</option>
+														<option>2018</option>
+														<option>2017</option>
 													</select>
+													<label class="focus-label">Select Year</label>
+												</div>
+											</div>
+											<div class="col-sm-3">  
+												<input type="submit" name="btnAttendanceSearch" class="btn btn-success btn-block" value="Submit">  
+											</div>			
+											</form>     
+										</div>								
+										<!-- /Search Filter -->
+
+										<!--Attendance Table-->
+										<div class="row">
+											<div class="col-lg-12">
+												<div class="table-responsive">
+													<table class="table-attendance table table-striped custom-table mb-0">
+														<thead>
+															<tr>
+																
+																<th>Employee ID</th>
+																<th>Employee Name</th>
+																<th>Date</th>
+																<th>Punch In</th>
+																<th>Punch Out</th>
+																<th>Total Hours</th>
+																<th>Status</th>
+																{% comment %} <th>Overtime</th> {% endcomment %}
+															</tr>
+														</thead>
+														<tbody>
+									
+															{% for employee in empl %}																		
+																{% for attendance in empatt %}
+												
+																{% if employee.employee_id == attendance.employee_id_id and employee.employee_id == id %}				
+																
+																
+																<tr>
+																	<td>{{employee.employee_id}}</td>
+																	<td>{{employee.firstname}} {{employee.lastname}}</td>
+																	<td>{{attendance.todaydate|date:"M d,Y"}}</td>
+																	<td><p style="display:inline" >{{attendance.timein|time:"h:i A"}} </p>
+																		<p style="display:inline; visibility:hidden" class="empTimeIn-{{ forloop.counter }}">{{attendance.timein|time:"H:i"}}</p>
+																	</td>
+																	<td><p style="display:inline">{{attendance.timeout|time:"h:i A"}}</p>
+																		<p style="display:inline; visibility:hidden" class="empTimeOut-{{ forloop.counter }}">{{attendance.timeout|time:"H:i"}}</p></td>
+																	<td><p id="totalHr" style="display:inline" class="total-hr-{{ forloop.counter }}"></p></td>
+																	<td>
+																		{% if attendance.timein > employee.sched_start %}
+																			<p style="display:inline; padding:2px 10px; border-radius:50px" class="btn-danger empLate-{{ forloop.counter }}">Late</p>
+																		{% else %} 
+																			<p style="display:inline; padding:2px 10px; border-radius:50px"  class="btn-success">On Time</p>
+																		{% endif %}
+																	</td>
+																	
+																</tr>											
+															{% endif %}										
+															{% endfor %}
+															{% comment %} {% endif %} {% endcomment %}
+														
+															{% endfor %}									
+														</tbody>
+													</table>
 												</div>
 											</div>
 										</div>
-										<div class="row">
-											<div class="col-sm-4">
-												<div class="form-group">
-													<label class="col-form-label">Employee PF rate</label>
-													<select class="select">
-														<option>Select PF contribution</option>
-														<option>Yes</option>
-														<option>No</option>
-													</select>
-												</div>
-											</div>
-											<div class="col-sm-4">
-												<div class="form-group">
-													<label class="col-form-label">Additional rate <span class="text-danger">*</span></label>
-													<select class="select">
-														<option>Select additional rate</option>
-														<option>0%</option>
-														<option>1%</option>
-														<option>2%</option>
-														<option>3%</option>
-														<option>4%</option>
-														<option>5%</option>
-														<option>6%</option>
-														<option>7%</option>
-														<option>8%</option>
-														<option>9%</option>
-														<option>10%</option>
-													</select>
-												</div>
-											</div>
-											<div class="col-sm-4">
-												<div class="form-group">
-													<label class="col-form-label">Total rate</label>
-													<input type="text" class="form-control" placeholder="N/A" value="11%">
-												</div>
-											</div>
-									    </div>
-										<div class="row">
-											<div class="col-sm-4">
-												<div class="form-group">
-													<label class="col-form-label">Employee PF rate</label>
-													<select class="select">
-														<option>Select PF contribution</option>
-														<option>Yes</option>
-														<option>No</option>
-													</select>
-												</div>
-											</div>
-											<div class="col-sm-4">
-												<div class="form-group">
-													<label class="col-form-label">Additional rate <span class="text-danger">*</span></label>
-													<select class="select">
-														<option>Select additional rate</option>
-														<option>0%</option>
-														<option>1%</option>
-														<option>2%</option>
-														<option>3%</option>
-														<option>4%</option>
-														<option>5%</option>
-														<option>6%</option>
-														<option>7%</option>
-														<option>8%</option>
-														<option>9%</option>
-														<option>10%</option>
-													</select>
-												</div>
-											</div>
-											<div class="col-sm-4">
-												<div class="form-group">
-													<label class="col-form-label">Total rate</label>
-													<input type="text" class="form-control" placeholder="N/A" value="11%">
-												</div>
-											</div>
-										</div>
-										
-										<hr>
-										<h3 class="card-title"> ESI Information</h3>
-										<div class="row">
-											<div class="col-sm-4">
-												<div class="form-group">
-													<label class="col-form-label">ESI contribution</label>
-													<select class="select">
-														<option>Select ESI contribution</option>
-														<option>Yes</option>
-														<option>No</option>
-													</select>
-												</div>
-											</div>
-											<div class="col-sm-4">
-												<div class="form-group">
-													<label class="col-form-label">ESI No. <span class="text-danger">*</span></label>
-													<select class="select">
-														<option>Select ESI contribution</option>
-														<option>Yes</option>
-														<option>No</option>
-													</select>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-sm-4">
-												<div class="form-group">
-													<label class="col-form-label">Employee ESI rate</label>
-													<select class="select">
-														<option>Select ESI contribution</option>
-														<option>Yes</option>
-														<option>No</option>
-													</select>
-												</div>
-											</div>
-											<div class="col-sm-4">
-												<div class="form-group">
-													<label class="col-form-label">Additional rate <span class="text-danger">*</span></label>
-													<select class="select">
-														<option>Select additional rate</option>
-														<option>0%</option>
-														<option>1%</option>
-														<option>2%</option>
-														<option>3%</option>
-														<option>4%</option>
-														<option>5%</option>
-														<option>6%</option>
-														<option>7%</option>
-														<option>8%</option>
-														<option>9%</option>
-														<option>10%</option>
-													</select>
-												</div>
-											</div>
-											<div class="col-sm-4">
-												<div class="form-group">
-													<label class="col-form-label">Total rate</label>
-													<input type="text" class="form-control" placeholder="N/A" value="11%">
-												</div>
-											</div>
-									    </div>
-										
-										<div class="submit-section">
-											<button class="btn btn-primary submit-btn" type="submit">Save</button>
-										</div>
-									</form>
-								</div>
+								<!-- /Attendace Table-->
+								
 							</div>
 						</div>
-						<!-- /Bank Statutory Tab -->
-						
+						<!-- /Bank Statutory Tab -->						
 					</div>
                 </div>
 				<!-- /Page Content -->
@@ -1513,6 +1458,78 @@
 		<script src="{% static '/admin/assets/js/app.js' %}"></script>
 
 		<script>
+			var totalRow = $('table.table-attendance tr:last').index() + 1;
+				var officialTimeIn = "08:00	".split(':');
+
+				for(let i = 1; i <= totalRow; i++){
+					var timeIn = $('p.empTimeIn-'+i).text().split(':');
+					var timeOut = $('p.empTimeOut-'+i).text().split(':');
+					
+
+				console.log(timeIn);
+				console.log(timeOut);
+				console.log(officialTimeIn);
+				
+					
+					//timeIn = timeIn.replace(/:/g, "");
+					//timeOut = timeOut.replace(/:/g, "");
+					var totalMin = timeOut-timeIn;
+					var totalMinLate = timeIn - 0800; 
+					var totalHr = totalMin/60;
+					var totalLateHr = totalMinLate/60;
+					//alert(totalMin);
+				//	$('.total-min-'+i).text(roundOff(totalMin));
+				//	$('.total-hr-'+i).text(roundOff(totalHr));
+				//	$('.empLate-'+i).text(roundOff(timeIn));
+					var hours1 = parseInt(timeIn[0], 10), 
+						hours2 = parseInt(timeOut[0], 10),
+						hours3 = parseInt(officialTimeIn[0], 10),
+						mins1 = parseInt(timeIn[1], 10),
+						mins2 = parseInt(timeOut[1], 10);
+						mins3 = parseInt(officialTimeIn[1], 10);
+
+					var hours = hours2 - hours1, mins = 0;
+                    var LateHours = hours1 - hours3, LateMins = 0;
+
+					//if(hours <= 0) hours = 24 + hours;
+					if(mins2 >= mins1) {
+						mins = mins2 - mins1;
+					}
+					else {
+						mins = (mins2 + 60) - mins1;
+						hours--;
+					}
+
+					//if(LateHours <= 0) LateHours = 24 + LateHours;
+					if(mins1 >= mins3) {
+						LateMins = mins1 - mins3;
+					} 
+
+					else {
+						LateMins = (mins1 + 60) - mins3;
+						LateHours--;
+					}
+
+					LateMins = LateMins / 60; // take percentage in 60
+					LateHours += LateMins;
+					LateHours = LateHours.toFixed(2);
+					totalLateMinutes = LateHours * 60;
+
+
+					mins = mins / 60; // take percentage in 60
+					hours += mins;
+					hours = hours.toFixed(2);
+					totalMinutes = hours * 60;
+
+
+					$('.total-hr-'+i).text(hours);
+					$('.total-min-'+i).text(Math.round(totalMinutes));
+					$('.empLate-'+i).text( Math.round(totalLateMinutes) + " Minutes Late");
+
+					
+				}				
+			
+
 			$('.datetimepicker').datetimepicker({
 				format: 'YYYY-MM-DD'
 			});
