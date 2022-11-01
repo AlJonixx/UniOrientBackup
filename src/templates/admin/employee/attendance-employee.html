@@ -451,10 +451,17 @@
 					$('.total-min-'+i).text(Math.round(totalMinutes));
 					$('.empLate-'+i).text( Math.round(totalLateMinutes) + " Minutes Late");
 
+					let totalhr = $('.total-hr-'+i).text();
+					if (totalhr == "NaN"){
+						$('.total-hr-'+i).text("0.00");
+					}
 					
 				}
 				
 			});
+
+			
+					
 
 			$('.datetimepicker').datetimepicker({
 				format: 'YYYY-MM-DD'
