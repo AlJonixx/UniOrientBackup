@@ -764,7 +764,7 @@
 										<div class="row">
 											<div class="col-lg-12">
 												<div class="table-responsive">
-													<table class="table-attendance table table-striped custom-table mb-0">
+													<table class="profile-table-attendance table table-striped custom-table mb-0">
 														<thead>
 															<tr>
 																<th colspan=7 style="text-align:center; border-bottom:none; border-top:none; font-size: 22px; background: #14007d; color: #FFF;">Uni Orient Travel, Inc. Cebu Attendance</th>
@@ -782,37 +782,37 @@
 															</tr>
 														</thead>
 														<tbody>
-									
-															{% for employee in empl %}																		
-																{% for attendance in empatt %}
-												
-																{% if employee.employee_id == attendance.employee_id_id and employee.employee_id == id %}				
-																
-																
+															
+														{% for emp in empfil %}
+															{% for att in attid %}
+															
+																	<p>{{emp.firstname}} - {{att.employee_id_id}} -  empTimeIn-{{ forloop.counter }}</p>
+
+																		
 																<tr>
-																	<td>{{employee.employee_id}}</td>
-																	<td>{{employee.firstname}} {{employee.lastname}}</td>
-																	<td>{{attendance.todaydate|date:"M d,Y"}}</td>
-																	<td><p style="display:inline" >{{attendance.timein|time:"h:i A"}} </p>
-																		<p style="display:inline; visibility:hidden" class="empTimeIn-{{ forloop.counter }}">{{attendance.timein|time:"H:i"}}</p>
+																	<td>{{emp.employee_id}}</td>
+																	<td>{{emp.firstname}} {{emp.lastname}}</td>
+																	<td>{{att.todaydate|date:"M d,Y"}}</td>
+																	<td><p style="display:inline" >{{att.timein|time:"h:i A"}} </p>
+																		<p style="display:inline; visibility:hidden" class="empTimeIn-{{ forloop.counter }}">{{att.timein|time:"H:i"}}</p>
 																	</td>
-																	<td><p style="display:inline">{{attendance.timeout|time:"h:i A"}}</p>
-																		<p style="display:inline; visibility:hidden" class="empTimeOut-{{ forloop.counter }}">{{attendance.timeout|time:"H:i"}}</p></td>
+																	<td><p class="empPunchOut-{{ forloop.counter }}" style="display:inline">{{att.timeout|time:"h:i A"}}</p>
+																		<p style="display:inline; visibility:hidden" class="empTimeOut-{{ forloop.counter }}">{{att.timeout|time:"H:i"}}</p></td>
 																	<td><p id="totalHr" style="display:inline" class="total-hr-{{ forloop.counter }}"></p></td>
 																	<td>
-																		{% if attendance.timein > employee.sched_start %}
+																		{% if att.timein > emp.sched_start %}
 																			<p style="display:inline; padding:2px 10px; border-radius:50px" class="btn-danger empLate-{{ forloop.counter }}">Late</p>
 																		{% else %} 
 																			<p style="display:inline; padding:2px 10px; border-radius:50px"  class="btn-success">On Time</p>
 																		{% endif %}
 																	</td>
 																	
-																</tr>											
-															{% endif %}										
+																</tr>			
+															
 															{% endfor %}
-															{% comment %} {% endif %} {% endcomment %}
-														
-															{% endfor %}									
+														{% endfor %}
+													
+																						
 														</tbody>
 													</table>
 												</div>
@@ -1462,80 +1462,85 @@
 		<script src="{% static '/admin/assets/js/app.js' %}"></script>
 
 		<script>
-			var totalRow = $('table.table-attendance tr:last').index() + 1;
+				$( document ).ready(function() {
+				//Attendance  Table
+				var totalRow = $('table.profile-table-attendance tr:last').index() + 1;
 				var officialTimeIn = "08:00	".split(':');
+				let defaultTimeOut = "00:00";
+				
+			
 
 				for(let i = 1; i <= totalRow; i++){
 					var timeIn = $('p.empTimeIn-'+i).text().split(':');
 					var timeOut = $('p.empTimeOut-'+i).text().split(':');
 					
+					if(timeOut != ""){
+						console.log(timeIn);
+						console.log(timeOut);
+						console.log(officialTimeIn);
+						
+							
+							//timeIn = timeIn.replace(/:/g, "");
+							//timeOut = timeOut.replace(/:/g, "");
+							var totalMin = timeOut-timeIn;
+							var totalMinLate = timeIn - 0800; 
+							var totalHr = totalMin/60;
+							var totalLateHr = totalMinLate/60;
+							//alert(totalMin);
+						//	$('.total-min-'+i).text(roundOff(totalMin));
+						//	$('.total-hr-'+i).text(roundOff(totalHr));
+						//	$('.empLate-'+i).text(roundOff(timeIn));
+							var hours1 = parseInt(timeIn[0], 10), 
+								hours2 = parseInt(timeOut[0], 10),
+								hours3 = parseInt(officialTimeIn[0], 10),
+								mins1 = parseInt(timeIn[1], 10),
+								mins2 = parseInt(timeOut[1], 10);
+								mins3 = parseInt(officialTimeIn[1], 10);
 
-				console.log(timeIn);
-				console.log(timeOut);
-				console.log(officialTimeIn);
-				
+							var hours = hours2 - hours1, mins = 0;
+							var LateHours = hours1 - hours3, LateMins = 0;
+
+							//if(hours <= 0) hours = 24 + hours;
+							if(mins2 >= mins1) {
+								mins = mins2 - mins1;
+							}
+							else {
+								mins = (mins2 + 60) - mins1;
+								hours--;
+							}
+
+							//if(LateHours <= 0) LateHours = 24 + LateHours;
+							if(mins1 >= mins3) {
+								LateMins = mins1 - mins3;
+							} 
+
+							else {
+								LateMins = (mins1 + 60) - mins3;
+								LateHours--;
+							}
+
+							LateMins = LateMins / 60; // take percentage in 60
+							LateHours += LateMins;
+							LateHours = LateHours.toFixed(2);
+							totalLateMinutes = LateHours * 60;
+
+
+							mins = mins / 60; // take percentage in 60
+							hours += mins;
+							hours = hours.toFixed(2);
+							totalMinutes = hours * 60;
+
+
+							$('.total-hr-'+i).text(hours);
+							$('.total-min-'+i).text(Math.round(totalMinutes));
+							$('.empLate-'+i).text( Math.round(totalLateMinutes) + " Minutes Late");
+					} else {
+						$('p.empPunchOut-'+i).text("Not Timed In");
+						$('.total-hr-'+i).text("0.00");
+					}
 					
-					//timeIn = timeIn.replace(/:/g, "");
-					//timeOut = timeOut.replace(/:/g, "");
-					var totalMin = timeOut-timeIn;
-					var totalMinLate = timeIn - 0800; 
-					var totalHr = totalMin/60;
-					var totalLateHr = totalMinLate/60;
-					//alert(totalMin);
-				//	$('.total-min-'+i).text(roundOff(totalMin));
-				//	$('.total-hr-'+i).text(roundOff(totalHr));
-				//	$('.empLate-'+i).text(roundOff(timeIn));
-					var hours1 = parseInt(timeIn[0], 10), 
-						hours2 = parseInt(timeOut[0], 10),
-						hours3 = parseInt(officialTimeIn[0], 10),
-						mins1 = parseInt(timeIn[1], 10),
-						mins2 = parseInt(timeOut[1], 10);
-						mins3 = parseInt(officialTimeIn[1], 10);
-
-					var hours = hours2 - hours1, mins = 0;
-                    var LateHours = hours1 - hours3, LateMins = 0;
-
-					//if(hours <= 0) hours = 24 + hours;
-					if(mins2 >= mins1) {
-						mins = mins2 - mins1;
-					}
-					else {
-						mins = (mins2 + 60) - mins1;
-						hours--;
-					}
-
-					//if(LateHours <= 0) LateHours = 24 + LateHours;
-					if(mins1 >= mins3) {
-						LateMins = mins1 - mins3;
-					} 
-
-					else {
-						LateMins = (mins1 + 60) - mins3;
-						LateHours--;
-					}
-
-					LateMins = LateMins / 60; // take percentage in 60
-					LateHours += LateMins;
-					LateHours = LateHours.toFixed(2);
-					totalLateMinutes = LateHours * 60;
-
-
-					mins = mins / 60; // take percentage in 60
-					hours += mins;
-					hours = hours.toFixed(2);
-					totalMinutes = hours * 60;
-
-
-					$('.total-hr-'+i).text(hours);
-					$('.total-min-'+i).text(Math.round(totalMinutes));
-					$('.empLate-'+i).text( Math.round(totalLateMinutes) + " Minutes Late");
-
-					let totalhr = $('.total-hr-'+i).text();
-						if (totalhr == "NaN"){
-							$('.total-hr-'+i).text("0.00");
-						}
-				}				
-			
+				}
+			});
 
 			$('.datetimepicker').datetimepicker({
 				format: 'YYYY-MM-DD'

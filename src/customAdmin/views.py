@@ -1,4 +1,5 @@
 from datetime import datetime
+from xml.sax.xmlreader import AttributesNSImpl
 from django import forms
 from django.contrib import messages
 from django.shortcuts import redirect, render
@@ -197,7 +198,8 @@ class all_employee_screen_view(LoginRequiredMixin, View):
                 form = Employee(employee_id=empid, firstname=firstName, lastname=lastName, username=userName, email=emailPost,
                                 phone=phonePost, designation_name_id=designationPost, gender=gender, address=address, sched_start=default_schedStart, sched_end=default_schedEnd)
                 form.save()
-                formEme = PrimaryEmergencyContacts(employee_id_id=empid, name=EmeName, relationship=EmeRela, phone=EmePhone)
+                formEme = PrimaryEmergencyContacts(
+                    employee_id_id=empid, name=EmeName, relationship=EmeRela, phone=EmePhone)
                 formEme.save()
                 messages.success(request, "Employee successfully Added!")
                 return redirect('all-employee')
@@ -335,6 +337,10 @@ class profile_screen_view(LoginRequiredMixin, View):
         department = Department.objects.all()
         designation = Designation.objects.all()
         emergency = PrimaryEmergencyContacts.objects.all()
+        attendanceFilter = EmployeeAttendance.objects.filter(
+            employee_id_id=id)
+        employeeFilter = Employee.objects.filter(
+            employee_id=id)
 
         if 'btnAttendanceSearch' in request.GET:
             searchDate = request.GET['selectDate']
@@ -357,8 +363,9 @@ class profile_screen_view(LoginRequiredMixin, View):
                     todaydate__year__gte=searchYear, todaydate__month__gte=searchMonth, todaydate__year__lte=searchYear, todaydate__month__lte=searchMonth)
 
         else:
+
             employee = Employee.objects.all()
-            # empatt = EmployeeAttendance.objects.all()
+            #empatt = EmployeeAttendance.objects.all()
             today = datetime.today()
             date = EmployeeAttendance.objects.filter(todaydate=today)
             totalMin = EmployeeAttendance.objects.values('timein')
@@ -370,6 +377,11 @@ class profile_screen_view(LoginRequiredMixin, View):
             'empl': employee,
             'eme': emergency,
             'empatt': date,
+            'attid': attendanceFilter,
+            'empfil': employeeFilter,
+
+
+
         }
         return render(request, 'admin/employee/profile.html', context)
 
@@ -392,7 +404,7 @@ class profile_screen_view(LoginRequiredMixin, View):
                 country = request.POST.get("country")
 
                 Employee.objects.filter(employee_id=id).update(firstname=fname, lastname=lname, phone=phoneProf,
-                                                      designation_name_id=designationProf, gender=gender, address=address, state=state, country=country, birthDate=birthD)
+                                                               designation_name_id=designationProf, gender=gender, address=address, state=state, country=country, birthDate=birthD)
                 messages.success(request, "Profile successfully Updated!")
                 return redirect('profile', id)
 
@@ -404,8 +416,10 @@ class profile_screen_view(LoginRequiredMixin, View):
                 MStatus = request.POST.get("MaritalStatus")
                 child = request.POST.get("Children")
 
-                Employee.objects.filter(employee_id=id).update(passNo=passNum, passExp=passExpiry, nationality=Nationality, religion=Religion, maritalStatus=MStatus, children=child)
-                messages.success(request, "Personal Information successfully Updated!")
+                Employee.objects.filter(employee_id=id).update(passNo=passNum, passExp=passExpiry,
+                                                               nationality=Nationality, religion=Religion, maritalStatus=MStatus, children=child)
+                messages.success(
+                    request, "Personal Information successfully Updated!")
                 return redirect('profile', id)
 
             if 'btnEditEmergency' in request.POST:
@@ -413,15 +427,20 @@ class profile_screen_view(LoginRequiredMixin, View):
                 relation = request.POST.get("Relationship")
                 Phone = request.POST.get("Phone")
 
-                if PrimaryEmergencyContacts.objects.filter(employee_id_id = id).exists():
-                    PrimaryEmergencyContacts.objects.filter(employee_id_id = id).update(name=Name, relationship=relation, phone=Phone)
-                    messages.success(request, "Personal Information successfully Updated!")
+                if PrimaryEmergencyContacts.objects.filter(employee_id_id=id).exists():
+                    PrimaryEmergencyContacts.objects.filter(employee_id_id=id).update(
+                        name=Name, relationship=relation, phone=Phone)
+                    messages.success(
+                        request, "Personal Information successfully Updated!")
                     return redirect('profile', id)
                 else:
-                    form = PrimaryEmergencyContacts(employee_id_id = id, name=Name, relationship=relation, phone=Phone)
+                    form = PrimaryEmergencyContacts(
+                        employee_id_id=id, name=Name, relationship=relation, phone=Phone)
                     form.save()
-                    messages.success(request, "Personal Information successfully Updated!")
+                    messages.success(
+                        request, "Personal Information successfully Updated!")
                     return redirect('profile', id)
+
 
 def holidays_screen_view(request):
     return render(request, 'admin/employee/holidays.html')
