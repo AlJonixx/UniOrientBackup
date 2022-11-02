@@ -546,12 +546,12 @@
     </script>
 
 	<script type="text/javascript">
-		 $(document).ready(function () {
+		$(document).ready(function () {
 
-			  $("#saveBtn").on('click', function () {
-                html2canvas(document.getElementById("id-card-holder")).then(function (canvas) {                   
-                   var anchorTag = document.createElement("a");
-				   var qrLastname = $("#lastname_text").val();
+			$("#saveBtn").on('click', function () {
+            	html2canvas(document.getElementById("id-card-holder")).then(function (canvas) {                   
+                  	var anchorTag = document.createElement("a");
+				   	var qrLastname = $("#lastname_text").val();
                     document.body.appendChild(anchorTag);
                     //document.getElementById("previewImg").appendChild(canvas);
                     anchorTag.download = ""+qrLastname+".jpg";
@@ -560,7 +560,13 @@
                     anchorTag.click();
                 });
     		});
- 
+			
+			//Button SearchButton
+			//$('.searchButton').attr('disabled',true);
+
+			//	$('.input').on('change', function () {
+			//		$('.searchButton').prop('disabled', !$(this).val());
+			//	}).trigger('change');
 
         });
 	</script>
@@ -580,6 +586,7 @@
 			phone_input.setCustomValidity('Enter phone number in this format: 1234-567-7890');
 		}
 		});
+
 
 
 	</script>

@@ -754,7 +754,7 @@
 												</div>
 											</div>
 											<div class="col-sm-3">  
-												<input type="submit" name="btnAttendanceSearch" class="btn btn-success btn-block searchButton" value="Submit">  
+												<input type="submit" name="btnAttendanceSearch" class="btn btn-success btn-block submitButton" value="Submit">  
 											</div>			
 											</form>     
 										</div>								
@@ -1542,10 +1542,10 @@
 				}
 
 				//Button submit disable
-				$('.searchButton').attr('disabled',true);
+				$('.submitButton').attr('disabled',true);
 
 				$('.input').on('change', function () {
-					$('.searchButton').prop('disabled', !$(this).val());
+					$('.submitButton').prop('disabled', !$(this).val());
 				}).trigger('change');
 			});
 
