@@ -783,11 +783,11 @@
 														</thead>
 														<tbody>
 															
-														{% for emp in empfil %}
+														{% for emp in empl %}
 															{% for att in attid %}
 															
 																	{% comment %} <p>{{emp.firstname}} - {{att.employee_id_id}} -  empTimeIn-{{ forloop.counter }}</p> {% endcomment %}
-
+																	{%if emp.employee_id == att.employee_id_id and att.employee_id_id == id%}
 																		
 																<tr>
 																	<td>{{emp.employee_id}}</td>
@@ -808,8 +808,9 @@
 																	</td>
 																	
 																</tr>			
-															
+																{% endif %}
 															{% endfor %}
+															
 														{% endfor %}
 													
 																						

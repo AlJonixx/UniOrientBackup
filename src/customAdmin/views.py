@@ -339,8 +339,8 @@ class profile_screen_view(LoginRequiredMixin, View):
         emergency = PrimaryEmergencyContacts.objects.all()
         attendanceFilter = EmployeeAttendance.objects.filter(
             employee_id_id=id)
-        employeeFilter = Employee.objects.filter(
-            employee_id=id)
+        # employeeFilter = Employee.objects.filter(
+        #     employee_id=id)
 
         if 'btnAttendanceSearch' in request.GET:
             searchDate = request.GET['selectDate']
@@ -348,26 +348,33 @@ class profile_screen_view(LoginRequiredMixin, View):
             searchMonth = request.GET['searchMonth']
             employee = Employee.objects.all()
             if searchDate != '':
-                date = EmployeeAttendance.objects.filter(todaydate=searchDate)
+                #date = EmployeeAttendance.objects.filter(todaydate=searchDate)
+                attendanceFilter = EmployeeAttendance.objects.filter(employee_id_id=id, todaydate=searchDate)
 
             elif searchYear != '':
-                date = EmployeeAttendance.objects.filter(
-                    todaydate__year__gte=searchYear, todaydate__year__lte=searchYear)
+                #date = EmployeeAttendance.objects.filter(
+                    #todaydate__year__gte=searchYear, todaydate__year__lte=searchYear)
+                attendanceFilter = EmployeeAttendance.objects.filter(
+                    employee_id_id=id, todaydate__year__gte=searchYear, todaydate__year__lte=searchYear)
 
             elif searchMonth != '':
-                date = EmployeeAttendance.objects.filter(
-                    todaydate__month__gte=searchMonth, todaydate__month__lte=searchMonth)
+                # date = EmployeeAttendance.objects.filter(
+                #     todaydate__month__gte=searchMonth, todaydate__month__lte=searchMonth)
+                attendanceFilter = EmployeeAttendance.objects.filter(
+                    employee_id_id=id, todaydate__month__gte=searchMonth, todaydate__month__lte=searchMonth)
 
             elif searchYear and searchMonth != '':
-                date = EmployeeAttendance.objects.filter(
-                    todaydate__year__gte=searchYear, todaydate__month__gte=searchMonth, todaydate__year__lte=searchYear, todaydate__month__lte=searchMonth)
+                # date = EmployeeAttendance.objects.filter(
+                #     todaydate__year__gte=searchYear, todaydate__month__gte=searchMonth, todaydate__year__lte=searchYear, todaydate__month__lte=searchMonth)
+                attendanceFilter = EmployeeAttendance.objects.filter(
+                    employee_id_id=id, todaydate__year__gte=searchYear, todaydate__month__gte=searchMonth, todaydate__year__lte=searchYear, todaydate__month__lte=searchMonth)
 
         else:
 
             employee = Employee.objects.all()
             #empatt = EmployeeAttendance.objects.all()
             today = datetime.today()
-            date = EmployeeAttendance.objects.filter(todaydate=today)
+            attendanceFilter = EmployeeAttendance.objects.filter(todaydate=today)
             totalMin = EmployeeAttendance.objects.values('timein')
 
         context = {
@@ -376,9 +383,9 @@ class profile_screen_view(LoginRequiredMixin, View):
             'desig': designation,
             'empl': employee,
             'eme': emergency,
-            'empatt': date,
+            # 'empatt': date,
             'attid': attendanceFilter,
-            'empfil': employeeFilter,
+            # 'empfil': employeeFilter,
 
 
 
