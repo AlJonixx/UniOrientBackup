@@ -487,6 +487,10 @@ class attendance_employee_screen_view(LoginRequiredMixin, View):
                 date = EmployeeAttendance.objects.filter(
                     todaydate__year__gte=searchYear, todaydate__month__gte=searchMonth, todaydate__year__lte=searchYear, todaydate__month__lte=searchMonth)
 
+            else:
+                today = datetime.today()
+                date = EmployeeAttendance.objects.filter(todaydate=today)
+
         else:
             emp = Employee.objects.all()
             # empatt = EmployeeAttendance.objects.all()

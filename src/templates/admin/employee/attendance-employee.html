@@ -159,14 +159,14 @@
 						{% csrf_token %}
 							<div class="form-group form-focus">
 								<div class="cal-icon">
-									<input type="text" name="selectDate" class="form-control floating datetimepicker">
+									<input type="text" name="selectDate" class="form-control floating datetimepicker input">
 								</div>
 								<label class="focus-label">Date</label>
 							</div>
 						</div>
 						<div class="col-sm-3"> 
 							<div class="form-group form-focus select-focus">
-								<select name="searchMonth" class="select floating"> 
+								<select name="searchMonth" class="select floating input"> 
 									<option value="">-</option>
 									<option value="1">Jan</option>
 									<option value="2">Feb</option>
@@ -186,7 +186,7 @@
 						</div>
 						<div class="col-sm-3"> 
 							<div class="form-group form-focus select-focus">
-								<select name="searchYear" class="select floating"> 
+								<select name="searchYear" class="select floating input"> 
 									<option value="">-</option>	
 									<option>2022</option>								
 									<option>2021</option>
@@ -199,7 +199,7 @@
 							</div>
 						</div>
 						<div class="col-sm-3">  
-							<input type="submit" name="btnAttendanceSearch" class="btn btn-success btn-block" value="Submit">  
+							<input type="submit" name="btnAttendanceSearch" class="btn btn-success btn-block submitButton" value="Submit">  
 						</div>				
 
 						</form>     
@@ -482,6 +482,13 @@
 					}
 					
 				}
+
+				//Button Submit Disable
+				$('.submitButton').attr('disabled',true);
+
+				$('.input').on('change', function () {
+					$('.submitButton').prop('disabled', !$(this).val());
+				}).trigger('change');
 				
 			});
 
