@@ -760,7 +760,11 @@
 										</div>								
 										<!-- /Search Filter -->
 
+										<button style="margin:20px 0;" id="btnExport" class="btn btn-success"> Export Excel</button>
+										<button style="margin:20px 0;" id="btnExportCSV" class="btn btn-info"> Export CSV</button>
+										<button style="margin:20px 0;" id="btnExportPDF" class="btn btn-danger"> Export PDF</button>
 										<!--Attendance Table-->
+
 										<div class="row">
 											<div class="col-lg-12">
 												<div class="table-responsive">
@@ -801,9 +805,9 @@
 																	<td><p id="totalHr" style="display:inline" class="total-hr-{{ forloop.counter }}"></p></td>
 																	<td>
 																		{% if att.timein > emp.sched_start %}
-																			<p style="display:inline; padding:2px 10px; border-radius:50px" class="btn-danger empLate-{{ forloop.counter }}">Late</p>
+																			<p style="display:inline; padding:2px 10px; border-radius:15px" class="btn-danger empLate-{{ forloop.counter }}">Late</p>
 																		{% else %} 
-																			<p style="display:inline; padding:2px 10px; border-radius:50px"  class="btn-success">On Time</p>
+																			<p style="display:inline; padding:2px 10px; border-radius:15px"  class="btn-success">On Time</p>
 																		{% endif %}
 																	</td>
 																	
@@ -1462,8 +1466,83 @@
 		<!-- Custom JS -->
 		<script src="{% static '/admin/assets/js/app.js' %}"></script>
 
+		<!-- EXport tables JS -->
+		<script src="{% static '/admin/assets/js/jquery.table2excel.js' %}"></script>
+
+		<script src="{% static '/admin/assets/js/tableHTMLExport.js' %}"></script>
+
+		<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
 		<script>
 				$( document ).ready(function() {
+				//Export Excel Table
+				
+				$("#btnExport").click(function(){
+						$(".profile-table-attendance").table2excel({
+						exclude:".noExl",
+						name:"Worksheet Name",
+						filename:"UniOrient-Attendance",//do not include extension
+						fileext:".xlsx" // file extension
+					});
+				});
+				
+				$("#btnExportCSV").click(function(){
+					
+					$(".profile-table-attendance").tableHTMLExport({
+
+						// csv, txt, json, pdf
+						type:'csv',
+
+						// default file name
+						filename: 'UniOrient-Attendance.csv',
+
+						// for csv
+						separator: ',',
+						newline: '\r\n',
+						trimContent: true,
+						quoteFields: true,
+
+						// CSS selector(s)
+						ignoreColumns: '',
+						ignoreRows: '',
+										
+						// your html table has html content?
+						htmlContent: false,
+						
+						// debug
+						consoleLog: false,  
+											
+					});
+				});
+
+
+				//document.querySelector('#btnExportPDF').addEventListener('click', downloadPDFWithjsPDF);
+				function Export() {
+							html2canvas(document.querySelector(".profile-table-attendance"), {
+								onrendered: function (canvas) {
+									var data = canvas.toDataURL();
+									var docDefinition = {
+										content: [{
+											image: data,
+											width: 700
+										}],
+										 pageSize: 'LETTER',
+               							 pageOrientation: 'landscape',
+										left: 60, // the left position
+										right: 60, // the right position
+										verticalRatio: 0.2, // the ratio of space used vertically in this document (excluding margins)
+										horizontalRatio: 0.0
+									};
+									pdfMake.createPdf(docDefinition).download("Uni-Orient-Travel-Report.pdf");
+								}
+							});
+						}
+						document.querySelector('#btnExportPDF').addEventListener('click', Export);
+
+
+				
 				//Attendance  Table
 				var totalRow = $('table.profile-table-attendance tr:last').index() + 1;
 				var officialTimeIn = "08:00	".split(':');

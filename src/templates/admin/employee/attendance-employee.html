@@ -303,15 +303,15 @@
 		<!-- Custom JS -->
 		<script src="{% static '/admin/assets/js/app.js' %}"></script>
 
-				<!-- Table Export -->
+		<!-- Table Export -->
 		<script src="{% static '/admin/assets/js/jquery.table2excel.js' %}"></script>
 
 		<script src="{% static '/admin/assets/js/tableHTMLExport.js' %}"></script>
 
 		<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-		<script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+			<script>
 
 			function roundOff(x) {
 			return Number.parseFloat(x).toFixed(2);
@@ -332,10 +332,7 @@
 					});
 				});
 				
-				$("#test-append").click(function(){
-						
-				});
-				
+
 				$("#btnExportCSV").click(function(){
 					
 					$(".table-attendance").tableHTMLExport({
