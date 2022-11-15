@@ -247,12 +247,13 @@
 												</td>
 												<td><p class="empPunchOut-{{ forloop.counter }}" style="display:inline">{{attendance.timeout|time:"h:i A"}}</p>
 													<p style="display:inline; visibility:hidden" class="empTimeOut-{{ forloop.counter }}">{{attendance.timeout|time:"H:i"}}</p></td>
-												<td><p id="totalHr" style="display:inline" class="total-hr-{{ forloop.counter }}"></p></td>
+												<td><p id="totalHr" style="display:inline">{{attendance.hours}}</p></td>
+												{% comment %} <td><p id="totalHr" style="display:inline" class="total-hr-{{ forloop.counter }}"></p></td> {% endcomment %}
 												<td>
 													{% if attendance.timein > employee.sched_start %}
-														<p style="display:inline; padding:2px 10px; border-radius:15px;" class="btn-danger empLate-{{ forloop.counter }}">Late</p>
+														<p style="display:inline; padding:2px 10px; border-radius:15px;" class="btn-danger">{{attendance.status}}<span  class="empLate-{{ forloop.counter }}"></span></p>  
 													{% else %} 
-														<p style="display:inline; padding:2px 10px; border-radius:15px;"  class="btn-success">On Time</p>
+														<p style="display:inline; padding:2px 10px; border-radius:15px;"  class="btn-success">{{attendance.status}}</p>
 													{% endif %}
 												</td>
 												
@@ -468,13 +469,14 @@
 							hours += mins;
 							hours = hours.toFixed(2);
 							totalMinutes = hours * 60;
+							
 
-
-							$('.total-hr-'+i).text(hours);
-							$('.total-min-'+i).text(Math.round(totalMinutes));
-							$('.empLate-'+i).text( Math.round(totalLateMinutes) + " Minutes Late");
+							//$('.total-hr-'+i).text(hours);
+							//$('.total-min-'+i).text(Math.round(totalMinutes));
+							//$('.empLate-'+i).text(" - " + Math.round(totalLateMinutes) + " Minutes Late");
 					} else {
-						$('p.empPunchOut-'+i).text("Not Timed In");
+						$('p.empPunchIn-'+i).text("Not Timed In");
+						$('p.empPunchOut-'+i).text("Not Timed Out");
 						$('.total-hr-'+i).text("0.00");
 					}
 					

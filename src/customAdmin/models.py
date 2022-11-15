@@ -91,14 +91,18 @@ class Employee(models.Model):  # Employee Model
 #         Employee, on_delete=models.CASCADE, related_name='emp_designation_name')
 
 class PrimaryEmergencyContacts(models.Model):
-    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
+    employee_id = models.ForeignKey(
+        Employee, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=150, blank=True)
     relationship = models.CharField(max_length=50, blank=True)
     phone = models.CharField(max_length=50, blank=True)
 
 
-class EmployeeAttendance(models.Model): #Employee Attendance Model
-    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
+class EmployeeAttendance(models.Model):  # Employee Attendance Model
+    employee_id = models.ForeignKey(
+        Employee, on_delete=models.CASCADE, null=True)
     todaydate = models.DateField(default=date.today)
     timein = models.TimeField(blank=True, null=True)
     timeout = models.TimeField(blank=True, null=True)
+    hours = models.CharField(max_length=150, blank=True)
+    status = models.CharField(max_length=150, blank=True)

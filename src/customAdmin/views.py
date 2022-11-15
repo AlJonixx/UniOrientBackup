@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import time
 from xml.sax.xmlreader import AttributesNSImpl
 from django import forms
 from django.contrib import messages
@@ -34,7 +35,20 @@ class attendance_screen_view(LoginRequiredMixin, View):
             if 'TimeLogin' in request.POST:
                 empId = request.POST.get("employeeID")
                 InOut = request.POST.get("LoginOptions")
-                inout = datetime.now().time()
+
+                currentDateAndTime = datetime.now()
+                currentTime = currentDateAndTime.strftime("%H:%M:%S")
+                currentEndTime = "17:00:00"
+
+                officialTimeIn = "8:00:00"
+                official_start_time = datetime.strptime(
+                    officialTimeIn, "%H:%M:%S")
+
+                inout = datetime.now()
+
+                start_time = datetime.strptime(currentTime, "%H:%M:%S")
+                end_time = datetime.strptime(currentEndTime, "%H:%M:%S")
+
                 if InOut == '1':
 
                     if EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(employee_id_id=empId).exists():
@@ -45,19 +59,64 @@ class attendance_screen_view(LoginRequiredMixin, View):
                             messages.success(request, 'Already Timed In!')
                             return redirect('attendance')
                     else:
-                        form = EmployeeAttendance(
-                            timein=inout, employee_id_id=empId)
+                        if inout > official_start_time:
+
+                            # LATE CALCULATIONS
+                            EmpofficialTimeIn = datetime.strptime(
+                                officialTimeIn, "%H:%M:%S")
+
+                            delta = start_time - EmpofficialTimeIn
+
+                            LateSec = delta.total_seconds()
+                            LateMin = LateSec / 60
+                            LateHours = LateSec / (60 * 60)
+
+                            totalSec = int(LateSec)
+
+                            TimeIntotalMin = int(LateMin)
+
+                            form = EmployeeAttendance(
+                                timein=inout, employee_id_id=empId, status="LATE - " + str(TimeIntotalMin) + " Minutes")
+                        else:
+                            form = EmployeeAttendance(
+                                timein=inout, employee_id_id=empId, status="TIME IN")
+
                         form.save()
+
                         messages.success(request, 'Timed In Successfully!')
                         return redirect('attendance')
 
                 else:
                     if EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(employee_id_id=empId).exists():
                         if EmployeeAttendance.objects.filter(timeout__isnull=True).filter(todaydate=datetime.today()):
-                            EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(
-                                employee_id_id=empId).update(timeout=inout, employee_id_id=empId)
+
+                            getTimeIn = EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(
+                                employee_id_id=empId).values_list('timein', flat=True)
+
+                            # TOTAL HOURS CALCULATIONS
+                            for a in getTimeIn:
+
+                                SubtotalTime = a.strftime(
+                                    "%H:%M:%S")
+                                totalTime = datetime.strptime(
+                                    SubtotalTime, "%H:%M:%S")
+
+                                totaldelta = start_time - totalTime
+
+                                sec = totaldelta.total_seconds()
+                                min = sec / 60
+                                hours = sec / (60 * 60)
+
+                                TimeOuttotalHour = int(hours)
+
+                                EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(
+                                    employee_id_id=empId).update(timeout=inout, employee_id_id=empId, status="TIMED OUT", hours=TimeOuttotalHour)
+
+                                print("Total Min: " + str(min))
+
                             messages.success(
                                 request, 'Timed Out Successfully!')
+
                             return redirect('attendance')
                         else:
                             messages.success(request, 'Already Timed Out!')
@@ -349,11 +408,12 @@ class profile_screen_view(LoginRequiredMixin, View):
             employee = Employee.objects.all()
             if searchDate != '':
                 #date = EmployeeAttendance.objects.filter(todaydate=searchDate)
-                attendanceFilter = EmployeeAttendance.objects.filter(employee_id_id=id, todaydate=searchDate)
+                attendanceFilter = EmployeeAttendance.objects.filter(
+                    employee_id_id=id, todaydate=searchDate)
 
             elif searchYear != '':
-                #date = EmployeeAttendance.objects.filter(
-                    #todaydate__year__gte=searchYear, todaydate__year__lte=searchYear)
+                # date = EmployeeAttendance.objects.filter(
+                # todaydate__year__gte=searchYear, todaydate__year__lte=searchYear)
                 attendanceFilter = EmployeeAttendance.objects.filter(
                     employee_id_id=id, todaydate__year__gte=searchYear, todaydate__year__lte=searchYear)
 
@@ -374,7 +434,8 @@ class profile_screen_view(LoginRequiredMixin, View):
             employee = Employee.objects.all()
             #empatt = EmployeeAttendance.objects.all()
             today = datetime.today()
-            attendanceFilter = EmployeeAttendance.objects.filter(todaydate=today)
+            attendanceFilter = EmployeeAttendance.objects.filter(
+                todaydate=today)
             totalMin = EmployeeAttendance.objects.values('timein')
 
         context = {
