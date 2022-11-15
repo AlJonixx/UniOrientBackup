@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.forms import fields, models
 from django.forms.widgets import PasswordInput
-from customAdmin.models import Department, Designation, Employee, EmployeeAttendance, NewUser, PrimaryEmergencyContacts
+from customAdmin.models import Department, Designation, Employee, EmployeeAttendance, EmployeeSalary, NewUser, PrimaryEmergencyContacts
 
 
 class AccountAuthenticationForm(forms.ModelForm):
@@ -36,13 +36,19 @@ class EmployeeForm(forms.ModelForm):  # Employee Form
         model = Employee
         fields = "__all__"
 
+
 class EmergencyContactForm(forms.ModelForm):  # Emergency Contact Form
     class Meta:
         model = PrimaryEmergencyContacts
         fields = "__all__"
+
+
+class EmployeeSalaryForm(forms.ModelForm):
+    class Meta:
+        model = EmployeeSalary
+        fields = "__all__"
+
 # class EmployeeAttendaceForm(forms.ModelForm):  # Employee Attendance Form
 #     class Meta:
 #         model = EmployeeAttendance
 #         fields = "__all__"
-    
-    

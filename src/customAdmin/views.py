@@ -1,5 +1,7 @@
 from datetime import datetime
 from datetime import time
+from datetime import date
+import calendar
 from xml.sax.xmlreader import AttributesNSImpl
 from django import forms
 from django.contrib import messages
@@ -10,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 import random
 
-from customAdmin.forms import AccountAuthenticationForm, DepartmentForm, DesignationForm, EmergencyContactForm, EmployeeForm
+from customAdmin.forms import AccountAuthenticationForm, DepartmentForm, DesignationForm, EmergencyContactForm, EmployeeForm, EmployeeSalaryForm
 from .models import *
 from django.db.models import Q
 from django.contrib.auth.hashers import make_password
@@ -234,6 +236,8 @@ class all_employee_screen_view(LoginRequiredMixin, View):
     def post(self, request):
         form = EmployeeForm(request.POST)
         formEme = PrimaryEmergencyContacts(request.POST)
+        SalaryForm = EmployeeSalaryForm(request.POST)
+
         if request.method == 'POST':
             if 'btnSubmitEmployee' in request.POST:
                 default_schedStart = datetime.now().replace(
@@ -257,9 +261,15 @@ class all_employee_screen_view(LoginRequiredMixin, View):
                 form = Employee(employee_id=empid, firstname=firstName, lastname=lastName, username=userName, email=emailPost,
                                 phone=phonePost, designation_name_id=designationPost, gender=gender, address=address, sched_start=default_schedStart, sched_end=default_schedEnd)
                 form.save()
+
                 formEme = PrimaryEmergencyContacts(
                     employee_id_id=empid, name=EmeName, relationship=EmeRela, phone=EmePhone)
                 formEme.save()
+
+                SalaryForm = EmployeeSalary(base_salary=0,
+                                            daily_rate=0, gross_salary=0, employee_id_id=empid, pag_ibig=0, philhealth=0, sss=0, net_salary=0)
+                SalaryForm.save()
+
                 messages.success(request, "Employee successfully Added!")
                 return redirect('all-employee')
 
@@ -398,8 +408,41 @@ class profile_screen_view(LoginRequiredMixin, View):
         emergency = PrimaryEmergencyContacts.objects.all()
         attendanceFilter = EmployeeAttendance.objects.filter(
             employee_id_id=id)
+
+        salaryList = EmployeeSalary.objects.filter(employee_id_id=id)
+
+        for sal in salaryList:
+            baseSalary = sal.base_salary
+            dailyRate = sal.daily_rate
+            grossSalary = sal.gross_salary
+            pagibig = sal.pag_ibig
+            philhealth = sal.philhealth
+            sss = sal.sss
+            netSalary = sal.net_salary
+
+        print(baseSalary)
+        print(dailyRate)
+        print(grossSalary)
+
         # employeeFilter = Employee.objects.filter(
         #     employee_id=id)
+
+        # CALCULATE No. Working Days
+        weekday_count = 0
+        cal = calendar.Calendar()
+
+        current_year = date.today().year
+        current_month = date.today().month
+
+        today_month = calendar.month_name[current_month]
+
+        for week in cal.monthdayscalendar(current_year, current_month):
+            for i, day in enumerate(week):
+                # not this month's day or a weekend
+                if day == 0 or i >= 5:
+                    continue
+                # or some other control if desired..
+                weekday_count += 1
 
         if 'btnAttendanceSearch' in request.GET:
             searchDate = request.GET['selectDate']
@@ -433,9 +476,10 @@ class profile_screen_view(LoginRequiredMixin, View):
 
             employee = Employee.objects.all()
             #empatt = EmployeeAttendance.objects.all()
-            today = datetime.today()
+            today = date.today().month
+
             attendanceFilter = EmployeeAttendance.objects.filter(
-                todaydate=today)
+                employee_id_id=id, todaydate__month__gte=today, todaydate__month__lte=today)
             totalMin = EmployeeAttendance.objects.values('timein')
 
         context = {
@@ -447,15 +491,43 @@ class profile_screen_view(LoginRequiredMixin, View):
             # 'empatt': date,
             'attid': attendanceFilter,
             # 'empfil': employeeFilter,
-
-
-
+            'workingDays': weekday_count,
+            'todayMonth': today_month,
+            'salary': salaryList,
+            'baseSal': baseSalary,
+            'dailyRat': dailyRate,
+            'grossSal': grossSalary,
+            'pagibig': pagibig,
+            'philhealth': philhealth,
+            'sss': sss,
+            'netSalary': netSalary
         }
+
         return render(request, 'admin/employee/profile.html', context)
 
     def post(self, request, id):
+
         form = EmergencyContactForm(request.POST)
+        SalaryForm = EmployeeSalaryForm(request.POST)
+
         if request.method == 'POST':
+
+            if 'btnSaveSalary' in request.POST:
+                salary = request.POST.get("salary_input")
+                daily = request.POST.get("daily_input")
+                gross = request.POST.get("gross_input")
+                pagibig = request.POST.get("pagibig_input")
+                philhealth = request.POST.get("philhealth_input")
+                sss = request.POST.get("sss_input")
+                netSal = request.POST.get("net_input")
+
+                EmployeeSalary.objects.filter(employee_id_id=id).update(
+                    base_salary=salary, daily_rate=daily, gross_salary=gross, pag_ibig=pagibig, philhealth=philhealth, sss=sss, net_salary=netSal)
+
+                messages.success(request, "Salary successfully Updated!")
+
+                return redirect('profile', id)
+
             if 'btnEditProfile' in request.POST:
                 fname = request.POST.get("firstname_profile")
                 lname = request.POST.get("lastname_profile")

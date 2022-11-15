@@ -241,7 +241,7 @@
 											<tr>
 												<td>{{employee.employee_id}}</td>
 												<td>{{employee.firstname}} {{employee.lastname}}</td>
-												<td>{{attendance.todaydate|date:"M d,Y"}}</td>
+												<td>{{attendance.todaydate|date:"l, M d,Y"}}</td>
 												<td><p style="display:inline" >{{attendance.timein|time:"h:i A"}} </p>
 													<p style="display:inline; visibility:hidden" class="empTimeIn-{{ forloop.counter }}">{{attendance.timein|time:"H:i"}}</p>
 												</td>

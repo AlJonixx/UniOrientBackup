@@ -106,3 +106,15 @@ class EmployeeAttendance(models.Model):  # Employee Attendance Model
     timeout = models.TimeField(blank=True, null=True)
     hours = models.CharField(max_length=150, blank=True)
     status = models.CharField(max_length=150, blank=True)
+
+
+class EmployeeSalary(models.Model):  # Employee Salary Model
+    employee_id = models.ForeignKey(
+        Employee, on_delete=models.CASCADE, null=True)
+    base_salary = models.IntegerField(blank=True, null=True)
+    daily_rate = models.IntegerField(blank=True, null=True)
+    gross_salary = models.IntegerField(blank=True, null=True)
+    sss = models.IntegerField(blank=True, null=True)
+    pag_ibig = models.IntegerField(blank=True, null=True)
+    philhealth = models.IntegerField(blank=True, null=True)
+    net_salary = models.IntegerField(blank=True, null=True)
