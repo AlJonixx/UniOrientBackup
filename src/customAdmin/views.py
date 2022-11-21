@@ -19,9 +19,9 @@ from django.contrib.auth.hashers import make_password
 
 from django.http import HttpResponse
 
+from django.views.generic import TemplateView
 
 # Create your views here.
-
 
 class attendance_screen_view(LoginRequiredMixin, View):
     login_url = 'admin-login'
@@ -150,6 +150,11 @@ def logout_screen_view(request):
     logout(request)
     return redirect('admin-login')
 
+def accoff_login_screen_view(request):
+    return render(request, 'admin/accofficerlogin.html')
+
+def choose_screen_view(request):
+    return render(request, 'admin/choose.html')
 
 # AUTHENTICATION
 
@@ -602,7 +607,6 @@ def leaves_employee_screen_view(request):
 
 def leaves_settings_screen_view(request):
     return render(request, 'admin/employee/leaves-settings.html')
-
 
 def attendance_admin_screen_view(request):
     return render(request, 'admin/employee/attendance-admin.html')

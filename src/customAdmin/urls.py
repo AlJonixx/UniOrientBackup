@@ -25,6 +25,9 @@ from customAdmin.views import (
     login_screen_view,
     logout_screen_view,
 
+    accoff_login_screen_view,
+    choose_screen_view,
+
     # Employee View
     all_employee_screen_view,
     employee_list_screen_view,
@@ -74,7 +77,10 @@ urlpatterns = [
     path('admin-dashboard', admin_screen_view.as_view(), name='admin-dashboard'),
     path('admin-login', login_screen_view, name='admin-login'),
     path('', logout_screen_view, name='admin-logout'),
-
+    
+    path('account-officer', accoff_login_screen_view, name='account-officer'),
+    path('choose', choose_screen_view, name='choose'),
+    
     # ATTENDANCE
     path('attendance', attendance_screen_view.as_view(), name='attendance'),
     # EMPLOYEES TAB

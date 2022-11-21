@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <meta name="description" content="Smarthr - Bootstrap Admin Template">
+		<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
+        <meta name="author" content="Dreamguys - Bootstrap Admin Template">
+        <meta name="robots" content="noindex, nofollow">
+        <title>Login - Uni Orient</title>
+		
+		<!-- Favicon -->
+         <link href="{% static '/home/assets/img/uni-logo-transparent.png' %}" rel="icon">
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{% static '/admin/assets/css/bootstrap.min.css' %}">
+		
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="{% static '/admin/assets/css/font-awesome.min.css' %}">
+		
+		<!-- Main CSS -->
+        <link rel="stylesheet" href="{% static '/admin/assets/css/style.css' %}">
+		
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+			<script src="assets/js/html5shiv.min.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+    </head>
+    <body class="account-page">
+	
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+			<div class="account-content">
+				<div class="container">
+				
+					<!-- Account Logo -->
+					<div class="account-logo">
+						<a href="{% url 'choose' %}"><img src="{% static '/home/assets/img/uni-logo-transparent.png' %}" alt="Logo Uni Orient"></a>
+					</div>
+					<!-- /Account Logo -->
+					
+					<div class="account-box">
+						<div class="account-wrapper">
+							<h3 class="account-title">Login</h3>
+							<p class="account-subtitle">Access to our dashboard</p>
+							<!--Message-->
+							<div>
+                    			{% for message in messages %}
+								<div class="alert alert-danger text-center" role="alert">
+									<strong>{{ message }}</strong>									
+								</div>
+                    			{% endfor %}
+                			</div>
+							<!-- Account Form -->
+							<form method="POST">
+							{% csrf_token %}
+								<div class="form-group">
+									<label>Email Address</label>
+									<input name="email" id="email" class="form-control" type="email" required="" oninvalid="this.setCustomValidity('Please Enter valid email')" oninput="setCustomValidity('')">
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<div class="col">
+											<label>Password</label>
+										</div>
+										<div class="col-auto">
+											<a class="text-muted" href="forgot-password.html">
+												Forgot password?
+											</a>
+										</div>
+									</div>
+									<input name="password" class="form-control" type="password" required="">
+								</div>
+								<div class="form-group text-center">
+									<button class="btn btn-primary account-btn" type="submit">Login</button>
+								</div>
+								<div class="account-footer">
+                                    <div class="text sign-up-text">Don't have an account? <a id="register" href="#">Register</a></p></div>
+								</div>
+							</form>
+							<!-- /Account Form -->
+							      <!--Modal register-->
+                                  <div id="register" class="modal custom-modal fade" role="dialog">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Register</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="POST">
+                                                    {% csrf_token %}
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="col-form-label">First Name <span class="text-danger">*</span></label>
+                                                                <input name="firstname_text" class="form-control" type="text">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="col-form-label">Last Name <span class="text-danger">*</span></label>
+                                                                <input name="lastname_text" class="form-control" type="text">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="col-form-label">Username <span class="text-danger">*</span></label>
+                                                                <input name="username_text" class="form-control" type="text">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                                                                <input name="email_text" class="form-control" type="email">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="col-form-label">Password <span class="text-danger">*</span></label>
+                                                                <input name="password_text" id="password" class="form-control" type="password" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="col-form-label">Confirm Password <span class="text-danger">*</span></label>
+                                                                <input name="password2_text" id="confirm-password" class="form-control" type="password" required>
+                                                            </div>
+                                                        </div> 
+                                                    
+                                                    <div class="submit-section">
+                                                        <button name="btnRegister" class="btn btn-primary submit-btn">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /Add Employee Modal -->
+						</div>
+					</div>
+				</div>
+			</div>
+        </div>
+		<!-- /Main Wrapper -->
+		
+		<!-- jQuery -->
+        <script src="{% static '/admin/assets/js/jquery-3.5.1.min.js' %}"></script>
+		
+		<!-- Bootstrap Core JS -->
+        <script src="{% static '/admin/assets/js/popper.min.js' %}"></script>
+        <script src="{% static '/admin/assets/js/bootstrap.min.js' %}"></script>
+		
+		<!-- Custom JS -->
+    	<script src="{% static '/admin/assets/js/app.js' %}"></script>
+          <!-- Vendor JS Files -->
+  <script src=" {% static '/home/assets/vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
+  <script src=" {% static '/home/assets/vendor/aos/aos.js' %}"></script>
+  <script src=" {% static '/home/assets/vendor/php-email-form/validate.js' %}"></script>
+  <script src=" {% static '/home/assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src=" {% static '/home/assets/vendor/purecounter/purecounter.js' %}"></script>
+  <script src=" {% static '/home/assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src=" {% static '/home/assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src=" {% static '/home/assets/js/main.js' %}"></script>
+  <script>
+  // Get the modal
+  var modal = document.getElementById("register");
+  
+  // Get the button that opens the modal
+  var btn = document.getElementById("myBtn");
+  
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+  
+  // When the user clicks the button, open the modal 
+  btn.onclick = function() {
+    modal.style.display = "block";
+  }
+  
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+  
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
+    </body>
+</html>
