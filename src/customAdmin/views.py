@@ -134,8 +134,14 @@ class admin_screen_view(LoginRequiredMixin, View):
 
     def get(self, request):
         totalEmp = Employee.objects.count()
+        totalDept = Department.objects.count()
+        totalDesg = Designation.objects.count()
+        totalPresent = EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(timein__isnull=False,timeout__isnull=False).count()
         context = {
-            'totalEmp': totalEmp
+            'totalEmp': totalEmp,
+            'totalDept': totalDept,
+            'totalDesg': totalDesg,
+            'totalPresent': totalPresent
         }
         return render(request, 'admin/index.html', context)
 
