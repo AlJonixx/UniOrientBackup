@@ -145,16 +145,42 @@ class admin_screen_view(LoginRequiredMixin, View):
         }
         return render(request, 'admin/index.html', context)
 
-
 def logout_screen_view(request):
     logout(request)
     return redirect('admin-login')
 
 def accoff_login_screen_view(request):
-    return render(request, 'admin/accofficerlogin.html')
+    context = {}
+
+    user = request.user
+    if user.is_authenticated:
+        return redirect('attendance-employee')
+
+    if request.method == 'POST':
+        form = AccountAuthenticationForm(request.POST)
+        if form.is_valid():
+            email = request.POST['email']
+            password = request.POST['password']
+            user = authenticate(email=email, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect('attendance-employee')
+
+        else:
+            messages.info(request, 'Email or Password do not match!')
+            return redirect('account-officer')
+    else:
+        form = AccountAuthenticationForm()
+
+    context['form'] = form
+    return render(request, 'admin/login.html', context)
 
 def choose_screen_view(request):
     return render(request, 'admin/choose.html')
+
+def register_screen_view(request):
+    return render(request, 'admin/register.html')
 
 # AUTHENTICATION
 
@@ -655,7 +681,6 @@ class attendance_employee_screen_view(LoginRequiredMixin, View):
 
         }
         return render(request, 'admin/employee/attendance-employee.html', context)
-
 
 class departments_screen_view(LoginRequiredMixin, View):
     login_url = 'admin-login'
