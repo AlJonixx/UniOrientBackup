@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	// Bar Chart
-	
+
 	Morris.Bar({
 		element: 'bar-charts',
 		data: [
@@ -46,3 +46,4 @@ $(document).ready(function() {
 	});
 		
 });
+

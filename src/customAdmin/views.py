@@ -13,15 +13,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import random
 
 from customAdmin.forms import AccountAuthenticationForm, DepartmentForm, DesignationForm, EmergencyContactForm, EmployeeForm, EmployeeSalaryForm
+from customAdmin.forms import *
 from .models import *
 from django.db.models import Q
 from django.contrib.auth.hashers import make_password
 
 from django.http import HttpResponse
 
+from django.views.generic import TemplateView
 
 # Create your views here.
-
 
 class attendance_screen_view(LoginRequiredMixin, View):
     login_url = 'admin-login'
@@ -145,11 +146,15 @@ class admin_screen_view(LoginRequiredMixin, View):
         }
         return render(request, 'admin/index.html', context)
 
-
 def logout_screen_view(request):
     logout(request)
     return redirect('admin-login')
 
+def choose_screen_view(request):
+    return render(request, 'admin/choose.html')
+
+def register_screen_view(request):
+    return render(request, 'admin/register.html')
 
 # AUTHENTICATION
 
@@ -179,6 +184,33 @@ def login_screen_view(request):
 
     context['form'] = form
     return render(request, 'admin/login.html', context)
+
+def accoff_login_screen_view(request):
+    context = {}
+
+    user = request.user
+    if user.is_authenticated:
+        return redirect('attendance-employee')
+
+    if request.method == 'POST':
+        form = AccountAuthenticationForm(request.POST)
+        if form.is_valid():
+            email = request.POST['email']
+            password = request.POST['password']
+            user = authenticate(email=email, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect('attendance-employee')
+
+        else:
+            messages.info(request, 'Email or Password do not match!')
+            return redirect('account-officer')
+    else:
+        form = AccountAuthenticationForm()
+
+    context['form'] = form
+    return render(request, 'admin/accofficerlogin.html', context)
 
 # END AUTHENTICATION
 
@@ -603,7 +635,6 @@ def leaves_employee_screen_view(request):
 def leaves_settings_screen_view(request):
     return render(request, 'admin/employee/leaves-settings.html')
 
-
 def attendance_admin_screen_view(request):
     return render(request, 'admin/employee/attendance-admin.html')
 
@@ -651,7 +682,6 @@ class attendance_employee_screen_view(LoginRequiredMixin, View):
 
         }
         return render(request, 'admin/employee/attendance-employee.html', context)
-
 
 class departments_screen_view(LoginRequiredMixin, View):
     login_url = 'admin-login'
