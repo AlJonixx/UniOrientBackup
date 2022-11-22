@@ -27,6 +27,7 @@ from customAdmin.views import (
 
     accoff_login_screen_view,
     choose_screen_view,
+    register_screen_view,
 
     # Employee View
     all_employee_screen_view,
@@ -80,6 +81,7 @@ urlpatterns = [
     
     path('account-officer', accoff_login_screen_view, name='account-officer'),
     path('choose', choose_screen_view, name='choose'),
+    path('register', register_screen_view, name='register'),
     
     # ATTENDANCE
     path('attendance', attendance_screen_view.as_view(), name='attendance'),

@@ -77,70 +77,10 @@
 									<button class="btn btn-primary account-btn" type="submit">Login</button>
 								</div>
 								<div class="account-footer">
-                                    <div class="text sign-up-text">Don't have an account? <a id="register" href="#">Register</a></p></div>
+									<p>Don't have an account yet? <a href="{% url 'register' %}">Register</a></p> 
 								</div>
 							</form>
 							<!-- /Account Form -->
-							      <!--Modal register-->
-                                  <div id="register" class="modal custom-modal fade" role="dialog">
-                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Register</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form method="POST">
-                                                    {% csrf_token %}
-                                                    <div class="row">
-                                                        <div class="col-sm-6">
-                                                            <div class="form-group">
-                                                                <label class="col-form-label">First Name <span class="text-danger">*</span></label>
-                                                                <input name="firstname_text" class="form-control" type="text">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            <div class="form-group">
-                                                                <label class="col-form-label">Last Name <span class="text-danger">*</span></label>
-                                                                <input name="lastname_text" class="form-control" type="text">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            <div class="form-group">
-                                                                <label class="col-form-label">Username <span class="text-danger">*</span></label>
-                                                                <input name="username_text" class="form-control" type="text">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            <div class="form-group">
-                                                                <label class="col-form-label">Email <span class="text-danger">*</span></label>
-                                                                <input name="email_text" class="form-control" type="email">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            <div class="form-group">
-                                                                <label class="col-form-label">Password <span class="text-danger">*</span></label>
-                                                                <input name="password_text" id="password" class="form-control" type="password" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            <div class="form-group">
-                                                                <label class="col-form-label">Confirm Password <span class="text-danger">*</span></label>
-                                                                <input name="password2_text" id="confirm-password" class="form-control" type="password" required>
-                                                            </div>
-                                                        </div> 
-                                                    
-                                                    <div class="submit-section">
-                                                        <button name="btnRegister" class="btn btn-primary submit-btn">Submit</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /Add Employee Modal -->
 						</div>
 					</div>
 				</div>
@@ -156,44 +96,6 @@
         <script src="{% static '/admin/assets/js/bootstrap.min.js' %}"></script>
 		
 		<!-- Custom JS -->
-    	<script src="{% static '/admin/assets/js/app.js' %}"></script>
-          <!-- Vendor JS Files -->
-  <script src=" {% static '/home/assets/vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
-  <script src=" {% static '/home/assets/vendor/aos/aos.js' %}"></script>
-  <script src=" {% static '/home/assets/vendor/php-email-form/validate.js' %}"></script>
-  <script src=" {% static '/home/assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
-  <script src=" {% static '/home/assets/vendor/purecounter/purecounter.js' %}"></script>
-  <script src=" {% static '/home/assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
-  <script src=" {% static '/home/assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
-
-  <!-- Template Main JS File -->
-  <script src=" {% static '/home/assets/js/main.js' %}"></script>
-  <script>
-  // Get the modal
-  var modal = document.getElementById("register");
-  
-  // Get the button that opens the modal
-  var btn = document.getElementById("myBtn");
-  
-  // Get the <span> element that closes the modal
-  var span = document.getElementsByClassName("close")[0];
-  
-  // When the user clicks the button, open the modal 
-  btn.onclick = function() {
-    modal.style.display = "block";
-  }
-  
-  // When the user clicks on <span> (x), close the modal
-  span.onclick = function() {
-    modal.style.display = "none";
-  }
-  
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }
-</script>
+    	<script src="{% static '/admin/assets/js/app.js' %}"></script>	
     </body>
 </html>
