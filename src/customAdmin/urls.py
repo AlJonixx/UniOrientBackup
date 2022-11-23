@@ -64,10 +64,18 @@ from customAdmin.views import (
 
     # Face Recog Images
     gallery_view,
+
+    registerPage_screen_view,
+    loginPage_screen_view,
+    logoutUser_screen_view,
 )
 
 
 urlpatterns = [
+
+    path('register1', registerPage_screen_view, name="register1"),
+	path('login1', loginPage_screen_view, name="login1"),  
+	path('logout', logoutUser_screen_view, name="logout"),
 
     # FINAL EXAM REQUIREMENT
     path('landing-page', landing_page_view, name='landing-page'),
@@ -81,8 +89,8 @@ urlpatterns = [
     
     path('account-officer', accoff_login_screen_view, name='account-officer'),
     path('choose', choose_screen_view, name='choose'),
-    path('register', register_screen_view, name='register'),
-    
+    path('register', register_screen_view.as_view(), name='register'),
+
     # ATTENDANCE
     path('attendance', attendance_screen_view.as_view(), name='attendance'),
     # EMPLOYEES TAB
@@ -97,6 +105,7 @@ urlpatterns = [
     path('attendance-admin', attendance_admin_screen_view, name='attendance-admin'),
     path('attendance-employee', attendance_employee_screen_view.as_view(),
          name='attendance-employee'),
+    path('attendance-employee', attendance_employee_screen_view.as_view(), name='attendance-employee'),
     path('departments', departments_screen_view.as_view(), name='departments'),
     path('deleteDepart/<int:id>',
          departments_screen_view.deleteDepartment, name='deleteDepartment'),

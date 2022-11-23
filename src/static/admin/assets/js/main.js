@@ -1,7 +1,7 @@
 
 function checkPassword() {
     var password = document.getElementById("password").value;
-    var cPassword = document.getElementById("confirm-password").value;
+    var cPassword = document.getElementById("confirm_password").value;
     var message = document.getElementById("message");
       if (password == cPassword) {
         message.textContent = "Passwords Match";
