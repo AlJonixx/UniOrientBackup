@@ -153,17 +153,20 @@ def logout_screen_view(request):
 def choose_screen_view(request):
     return render(request, 'admin/choose.html')
 
-def register_screen_view(request):
-    return render(request, 'admin/register.html')
-
-# AUTHENTICATION
+class register_screen_view(View):
+    def get(self, request):
+        accoff = AccountOfficer.objects.all()
+        context ={
+            'accoff': accoff
+        }
+        return render(request, 'admin/register.html', context)
 
 def login_screen_view(request):
     context = {}
 
     user = request.user
     if user.is_authenticated:
-        return redirect('admin-dashboard')
+        return redirect('attendance-employee')
 
     if request.method == 'POST':
         form = AccountAuthenticationForm(request.POST)
@@ -182,8 +185,6 @@ def login_screen_view(request):
     else:
         form = AccountAuthenticationForm()
 
-    context['form'] = form
-    return render(request, 'admin/login.html', context)
 
 def accoff_login_screen_view(request):
     context = {}
