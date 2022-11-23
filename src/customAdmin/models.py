@@ -109,8 +109,10 @@ class EmployeeAttendance(models.Model):  # Employee Attendance Model
     todaydate = models.DateField(default=date.today)
     timein = models.TimeField(blank=True, null=True)
     timeout = models.TimeField(blank=True, null=True)
-    hours = models.CharField(max_length=150, blank=True)
-    status = models.CharField(max_length=150, blank=True)
+    hours = models.CharField(max_length=150, blank=True, null=True)
+    status = models.CharField(max_length=150, blank=True, null=True)
+    remarks = models.CharField(max_length=150, blank=True, null=True)
+    lateMin = models.IntegerField(blank=True, null=True)
 
 
 class EmployeeSalary(models.Model):  # Employee Salary Model
@@ -123,3 +125,10 @@ class EmployeeSalary(models.Model):  # Employee Salary Model
     pag_ibig = models.IntegerField(blank=True, null=True)
     philhealth = models.IntegerField(blank=True, null=True)
     net_salary = models.IntegerField(blank=True, null=True)
+
+
+class EmployeeSchedule(models.Model):
+    timein = models.TimeField(blank=True, null=True)
+    timeout = models.TimeField(blank=True, null=True)
+    status = models.CharField(
+        max_length=150, blank=True, null=True, default="INACTIVE")

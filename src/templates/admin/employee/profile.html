@@ -826,11 +826,17 @@
 
 										<div class="row">
 											<div class="col-lg-12">
+												<h2>Absent: {{absent}}</h2>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-lg-12">
 												<div class="table-responsive">
 													<table class="profile-table-attendance table table-striped custom-table mb-0">
 														<thead>
 															<tr>
-																<th colspan=7 style="text-align:center; border-bottom:none; border-top:none; font-size: 22px; background: #14007d; color: #FFF;">Uni Orient Travel, Inc. Cebu Attendance</th>
+																<th colspan=8 style="text-align:center; border-bottom:none; border-top:none; font-size: 22px; background: #14007d; color: #FFF;">Uni Orient Travel, Inc. Cebu Attendance</th>
 															</tr>
 															<tr>
 																
@@ -840,7 +846,9 @@
 																<th>Punch In</th>
 																<th>Punch Out</th>
 																<th>Total Hours</th>
+																<th>Minutes Late</th>
 																<th>Status</th>
+																
 																{% comment %} <th>Overtime</th> {% endcomment %}
 															</tr>
 														</thead>
@@ -862,8 +870,11 @@
 																	<td><p class="empPunchOut-{{ forloop.counter }}" style="display:inline">{{att.timeout|time:"h:i A"}}</p>
 																		<p style="display:inline; visibility:hidden" class="empTimeOut-{{ forloop.counter }}">{{att.timeout|time:"H:i"}}</p></td>
 																	<td><p id="totalHr" style="display:inline"></p>{{att.hours}}</td>
+																	<td>{{att.lateMin}}</td>
 																	<td>
 																		{% if att.timein > emp.sched_start %}
+																			<p style="display:inline; padding:2px 10px; border-radius:15px;" class="btn-danger">{{att.status}}<span  class="empLate-{{ forloop.counter }}"></span></p>
+																		{% elif att.remarks == "ABSENT" %}
 																			<p style="display:inline; padding:2px 10px; border-radius:15px;" class="btn-danger">{{att.status}}<span  class="empLate-{{ forloop.counter }}"></span></p>
 																		{% else %} 
 																			<p style="display:inline; padding:2px 10px; border-radius:15px;"  class="btn-success">{{att.status}}</p>

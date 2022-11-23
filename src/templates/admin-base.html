@@ -29,6 +29,8 @@
 {% url 'salary-view' as salaryView %}
 {% url 'payroll-items' as payrollItems %}
 
+{% url 'employee-schedule' as employeeSchedule %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -84,7 +86,7 @@
 	
 
     
-    <body>
+    <body onload="mytime()">
 		<!-- Main Wrapper -->
         <div class="main-wrapper">
 		
@@ -430,6 +432,16 @@
 									<!-- <li><a class="{% if request.path == timeSheet %}active{% endif %}" href="{% url 'timesheet' %}">Timesheet</a></li>
 									<li><a class="{% if request.path == shiftScheduling %}active{% endif %}" href="{% url 'shift-scheduling' %}">Shift & Schedule</a></li>
 									<li><a class="{% if request.path == overTime %}active{% endif %}" href="{% url 'overtime' %}">Overtime</a></li> -->
+								</ul>
+							</li>
+
+							<li class="menu-title"> 
+								<span>Schedules</span>
+							</li>
+							<li class="submenu">
+								<a href="#"><i class="la la-clock"></i> <span> Work Schedule</span> <span class="menu-arrow"></span></a>
+								<ul style="display: none;">
+									<li><a class="{% if request.path == employeeSchedule %}active{% endif %}" href="{% url 'employee-schedule' %}">Employee Schedule</a></li>
 								</ul>
 							</li>
 						<!--	<li> 
