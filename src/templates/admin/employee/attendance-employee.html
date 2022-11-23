@@ -242,7 +242,7 @@
 												<td>{{employee.employee_id}}</td>
 												<td>{{employee.firstname}} {{employee.lastname}}</td>
 												<td>{{attendance.todaydate|date:"l, M d,Y"}}</td>
-												<td><p style="display:inline" >{{attendance.timein|time:"h:i A"}} </p>
+												<td><p class="empPunchIn-{{ forloop.counter }}" style="display:inline" >{{attendance.timein|time:"h:i A"}} </p>
 													<p style="display:inline; visibility:hidden" class="empTimeIn-{{ forloop.counter }}">{{attendance.timein|time:"H:i"}}</p>
 												</td>
 												<td><p class="empPunchOut-{{ forloop.counter }}" style="display:inline">{{attendance.timeout|time:"h:i A"}}</p>
@@ -251,7 +251,9 @@
 												{% comment %} <td><p id="totalHr" style="display:inline" class="total-hr-{{ forloop.counter }}"></p></td> {% endcomment %}
 												<td>
 													{% if attendance.timein > employee.sched_start %}
-														<p style="display:inline; padding:2px 10px; border-radius:15px;" class="btn-danger">{{attendance.status}}<span  class="empLate-{{ forloop.counter }}"></span></p>  
+														<p style="display:inline; padding:2px 10px; border-radius:15px;" class="btn-danger">{{attendance.status}}<span  class="empLate-{{ forloop.counter }}"></span></p> 
+													{% elif attendance.remarks == "ABSENT" %} 
+														<p style="display:inline; padding:2px 10px; border-radius:15px;" class="btn-danger">{{attendance.status}}<span  class="empLate-{{ forloop.counter }}"></span></p> 
 													{% else %} 
 														<p style="display:inline; padding:2px 10px; border-radius:15px;"  class="btn-success">{{attendance.status}}</p>
 													{% endif %}
@@ -474,9 +476,12 @@
 							//$('.total-hr-'+i).text(hours);
 							//$('.total-min-'+i).text(Math.round(totalMinutes));
 							//$('.empLate-'+i).text(" - " + Math.round(totalLateMinutes) + " Minutes Late");
-					} else {
-						$('p.empPunchIn-'+i).text("Not Timed In");
-						$('p.empPunchOut-'+i).text("Not Timed Out");
+					}
+					 
+					
+					else {
+						//$('p.empPunchIn-'+i).text("Not Timed In");
+						//$('p.empPunchOut-'+i).text("Not Timed Out");
 						$('.total-hr-'+i).text("0.00");
 					}
 					

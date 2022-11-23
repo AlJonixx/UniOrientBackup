@@ -54,6 +54,12 @@ from customAdmin.views import (
     daily_report_screen_view,
     overtime_report_screen_view,
 
+    # Attendance
+    initial_attendance_view,
+
+    # Schedule
+    employee_schedule_view,
+
     # Payroll View
     salary_screen_view,
     salary_view_screen_view,
@@ -85,6 +91,13 @@ urlpatterns = [
     
     # ATTENDANCE
     path('attendance', attendance_screen_view.as_view(), name='attendance'),
+    path('initial-attendance', initial_attendance_view.as_view(),
+         name='initial-attendance'),
+    path('initial-timein/<int:id>',
+         initial_attendance_view.initalTimein, name='initial-timein'),
+
+
+
     # EMPLOYEES TAB
     path('all-employee', all_employee_screen_view.as_view(), name='all-employee'),
     path('employee-list', employee_list_screen_view.as_view(), name='employee-list'),
@@ -107,6 +120,10 @@ urlpatterns = [
     path('shift-scheduling', shift_scheduling_screen_view, name='shift-scheduling'),
     path('overtime', overtime_screen_view, name='overtime'),
     path('profile/<int:id>', profile_screen_view.as_view(), name="profile"),
+
+    # SCHEDULE TAB
+    path('employee-schedule', employee_schedule_view.as_view(),
+         name='employee-schedule'),
 
 
     # REPORTS TAB

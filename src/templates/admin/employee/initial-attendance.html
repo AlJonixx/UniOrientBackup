@@ -1,0 +1,249 @@
+
+{% now "Y-m-d" as today_date%}
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <meta name="description" content="Smarthr - Bootstrap Admin Template">
+		<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
+        <meta name="author" content="Dreamguys - Bootstrap Admin Template">
+        <meta name="robots" content="noindex, nofollow">
+        <title>Attendance - Uni Orient</title>
+		
+		<!-- Favicon -->
+       <link href="{% static '/home/assets/img/uni-logo-transparent.png' %}" rel="icon">
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{% static '/admin/assets/css/bootstrap.min.css' %}">
+		
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="{% static '/admin/assets/css/font-awesome.min.css' %}">
+		
+		<!-- Lineawesome CSS -->
+        <link rel="stylesheet" href="{% static '/admin/assets/css/line-awesome.min.css' %}">
+		
+		<!-- Chart CSS -->
+		<link rel="stylesheet" href="{% static '/admin/assets/plugins/morris/morris.css' %}">
+
+        <!-- Datatable CSS -->
+		<link rel="stylesheet" href="{% static '/admin/assets/css/dataTables.bootstrap4.min.css' %}">
+
+        <!-- Datetimepicker CSS -->
+		<link rel="stylesheet" href="{% static '/admin/assets/css/bootstrap-datetimepicker.min.css' %}">
+		
+		<!-- Select2 CSS -->
+		<link rel="stylesheet" href="{% static '/admin/assets/css/select2.min.css' %}">
+		
+		<!-- Main CSS -->
+        <link rel="stylesheet" href="{% static '/admin/assets/css/style.css' %}">
+
+		<!-- Face API -->
+		<script src="{% static '/admin/assets/js/face-api.min.js' %}"></script>
+
+		<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
+
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    </head>
+    <body  onload="mytime()">
+
+				<!-- Page Wrapper -->
+            <div style="padding:50px">
+                <div class="content container">
+				
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row">
+							<div class="col-sm-12">
+								<h3 class="page-title">Initial Attendance</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+									<li class="breadcrumb-item active">Initial Attendance</li>
+								</ul>
+								<br>
+								
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+
+                    <div class="row">
+                        <div class="col-lg-12">
+							<h3 style="text-align:center;" id="timehere"></h3>
+							<div class="table-responsive attendance-section">
+								<a href="#" class="btn btn-primary continue-btn" id="punch-all">Punch All</a>
+								<br>
+								<table class="table-attendance table table-striped custom-table mb-0">
+									<thead>
+										<tr>
+											<th colspan=7 style="text-align:center; border-bottom:none; border-top:none; font-size: 22px; background: #14007d; color: #FFF;">Uni Orient Travel, Inc. Cebu Attendance</th>
+										</tr>
+										<tr>
+											
+											<th>Employee ID</th>
+											<th>Employee Name</th>
+											<th>Punch In</th>
+
+											{% comment %} <th>Overtime</th> {% endcomment %}
+										</tr>
+									</thead>
+									<tbody>
+											{% for employee in emp  %}
+											<tr>
+												<td>{{employee.employee_id}}</td>
+												<td>{{employee.username}}</td>
+												<td><a href="initial-timein/{{employee.employee_id}}" class="btn btn-primary continue-btn initial-button" id="initial-button-{{forloop.counter}}">Punch in</a></td>
+											{% comment %} <td><button class="btn btn-primary continue-btn initial-button" id="{{forloop.counter}}">Punch in</button></td> {% endcomment %}
+											</tr>											
+											{% endfor %}
+																		
+									</tbody>
+								</table>
+							</div>
+                        </div>
+                    </div>
+                </div>
+				<!-- /Page Content -->
+				
+            </div>
+			<!-- Page Wrapper -->
+			
+        </div>
+		<!-- /Main Wrapper -->
+		
+		<!-- jQuery -->
+        <script src="{% static '/admin/assets/js/jquery-3.5.1.min.js' %}"></script>
+
+		<!-- Bootstrap Core JS -->
+        <script src="{% static '/admin/assets/js/popper.min.js' %}"></script>
+        <script src="{% static '/admin/assets/js/bootstrap.min.js' %}"></script>
+
+		<!-- Slimscroll JS -->
+		<script src="{% static '/admin/assets/js/jquery.slimscroll.min.js' %}"></script>
+		
+		<!-- Select2 JS -->
+		<script src="{% static '/admin/assets/js/select2.min.js' %}"></script>
+		
+		<!-- Datatable JS -->
+		<script src="{% static '/admin/assets/js/jquery.dataTables.min.js' %}"></script>
+		<script src="{% static '/admin/assets/js/dataTables.bootstrap4.min.js' %}"></script>
+		
+		<!-- Datetimepicker JS -->
+		<script src="{% static '/admin/assets/js/moment.min.js' %}"></script>
+		<script src="{% static '/admin/assets/js/bootstrap-datetimepicker.min.js' %}"></script>
+
+		<!-- Custom JS -->
+		<script src="{% static '/admin/assets/js/app.js' %}"></script>
+
+		<!-- Table Export -->
+		<script src="{% static '/admin/assets/js/jquery.table2excel.js' %}"></script>
+
+		<script src="{% static '/admin/assets/js/tableHTMLExport.js' %}"></script>
+
+		<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+			<script>
+
+			function mytime(){
+				var d=new Date();
+				ap="am";	
+				h=d.getHours();
+				m=d.getMinutes();
+				s=d.getSeconds();
+				if (h>11) { ap = "pm"; }
+				if (h>=12 && h<=14) { 
+					$('.lunchBreak').hide(); 
+				} else {				
+					$('.lunchBreak').hide(); 
+				}
+				if (h>12) { h = h-12; }			
+				if (h==0) { h = 12; }
+				if (m<10) { m = "0" + m; }
+				if (s<10) { s = "0" + s; }
+
+				document.getElementById('timehere').innerHTML=h + ":" + m + ":" + s + " " + ap;	
+					
+				t=setTimeout('mytime()',500);	
+
+				timecurrent = document.getElementById('timehere').textContent;
+
+
+				
+				if(timecurrent == "7:45:40 am"){			
+					document.getElementById('initial-button-1').click();
+					document.getElementById('initial-button-2').click();
+					document.getElementById('initial-button-3').click();
+					document.getElementById('initial-button-4').click();
+					document.getElementById('initial-button-5').click();
+					document.getElementById('initial-button-6').click();
+					document.getElementById('initial-button-7').click();
+					document.getElementById('initial-button-8').click();
+					document.getElementById('initial-button-9').click();
+					document.getElementById('initial-button-10').click();
+					document.getElementById('initial-button-11').click();
+					document.getElementById('initial-button-12').click();
+					document.getElementById('initial-button-13').click();
+					document.getElementById('initial-button-14').click();
+					document.getElementById('initial-button-15').click();
+				}
+
+				
+
+					
+			}	
+
+			function roundOff(x) {
+			return Number.parseFloat(x).toFixed(2);
+			}
+
+
+			$( document ).ready(function() {
+
+				//CLICK INITIAL BUTTONS
+
+				$("#punch-all").click(function(){
+					document.getElementById('initial-button-1').click();
+					document.getElementById('initial-button-2').click();
+					document.getElementById('initial-button-3').click();
+					document.getElementById('initial-button-4').click();
+					document.getElementById('initial-button-5').click();
+				});
+	
+				
+				//Attendance  Table
+				var totalRow = $('table.table-attendance tr:last').index() + 1;
+				var officialTimeIn = "08:00	".split(':');
+				let defaultTimeOut = "00:00";
+				
+			
+				
+
+
+				//Button Submit Disable
+				$('.submitButton').attr('disabled',true);
+
+				$('.input').on('change', function () {
+					$('.submitButton').prop('disabled', !$(this).val());
+				}).trigger('change');
+				
+			});
+
+			
+			
+
+			$('.datetimepicker').datetimepicker({
+				format: 'YYYY-MM-DD'
+			});
+		</script>
+
+
+    </body>
+</html>

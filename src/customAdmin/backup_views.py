@@ -13,16 +13,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import random
 
 from customAdmin.forms import AccountAuthenticationForm, DepartmentForm, DesignationForm, EmergencyContactForm, EmployeeForm, EmployeeSalaryForm
-from customAdmin.forms import *
 from .models import *
 from django.db.models import Q
 from django.contrib.auth.hashers import make_password
 
 from django.http import HttpResponse
 
-from django.views.generic import TemplateView
 
 # Create your views here.
+
 
 class attendance_screen_view(LoginRequiredMixin, View):
     login_url = 'admin-login'
@@ -30,18 +29,7 @@ class attendance_screen_view(LoginRequiredMixin, View):
 
     def get(self, request):
         emp = Employee.objects.all()
-        sked = EmployeeSchedule.objects.filter(id=1)
-
-        for schdule in sked:
-            timein = schdule.timein
-            officialTimein = timein.strftime("%H:%M:%S")
-
-        context = {
-            'empl': emp,
-            'officialTimein': timein,
-        }
-
-        return render(request, 'take_attendance_template.html', context)
+        return render(request, 'take_attendance_template.html', {'empl': emp})
 
     def post(self, request):
         form = EmployeeAttendance(request.POST)
@@ -65,24 +53,14 @@ class attendance_screen_view(LoginRequiredMixin, View):
 
                 if InOut == '1':
 
-                    # if EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(employee_id_id=empId).exists():
-                    #     if EmployeeAttendance.objects.filter(timeout__isnull=False).filter(todaydate=datetime.today()):
-                    #         messages.success(request, 'Already Timed In!')
-                    #         return redirect('attendance')
-                    #     else:
-                    #         messages.success(request, 'Already Timed In!')
-                    #         return redirect('attendance')
-                    # else:
-
-                    if EmployeeAttendance.objects.filter(timein__isnull=False).filter(todaydate=datetime.today()).filter(employee_id_id=empId).exists():
-                        if EmployeeAttendance.objects.filter(timein__isnull=False).filter(todaydate=datetime.today()):
+                    if EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(employee_id_id=empId).exists():
+                        if EmployeeAttendance.objects.filter(timeout__isnull=False).filter(todaydate=datetime.today()):
                             messages.success(request, 'Already Timed In!')
                             return redirect('attendance')
                         else:
                             messages.success(request, 'Already Timed In!')
                             return redirect('attendance')
                     else:
-
                         if inout > official_start_time:
 
                             # LATE CALCULATIONS
@@ -98,17 +76,17 @@ class attendance_screen_view(LoginRequiredMixin, View):
                             totalSec = int(LateSec)
 
                             TimeIntotalMin = int(LateMin)
-                            if EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(employee_id_id=empId).exists():
-                                if EmployeeAttendance.objects.filter(timein__isnull=True).filter(todaydate=datetime.today()):
-                                    EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(
-                                        employee_id_id=empId).update(
-                                        timein=inout, employee_id_id=empId, status="LATE", lateMin=TimeIntotalMin)
+
+                            form = EmployeeAttendance(
+                                timein=inout, employee_id_id=empId, status="LATE - " + str(TimeIntotalMin) + " Minutes")
                         else:
-                            EmployeeAttendance.objects.update(
+                            form = EmployeeAttendance(
                                 timein=inout, employee_id_id=empId, status="TIME IN")
 
-                    messages.success(request, 'Timed In Successfully!')
-                    return redirect('attendance')
+                        form.save()
+
+                        messages.success(request, 'Timed In Successfully!')
+                        return redirect('attendance')
 
                 else:
                     if EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(employee_id_id=empId).exists():
@@ -133,12 +111,8 @@ class attendance_screen_view(LoginRequiredMixin, View):
 
                                 TimeOuttotalHour = int(hours)
 
-                                if EmployeeAttendance.objects.filter(timeout__isnull=False):
-                                    EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(
-                                        employee_id_id=empId).update(timeout=inout, employee_id_id=empId, status="TIMED OUT", remarks="ABSENT", hours=TimeOuttotalHour)
-                                else:
-                                    EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(
-                                        employee_id_id=empId).update(timeout=inout, employee_id_id=empId, status="TIMED OUT", remarks="PRESENT", hours=TimeOuttotalHour)
+                                EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(
+                                    employee_id_id=empId).update(timeout=inout, employee_id_id=empId, status="TIMED OUT", hours=TimeOuttotalHour)
 
                                 print("Total Min: " + str(min))
 
@@ -172,15 +146,11 @@ class admin_screen_view(LoginRequiredMixin, View):
         }
         return render(request, 'admin/index.html', context)
 
+
 def logout_screen_view(request):
     logout(request)
     return redirect('admin-login')
 
-def choose_screen_view(request):
-    return render(request, 'admin/choose.html')
-
-def register_screen_view(request):
-    return render(request, 'admin/register.html')
 
 # AUTHENTICATION
 
@@ -210,33 +180,6 @@ def login_screen_view(request):
 
     context['form'] = form
     return render(request, 'admin/login.html', context)
-
-def accoff_login_screen_view(request):
-    context = {}
-
-    user = request.user
-    if user.is_authenticated:
-        return redirect('attendance-employee')
-
-    if request.method == 'POST':
-        form = AccountAuthenticationForm(request.POST)
-        if form.is_valid():
-            email = request.POST['email']
-            password = request.POST['password']
-            user = authenticate(email=email, password=password)
-
-            if user is not None:
-                login(request, user)
-                return redirect('attendance-employee')
-
-        else:
-            messages.info(request, 'Email or Password do not match!')
-            return redirect('account-officer')
-    else:
-        form = AccountAuthenticationForm()
-
-    context['form'] = form
-    return render(request, 'admin/accofficerlogin.html', context)
 
 # END AUTHENTICATION
 
@@ -473,11 +416,6 @@ class profile_screen_view(LoginRequiredMixin, View):
         attendanceFilter = EmployeeAttendance.objects.filter(
             employee_id_id=id)
 
-        today = date.today().month
-
-        absent = EmployeeAttendance.objects.filter(employee_id_id=id).filter(
-            status="NONE").filter(todaydate__month__lte=today).filter(remarks="ABSENT").count()
-
         salaryList = EmployeeSalary.objects.filter(employee_id_id=id)
 
         for sal in salaryList:
@@ -508,7 +446,7 @@ class profile_screen_view(LoginRequiredMixin, View):
         for week in cal.monthdayscalendar(current_year, current_month):
             for i, day in enumerate(week):
                 # not this month's day or a weekend
-                if day == 0 or i >= 6:
+                if day == 0 or i >= 5:
                     continue
                 # or some other control if desired..
                 weekday_count += 1
@@ -569,8 +507,7 @@ class profile_screen_view(LoginRequiredMixin, View):
             'pagibig': pagibig,
             'philhealth': philhealth,
             'sss': sss,
-            'netSalary': netSalary,
-            'absent': absent,
+            'netSalary': netSalary
         }
 
         return render(request, 'admin/employee/profile.html', context)
@@ -667,44 +604,9 @@ def leaves_employee_screen_view(request):
 def leaves_settings_screen_view(request):
     return render(request, 'admin/employee/leaves-settings.html')
 
+
 def attendance_admin_screen_view(request):
     return render(request, 'admin/employee/attendance-admin.html')
-
-# INITIAL ATTENDANCE - ACCESS THIS PAGE FOR PARTIAL ATTENDANCE OF THE EMPLOYEE
-
-
-class initial_attendance_view(LoginRequiredMixin, View):
-    login_url = 'admin-login'
-    redirect_field_name = 'redirect_to'
-
-    def get(self, request):
-        emp = Employee.objects.all()
-        att = EmployeeAttendance.objects.all()
-
-        for employee in emp:
-            print("SAVE")
-            form = EmployeeAttendance(
-                employee_id_id=employee.employee_id, status="NONE", remarks="ABSENT",)
-            form.save()
-
-        context = {
-            'emp': emp,
-        }
-
-        # return render(request, 'admin/employee/initial-attendance.html', context)
-        return redirect('admin-dashboard')
-
-    @staticmethod
-    def initalTimein(request, id):
-        empid = Employee.objects.get(employee_id=id)
-
-        form = EmployeeAttendance(
-            employee_id_id=empid.employee_id, status="NONE")
-
-        form.save()
-
-        messages.success(request, "Employee Timed in!")
-        return redirect('initial-attendance')
 
 
 class attendance_employee_screen_view(LoginRequiredMixin, View):
@@ -750,6 +652,7 @@ class attendance_employee_screen_view(LoginRequiredMixin, View):
 
         }
         return render(request, 'admin/employee/attendance-employee.html', context)
+
 
 class departments_screen_view(LoginRequiredMixin, View):
     login_url = 'admin-login'
@@ -866,18 +769,6 @@ class salary_screen_view(View):
 
 # END PAYROLL
 
-# SCHEDULE
-
-
-class employee_schedule_view(View):
-    def get(self, request):
-        schedule = EmployeeSchedule.objects.all()
-        context = {
-            'schedules': schedule,
-        }
-        return render(request, 'admin/employee/employees-schedule.html', context)
-
-
 # START OF REPORT VIEWS
 
 
@@ -905,7 +796,6 @@ def overtime_report_screen_view(request):
     return render(request, 'admin/reports/overtime_report.html', {})
 
 # END OF REPORT VIEWS
-
 
 # Final Exam Requirement
 

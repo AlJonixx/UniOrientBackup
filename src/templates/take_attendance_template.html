@@ -74,6 +74,7 @@
 							<br>
 							<h3 style="text-align:center">{% now "jS F Y" %}</h3>
 							<h3 style="text-align:center;" id="timehere"></h3>
+							{% comment %} <h4 style="text-align:center;">{{officialTimein|time:"h:i a"}}</h4> {% endcomment %}
 							<br>
 								<div id="videoSection">
 								<video playsinline id="preview" width="100%"></video>
@@ -106,7 +107,7 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
 										 <label class="focus-label">Employee ID</label>
-                                        <input  id="employeeID" name="employeeID" class="form-control" type="text" readonly>	
+                                        <input  id="employeeID" name="employeeID" class="form-control" type="text" >	
 										<button style="visibility:hidden"  id="myBtn" class="btn btn-primary account-btn" name="TimeLogin" type="submit">Login</button>									
                                     </div>
                                 </div>
@@ -242,8 +243,13 @@
 				if (h==0) { h = 12; }
 				if (m<10) { m = "0" + m; }
 				if (s<10) { s = "0" + s; }
-				document.getElementById('timehere').innerHTML=h + ":" + m + ":" + s + " " + ap;			
-				t=setTimeout('mytime()',500);			
+
+				document.getElementById('timehere').innerHTML=h + ":" + m + ":" + s + " " + ap;	
+					
+				t=setTimeout('mytime()',500);	
+
+
+					
 			}			
 
 			/*setTimeout(function(){
