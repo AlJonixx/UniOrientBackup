@@ -12,9 +12,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 import random
 
-from customAdmin.forms import AccountAuthenticationForm, DepartmentForm, DesignationForm, EmergencyContactForm, EmployeeForm, EmployeeSalaryForm
-from customAdmin.forms import *
+from customAdmin.forms import AccountAuthenticationForm, DepartmentForm, DesignationForm, EmergencyContactForm, EmployeeForm, EmployeeSalaryForm, AccountOfficerForm
 from .models import *
+from .forms import *
 from django.db.models import Q
 from django.contrib.auth.hashers import make_password
 
@@ -174,16 +174,47 @@ class admin_screen_view(LoginRequiredMixin, View):
 
 def logout_screen_view(request):
     logout(request)
-    return redirect('admin-login')
+    return redirect('landing-page')
 
 def choose_screen_view(request):
     return render(request, 'admin/choose.html')
 
-def register_screen_view(request):
-    return render(request, 'admin/register.html')
+class register_screen_view(View):
+    def get(self, request):
+        accoff = AccountOfficer.objects.all()
+        context ={
+            'accoff': accoff
+        }
+        return render(request, 'admin/register.html', context)
+
+    def post(self, request):
+        form = AccountOfficerForm(request.POST)
+        email = request.POST.get("email")
+        username = request.POST.get("username")
+        firstname = request.POST.get("firstname")
+        password = request.POST.get("password")
+        form = AccountOfficer(email = email, username=username, firstname=firstname, password=password)
+        form.save()
+
+        return redirect('account-officer')              
+
+def accoff_login_screen_view(request):
+    if (request.method == 'GET'):
+        return render(request, 'admin/accofficerlogin.html')
+    else:
+
+        email = request.POST['email']
+        password = request.POST['password']
+        intakes = AccountOfficer.objects.all().filter(email=email,password=password)
+
+        for intake in intakes:
+
+            if intake.email==email and intake.password==password:
+                return render(request, "admin/employee/attendance-employee.html")
+            else:
+                return render(request, "admin/register.html")
 
 # AUTHENTICATION
-
 def login_screen_view(request):
     context = {}
 
@@ -211,32 +242,6 @@ def login_screen_view(request):
     context['form'] = form
     return render(request, 'admin/login.html', context)
 
-def accoff_login_screen_view(request):
-    context = {}
-
-    user = request.user
-    if user.is_authenticated:
-        return redirect('attendance-employee')
-
-    if request.method == 'POST':
-        form = AccountAuthenticationForm(request.POST)
-        if form.is_valid():
-            email = request.POST['email']
-            password = request.POST['password']
-            user = authenticate(email=email, password=password)
-
-            if user is not None:
-                login(request, user)
-                return redirect('attendance-employee')
-
-        else:
-            messages.info(request, 'Email or Password do not match!')
-            return redirect('account-officer')
-    else:
-        form = AccountAuthenticationForm()
-
-    context['form'] = form
-    return render(request, 'admin/accofficerlogin.html', context)
 
 # END AUTHENTICATION
 
@@ -753,6 +758,7 @@ class attendance_employee_screen_view(LoginRequiredMixin, View):
 
 class departments_screen_view(LoginRequiredMixin, View):
     login_url = 'admin-login'
+    login_url = 'account-officer'
     redirect_field_name = 'redirect_to'
 
     def get(self, request):

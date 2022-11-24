@@ -89,15 +89,12 @@
                      <div class="form-group">
                         <input name="firstname" id="firstname" class="form-control" type="text" required="" placeholder="Firstname: ">
                      </div>
-							<div class="form-group">
-                        <input type="password" class="form-control" id="password" placeholder="Password: " required>
+							        <div class="form-group">
+                        <input name="password" type="password" class="form-control" id="password" placeholder="Password: " required>
                       </div>
-                      <div class="form-group">
-                        <input type="password" class="form-control" id="confirm_password" placeholder="Confirm Password: " required>
-                      </div>
+                      
 								<div class="form-group text-center">
-                           <p id="message"></p>
-									<button name ="btnRegister" onclick ="checkPassword()" class="btn btn-primary account-btn" type="submit">Register</button>
+									<button class="btn btn-primary account-btn" type="submit">Register</button>
 								</div>
 								<div class="account-footer">
 									<p>Already have an account? <a href="{% url 'account-officer' %}">Login Now</a></p> 
@@ -109,7 +106,7 @@
 					</div>
 				</div>
 			</div>
-        </div>
+    </div>
         <!-- pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required
         <div id="message">
          <h3>Password must contain the following:</h3>
@@ -119,8 +116,6 @@
          <p id="length" class="invalid">Minimum <b>8 characters</b></p>
        </div>-->
 		<!-- /Main Wrapper -->
-
-      <script src="{% static '/admin/assets/js/main.js' %}"></script>
 	<!--	<script>
 var myInput = document.getElementById("psw");
 var letter = document.getElementById("letter");
@@ -189,7 +184,6 @@ myInput.onkeyup = function() {
 		
 		<!-- Custom JS -->
     	<script src="{% static '/admin/assets/js/app.js' %}"></script>	
-    </body>
 
    </body>
 </html>

@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.forms import fields, models
 from django.forms.widgets import PasswordInput
-from customAdmin.models import Department, Designation, Employee, EmployeeAttendance, EmployeeSchedule, EmployeeSalary, NewUser, PrimaryEmergencyContacts
+from customAdmin.models import Department, Designation, Employee, EmployeeAttendance, EmployeeSchedule, EmployeeSalary, NewUser, PrimaryEmergencyContacts, AccountOfficer
 
 from customAdmin.models import *
 
@@ -20,9 +20,8 @@ class AccountAuthenticationForm(forms.ModelForm):
         if not authenticate(email=email, password=password):
             raise forms.ValidationError('Invalid Login')
 
-
-class AccountOfficerForm(forms.ModelForm):  # Account Officer
-    class Meta:
+class AccountOfficerForm(forms.ModelForm): # Account Officer
+   class Meta:
         model = AccountOfficer
         fields = "__all__"
 

@@ -87,8 +87,8 @@ urlpatterns = [
     
     path('account-officer', accoff_login_screen_view, name='account-officer'),
     path('choose', choose_screen_view, name='choose'),
-    path('register', register_screen_view, name='register'),
-    
+    path('register', register_screen_view.as_view(), name='register'),
+
     # ATTENDANCE
     path('attendance', attendance_screen_view.as_view(), name='attendance'),
     path('initial-attendance', initial_attendance_view.as_view(),
@@ -110,6 +110,7 @@ urlpatterns = [
     path('attendance-admin', attendance_admin_screen_view, name='attendance-admin'),
     path('attendance-employee', attendance_employee_screen_view.as_view(),
          name='attendance-employee'),
+    path('attendance-employee', attendance_employee_screen_view.as_view(), name='attendance-employee'),
     path('departments', departments_screen_view.as_view(), name='departments'),
     path('deleteDepart/<int:id>',
          departments_screen_view.deleteDepartment, name='deleteDepartment'),

@@ -52,8 +52,7 @@ class AccountOfficer(models.Model):
     email = models.EmailField()
     username = models.CharField(max_length=150, unique=True)
     firstname = models.CharField(max_length=150, blank=True)
-    password = models.CharField(max_length=150, blank=True)
-    confirm_password = models.CharField(max_length=150, blank=True)
+    password = models.CharField(max_length=150, blank=True, null=True)
 
 class Department(models.Model):  # Deparment Model
     department_name = models.CharField(max_length=150, unique=True)
