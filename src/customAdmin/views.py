@@ -24,24 +24,30 @@ from django.views.generic import TemplateView
 
 # Create your views here.
 
+
 class attendance_screen_view(LoginRequiredMixin, View):
     login_url = 'admin-login'
     redirect_field_name = 'redirect_to'
 
     def get(self, request):
-        emp = Employee.objects.all()
-        sked = EmployeeSchedule.objects.filter(id=1)
+        user = request.user
+        if user.role == "admin":
+            emp = Employee.objects.all()
+            sked = EmployeeSchedule.objects.filter(id=1)
 
-        for schdule in sked:
-            timein = schdule.timein
-            officialTimein = timein.strftime("%H:%M:%S")
+            for schdule in sked:
+                timein = schdule.timein
+                officialTimein = timein.strftime("%H:%M:%S")
 
-        context = {
-            'empl': emp,
-            'officialTimein': timein,
-        }
+            context = {
+                'empl': emp,
+                'officialTimein': timein,
+            }
 
-        return render(request, 'take_attendance_template.html', context)
+            return render(request, 'take_attendance_template.html', context)
+        else:
+            print("not admin!")
+            return render(request, 'restrict-content.html', {})
 
     def post(self, request):
         form = EmployeeAttendance(request.POST)
@@ -159,30 +165,38 @@ class admin_screen_view(LoginRequiredMixin, View):
     redirect_field_name = 'redirect_to'
 
     def get(self, request):
-        totalEmp = Employee.objects.count()
-        totalDept = Department.objects.count()
-        totalDesg = Designation.objects.count()
-        totalPresent = EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(
-            timein__isnull=False, timeout__isnull=False).count()
-        context = {
-            'totalEmp': totalEmp,
-            'totalDept': totalDept,
-            'totalDesg': totalDesg,
-            'totalPresent': totalPresent
-        }
-        return render(request, 'admin/index.html', context)
+        user = request.user
+        if user.role == "admin":
+            totalEmp = Employee.objects.count()
+            totalDept = Department.objects.count()
+            totalDesg = Designation.objects.count()
+            totalPresent = EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(
+                timein__isnull=False, timeout__isnull=False).count()
+            context = {
+                'totalEmp': totalEmp,
+                'totalDept': totalDept,
+                'totalDesg': totalDesg,
+                'totalPresent': totalPresent
+            }
+            return render(request, 'admin/index.html', context)
+        else:
+            print("not admin!")
+            return render(request, 'restrict-content.html', {})
+
 
 def logout_screen_view(request):
     logout(request)
-    return redirect('landing-page')
+    return redirect('admin-login')
+
 
 def choose_screen_view(request):
     return render(request, 'admin/choose.html')
 
+
 class register_screen_view(View):
     def get(self, request):
         accoff = AccountOfficer.objects.all()
-        context ={
+        context = {
             'accoff': accoff
         }
         return render(request, 'admin/register.html', context)
@@ -193,28 +207,58 @@ class register_screen_view(View):
         username = request.POST.get("username")
         firstname = request.POST.get("firstname")
         password = request.POST.get("password")
-        form = AccountOfficer(email = email, username=username, firstname=firstname, password=password)
+        form = AccountOfficer(email=email, username=username,
+                              firstname=firstname, password=password)
         form.save()
 
-        return redirect('account-officer')              
+        return redirect('account-officer')
+
+
+# def accoff_login_screen_view(request):
+#     if (request.method == 'GET'):
+#         return render(request, 'admin/accofficerlogin.html')
+#     else:
+
+#         email = request.POST['email']
+#         password = request.POST['password']
+#         intakes = AccountOfficer.objects.all().filter(email=email, password=password)
+
+#         for intake in intakes:
+
+#             if intake.email == email and intake.password == password:
+#                 return render(request, "admin/employee/attendance-employee.html")
+#             else:
+#                 return render(request, "admin/register.html")
 
 def accoff_login_screen_view(request):
-    if (request.method == 'GET'):
-        return render(request, 'admin/accofficerlogin.html')
+    context = {}
+
+    user = request.user
+    if user.is_authenticated:
+        return redirect('employee-schedule')
+
+    if request.method == 'POST':
+        form = AccountOfficerForm(request.POST)
+        if form.is_valid():
+            email = request.POST['email']
+            password = request.POST['password']
+            user = authenticate(email=email, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect('employee-schedule')
+        else:
+            messages.info(request, 'Email or Password do not match!')
+            return redirect('account-officer')
     else:
+        form = AccountOfficerForm()
 
-        email = request.POST['email']
-        password = request.POST['password']
-        intakes = AccountOfficer.objects.all().filter(email=email,password=password)
-
-        for intake in intakes:
-
-            if intake.email==email and intake.password==password:
-                return render(request, "admin/employee/attendance-employee.html")
-            else:
-                return render(request, "admin/register.html")
+    context['form'] = form
+    return render(request, 'admin/accofficerlogin.html', context)
 
 # AUTHENTICATION
+
+
 def login_screen_view(request):
     context = {}
 
@@ -230,9 +274,13 @@ def login_screen_view(request):
             user = authenticate(email=email, password=password)
 
             if user is not None:
-                login(request, user)
-                return redirect('admin-dashboard')
 
+                if user.role == "admin":
+                    login(request, user)
+                    return redirect('admin-dashboard')
+                else:
+                    login(request, user)
+                    return redirect('employee-schedule')
         else:
             messages.info(request, 'Email or Password do not match!')
             return redirect('admin-login')
@@ -672,6 +720,7 @@ def leaves_employee_screen_view(request):
 def leaves_settings_screen_view(request):
     return render(request, 'admin/employee/leaves-settings.html')
 
+
 def attendance_admin_screen_view(request):
     return render(request, 'admin/employee/attendance-admin.html')
 
@@ -755,6 +804,7 @@ class attendance_employee_screen_view(LoginRequiredMixin, View):
 
         }
         return render(request, 'admin/employee/attendance-employee.html', context)
+
 
 class departments_screen_view(LoginRequiredMixin, View):
     login_url = 'admin-login'
@@ -875,7 +925,10 @@ class salary_screen_view(View):
 # SCHEDULE
 
 
-class employee_schedule_view(View):
+class employee_schedule_view(LoginRequiredMixin, View):
+    login_url = 'admin-login'
+    redirect_field_name = 'redirect_to'
+
     def get(self, request):
         schedule = EmployeeSchedule.objects.all()
         context = {

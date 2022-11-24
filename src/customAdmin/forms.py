@@ -20,8 +20,9 @@ class AccountAuthenticationForm(forms.ModelForm):
         if not authenticate(email=email, password=password):
             raise forms.ValidationError('Invalid Login')
 
-class AccountOfficerForm(forms.ModelForm): # Account Officer
-   class Meta:
+
+class AccountOfficerForm(forms.ModelForm):  # Account Officer
+    class Meta:
         model = AccountOfficer
         fields = "__all__"
 

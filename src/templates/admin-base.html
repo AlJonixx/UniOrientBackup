@@ -384,10 +384,12 @@
             <div class="sidebar" id="sidebar">
                 <div class="sidebar-inner slimscroll">
 					<div id="sidebar-menu" class="sidebar-menu">
+						
 						<ul>
 							<li class="menu-title"> 
 								<span>Main</span>
 							</li>
+							{% if user.role == 'admin' %}
 							<li class="submenu">
 								<a href="#"><i class="la la-dashboard"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
@@ -417,6 +419,7 @@
 							<li class="menu-title"> 
 								<span>Employees</span>
 							</li>
+							
 							<li class="submenu">
 								<a href="#" class="noti-dot"><i class="la la-user"></i> <span> Employees</span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
@@ -434,7 +437,7 @@
 									<li><a class="{% if request.path == overTime %}active{% endif %}" href="{% url 'overtime' %}">Overtime</a></li> -->
 								</ul>
 							</li>
-
+							{% endif %}
 							<li class="menu-title"> 
 								<span>Schedules</span>
 							</li>
