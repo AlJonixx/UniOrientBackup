@@ -2,14 +2,9 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.forms import fields, models
 from django.forms.widgets import PasswordInput
-<<<<<<< HEAD
-from customAdmin.models import Department, Designation, Employee, EmployeeAttendance, EmployeeSalary, NewUser, PrimaryEmergencyContacts, AccountOfficer
-from django.contrib.auth.forms import UserCreationForm
-=======
-from customAdmin.models import Department, Designation, Employee, EmployeeAttendance, EmployeeSchedule, EmployeeSalary, NewUser, PrimaryEmergencyContacts
+from customAdmin.models import Department, Designation, Employee, EmployeeAttendance, EmployeeSchedule, EmployeeSalary, NewUser, PrimaryEmergencyContacts, AccountOfficer
 
 from customAdmin.models import *
->>>>>>> 70f4444c3cd36f19ef711b45d9d0106f53ccc2f1
 
 
 class AccountAuthenticationForm(forms.ModelForm):
@@ -24,17 +19,6 @@ class AccountAuthenticationForm(forms.ModelForm):
 
         if not authenticate(email=email, password=password):
             raise forms.ValidationError('Invalid Login')
-
-<<<<<<< HEAD
-class AccountForm(UserCreationForm):
-
-=======
-
-class AccountOfficerForm(forms.ModelForm):  # Account Officer
->>>>>>> 70f4444c3cd36f19ef711b45d9d0106f53ccc2f1
-    class Meta:
-        model = NewUser
-        fields = ['user_name','email', 'password']
 
 class AccountOfficerForm(forms.ModelForm): # Account Officer
    class Meta:

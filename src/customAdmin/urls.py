@@ -70,18 +70,10 @@ from customAdmin.views import (
 
     # Face Recog Images
     gallery_view,
-
-    registerPage_screen_view,
-    loginPage_screen_view,
-    logoutUser_screen_view,
 )
 
 
 urlpatterns = [
-
-    path('register1', registerPage_screen_view, name="register1"),
-	path('login1', loginPage_screen_view, name="login1"),  
-	path('logout', logoutUser_screen_view, name="logout"),
 
     # FINAL EXAM REQUIREMENT
     path('landing-page', landing_page_view, name='landing-page'),
