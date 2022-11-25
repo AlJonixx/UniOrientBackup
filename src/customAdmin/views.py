@@ -935,6 +935,21 @@ class employee_schedule_view(LoginRequiredMixin, View):
             'schedules': schedule,
         }
         return render(request, 'admin/employee/employees-schedule.html', context)
+    
+    def post(self, request):
+        form = EmployeeScheduleForm(request.POST)
+        if "btnSubmitSchedule" in request.POST:
+            schedin = request.POST.get("schedule_in")
+            schedout = request.POST.get("schedule_out")
+
+            inS = datetime.combine(datetime.now(), datetime.strptime(schedin + "000", "%H:%M:%S.%f").time())
+            outS = datetime.combine(datetime.now(), datetime.strptime(schedout + "000", "%H:%M:%S.%f").time())
+
+            form = EmployeeSchedule(timein=inS, timeout=outS)
+            form.save()
+
+            messages.success(request, "Schedule successfully Added!")
+            return redirect('employee-schedule')
 
 
 # START OF REPORT VIEWS

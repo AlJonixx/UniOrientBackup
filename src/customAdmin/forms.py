@@ -57,7 +57,7 @@ class EmployeeSalaryForm(forms.ModelForm):
         fields = "__all__"
 
 
-class EmployeSchduleForm(forms.ModelForm):
+class EmployeeScheduleForm(forms.ModelForm):
     class Meta:
         model = EmployeeSchedule
         fields = "__all__"

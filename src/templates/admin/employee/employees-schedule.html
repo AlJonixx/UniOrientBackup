@@ -20,7 +20,7 @@
 								</ul>
 							</div>
 							<div class="col-auto float-right ml-auto">
-								<a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_department"><i class="fa fa-plus"></i> Add Schedule</a>
+								<a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_schedule"><i class="fa fa-plus"></i> Add Schedule</a>
 							</div>
 						</div>
 					</div>
@@ -86,7 +86,37 @@
                 </div>
 				<!-- /Page Content -->
 				
+				<!--Add Schedule Modal-->
+				<div id="add_schedule" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Add Designation</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form method="POST">
+								{% csrf_token %}
+									<div class="form-group">
+										<label>Time in <span class="text-danger">*</span></label>
+										<input name="schedule_in" class="form-control" type="time" step=".010" value="00:00">
+									</div>
 
+									<div class="form-group">
+										<label>Time in <span class="text-danger">*</span></label>
+										<input name="schedule_out" class="form-control" type="time" step=".010" value="00:00">
+									</div>
+									
+									<div class="submit-section">
+										<button name="btnSubmitSchedule" class="btn btn-primary submit-btn">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
 		
             </div>
 			<!-- /Page Wrapper -->
