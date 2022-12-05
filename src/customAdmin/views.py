@@ -1,6 +1,4 @@
 from datetime import datetime
-from datetime import time
-from datetime import date
 import calendar
 from xml.sax.xmlreader import AttributesNSImpl
 from django import forms
@@ -598,11 +596,19 @@ class profile_screen_view(LoginRequiredMixin, View):
 
             employee = Employee.objects.all()
             #empatt = EmployeeAttendance.objects.all()
-            today = date.today().month
+            today = datetime.today().month            
+            # totalMin = EmployeeAttendance.objects.values('timein')
 
-            attendanceFilter = EmployeeAttendance.objects.filter(
-                employee_id_id=id, todaydate__month__gte=today, todaydate__month__lte=today)
-            totalMin = EmployeeAttendance.objects.values('timein')
+            #FILTER FOR KINSENAS
+            if 'kinsenas1' in request.GET:
+                attendanceFilter = EmployeeAttendance.objects.filter(employee_id_id=id, todaydate__range=[datetime.now().replace(day=1), datetime.now().replace(day=15)])
+            
+            elif 'kinsenas2' in request.GET:
+                attendanceFilter = EmployeeAttendance.objects.filter(employee_id_id=id, todaydate__range=[datetime.now().replace(day=16), datetime.now().replace(day=31)])
+            
+            else:
+                attendanceFilter = EmployeeAttendance.objects.filter(employee_id_id=id, todaydate__month__gte=today, todaydate__month__lte=today)
+            #END FILTER FOR KINSENAS
 
         context = {
             'id': id,
@@ -795,8 +801,8 @@ class attendance_employee_screen_view(LoginRequiredMixin, View):
             # empatt = EmployeeAttendance.objects.all()
             today = datetime.today()
             date = EmployeeAttendance.objects.filter(todaydate=today)
-            totalMin = EmployeeAttendance.objects.values('timein')
-
+            # totalMin = EmployeeAttendance.objects.values('timein')
+            
         context = {
             'emp': emp,
             'empatt': date,
