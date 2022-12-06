@@ -66,6 +66,7 @@
 											<th>Time In</th>
 											<th>Time Out</th>
                                             <th>Status</th>
+											<th>Action</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -76,6 +77,18 @@
                                             <td>{{sked.timein|time:"h:i A"}}</td>
                                             <td>{{sked.timeout|time:"h:i A"}}</td>
                                             <td>{{sked.status}}</td>
+											<td>{% if sked.status == "ACTIVE"%} 
+													<form method="POST">
+														{% csrf_token %}
+													<button type="submit" class="btn btn-danger btn-block" name="deactivate" value="{{sked.id}}">DEACTIVATE</button>
+													</form>
+												{%else%}
+													<form method="POST">
+														{% csrf_token %}
+													<button type="submit" class="btn btn-success btn-block" name="activate" value="{{sked.id}}">ACTIVATE</button>
+													</form>
+												{%endif%}
+											</td>
 										</tr>		
                                         {% endfor %}
 									</tbody>

@@ -108,6 +108,10 @@
                                     <div class="form-group">
 										 <label class="focus-label">Employee ID</label>
                                         <input  id="employeeID" name="employeeID" class="form-control" type="text" >	
+										{%for s in sched%}
+										<input type="text" class="form-control" name="timein" value="{{s.timein|time:"H:i:s"}}" hidden>
+										<input type="text" class="form-control" name="timeout" value="{{s.timeout|time:"H:i:s"}}" hidden>
+										{%endfor%}
 										<button style="visibility:hidden"  id="myBtn" class="btn btn-primary account-btn" name="TimeLogin" type="submit">Login</button>									
                                     </div>
                                 </div>
