@@ -988,7 +988,7 @@ class salary_view_screen_view(View):
         # SUM TOTAL MINUTES LATE
         late_first_period = EmployeeAttendance.objects.filter(employee_id_id=id).filter(
             status="LATE").filter(todaydate__range=[datetime.now().replace(day=1), datetime.now().replace(day=15)]).aggregate(TOTAL=Sum('lateMin'))['TOTAL']
-
+        late_first_period = 0
         # PASS SALARY DETAILS
         salary = EmployeeSalary.objects.filter(employee_id_id=id)
 
@@ -1071,7 +1071,7 @@ class salary_view_screen_view(View):
         late_second_period = EmployeeAttendance.objects.filter(employee_id_id=id).filter(
             status="LATE").filter(todaydate__range=[
                 datetime.now().replace(day=16), datetime.now().replace(day=31)]).aggregate(TOTAL=Sum('lateMin'))['TOTAL']
-
+        late_second_period = 0
         # PASS SALARY DETAILS
         salary = EmployeeSalary.objects.filter(employee_id_id=id)
 
@@ -1084,6 +1084,7 @@ class salary_view_screen_view(View):
             sss = sal.sss
 
         absent_deductions = daily_rate * absent_second_period
+
         total_deductions = pagibig + philhealth + \
             sss + absent_deductions + late_second_period
 
