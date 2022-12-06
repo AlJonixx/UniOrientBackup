@@ -106,10 +106,10 @@ class attendance_screen_view(LoginRequiredMixin, View):
                                 if EmployeeAttendance.objects.filter(timein__isnull=True).filter(todaydate=datetime.today()):
                                     EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(
                                         employee_id_id=empId).update(
-                                        timein=inout, employee_id_id=empId, status="LATE", lateMin=TimeIntotalMin)
+                                        timein=inout, employee_id_id=empId, status="LATE", remarks="TIMED IN", lateMin=TimeIntotalMin)
                         else:
                             EmployeeAttendance.objects.update(
-                                timein=inout, employee_id_id=empId, status="TIME IN")
+                                timein=inout, employee_id_id=empId, status="TIME IN", remarks="TIMED IN")
 
                     messages.success(request, 'Timed In Successfully!')
                     return redirect('attendance')
@@ -526,9 +526,6 @@ class profile_screen_view(LoginRequiredMixin, View):
 
         today = date.today().month
 
-        absent = EmployeeAttendance.objects.filter(employee_id_id=id).filter(
-            status="NONE").filter(todaydate__month__lte=today).filter(remarks="ABSENT").count()
-
         salaryList = EmployeeSalary.objects.filter(employee_id_id=id)
 
         for sal in salaryList:
@@ -556,6 +553,9 @@ class profile_screen_view(LoginRequiredMixin, View):
 
         today_month = calendar.month_name[current_month]
 
+        absent = EmployeeAttendance.objects.filter(employee_id_id=id).filter(
+            status="NONE").filter(todaydate__month__lte=today).filter(remarks="ABSENT").count()
+
         for week in cal.monthdayscalendar(current_year, current_month):
             for i, day in enumerate(week):
                 # not this month's day or a weekend
@@ -574,11 +574,17 @@ class profile_screen_view(LoginRequiredMixin, View):
                 attendanceFilter = EmployeeAttendance.objects.filter(
                     employee_id_id=id, todaydate=searchDate)
 
+                absent = EmployeeAttendance.objects.filter(employee_id_id=id).filter(
+                    status="NONE").filter(todaydate=searchDate).filter(remarks="ABSENT").count()
+
             elif searchYear != '':
                 # date = EmployeeAttendance.objects.filter(
                 # todaydate__year__gte=searchYear, todaydate__year__lte=searchYear)
                 attendanceFilter = EmployeeAttendance.objects.filter(
                     employee_id_id=id, todaydate__year__gte=searchYear, todaydate__year__lte=searchYear)
+
+                absent = EmployeeAttendance.objects.filter(employee_id_id=id).filter(
+                    status="NONE").filter(todaydate__year__gte=searchYear, todaydate__year__lte=searchYear).filter(remarks="ABSENT").count()
 
             elif searchMonth != '':
                 # date = EmployeeAttendance.objects.filter(
@@ -586,29 +592,45 @@ class profile_screen_view(LoginRequiredMixin, View):
                 attendanceFilter = EmployeeAttendance.objects.filter(
                     employee_id_id=id, todaydate__month__gte=searchMonth, todaydate__month__lte=searchMonth)
 
+                absent = EmployeeAttendance.objects.filter(employee_id_id=id).filter(
+                    status="NONE").filter(todaydate__month__gte=searchMonth, todaydate__month__lte=searchMonth).filter(remarks="ABSENT").count()
+
             elif searchYear and searchMonth != '':
                 # date = EmployeeAttendance.objects.filter(
                 #     todaydate__year__gte=searchYear, todaydate__month__gte=searchMonth, todaydate__year__lte=searchYear, todaydate__month__lte=searchMonth)
                 attendanceFilter = EmployeeAttendance.objects.filter(
                     employee_id_id=id, todaydate__year__gte=searchYear, todaydate__month__gte=searchMonth, todaydate__year__lte=searchYear, todaydate__month__lte=searchMonth)
 
+                absent = EmployeeAttendance.objects.filter(employee_id_id=id).filter(
+                    status="NONE").filter(todaydate__year__gte=searchYear, todaydate__month__gte=searchMonth, todaydate__year__lte=searchYear, todaydate__month__lte=searchMonth).filter(remarks="ABSENT").count()
+
         else:
 
             employee = Employee.objects.all()
             #empatt = EmployeeAttendance.objects.all()
-            today = datetime.today().month            
+            today = datetime.today().month
             # totalMin = EmployeeAttendance.objects.values('timein')
 
-            #FILTER FOR KINSENAS
+            # FILTER FOR KINSENAS
             if 'kinsenas1' in request.GET:
-                attendanceFilter = EmployeeAttendance.objects.filter(employee_id_id=id, todaydate__range=[datetime.now().replace(day=1), datetime.now().replace(day=15)])
-            
+                attendanceFilter = EmployeeAttendance.objects.filter(employee_id_id=id, todaydate__range=[
+                                                                     datetime.now().replace(day=1), datetime.now().replace(day=15)])
+
+                absent = EmployeeAttendance.objects.filter(employee_id_id=id).filter(
+                    status="NONE").filter(todaydate__range=[datetime.now().replace(day=1), datetime.now().replace(day=15)]).filter(remarks="ABSENT").count()
+
             elif 'kinsenas2' in request.GET:
-                attendanceFilter = EmployeeAttendance.objects.filter(employee_id_id=id, todaydate__range=[datetime.now().replace(day=16), datetime.now().replace(day=31)])
-            
+                attendanceFilter = EmployeeAttendance.objects.filter(employee_id_id=id, todaydate__range=[
+                                                                     datetime.now().replace(day=16), datetime.now().replace(day=31)])
+                absent = EmployeeAttendance.objects.filter(employee_id_id=id).filter(
+                    status="NONE").filter(todaydate__range=[
+                        datetime.now().replace(day=16), datetime.now().replace(day=31)]).filter(remarks="ABSENT").count()
+
             else:
-                attendanceFilter = EmployeeAttendance.objects.filter(employee_id_id=id, todaydate__month__gte=today, todaydate__month__lte=today)
-            #END FILTER FOR KINSENAS
+                attendanceFilter = EmployeeAttendance.objects.filter(
+                    employee_id_id=id, todaydate__month__gte=today, todaydate__month__lte=today)
+
+            # END FILTER FOR KINSENAS
 
         context = {
             'id': id,
@@ -802,7 +824,7 @@ class attendance_employee_screen_view(LoginRequiredMixin, View):
             today = datetime.today()
             date = EmployeeAttendance.objects.filter(todaydate=today)
             # totalMin = EmployeeAttendance.objects.values('timein')
-            
+
         context = {
             'emp': emp,
             'empatt': date,
@@ -941,15 +963,17 @@ class employee_schedule_view(LoginRequiredMixin, View):
             'schedules': schedule,
         }
         return render(request, 'admin/employee/employees-schedule.html', context)
-    
+
     def post(self, request):
         form = EmployeeScheduleForm(request.POST)
         if "btnSubmitSchedule" in request.POST:
             schedin = request.POST.get("schedule_in")
             schedout = request.POST.get("schedule_out")
 
-            inS = datetime.combine(datetime.now(), datetime.strptime(schedin + "000", "%H:%M:%S.%f").time())
-            outS = datetime.combine(datetime.now(), datetime.strptime(schedout + "000", "%H:%M:%S.%f").time())
+            inS = datetime.combine(datetime.now(), datetime.strptime(
+                schedin + "000", "%H:%M:%S.%f").time())
+            outS = datetime.combine(datetime.now(), datetime.strptime(
+                schedout + "000", "%H:%M:%S.%f").time())
 
             form = EmployeeSchedule(timein=inS, timeout=outS)
             form.save()
