@@ -138,7 +138,10 @@ urlpatterns = [
     path('overtime-report', overtime_report_screen_view, name='overtime-report'),
 
     # PAYROLL TAB
-    path('salary-view', salary_view_screen_view, name='salary-view'),
+    path('salary-view/first-period/<int:id>',
+         salary_view_screen_view.first_period, name='salary-view-first-period'),
+    path('salary-view/second-period/<int:id>',
+         salary_view_screen_view.second_period, name='salary-view-second-period'),
     path('payroll-items', payroll_items_screen_view, name='payroll-items'),
     path('salary', salary_screen_view.as_view(), name='salary'),
 ]

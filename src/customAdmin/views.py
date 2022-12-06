@@ -1,5 +1,7 @@
 from datetime import datetime
+from datetime import date
 import calendar
+import inflect
 from xml.sax.xmlreader import AttributesNSImpl
 from django import forms
 from django.contrib import messages
@@ -9,6 +11,9 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 import random
+from django.db.models import Sum
+from random import randint, randrange
+
 
 from customAdmin.forms import AccountAuthenticationForm, DepartmentForm, DesignationForm, EmergencyContactForm, EmployeeForm, EmployeeSalaryForm, AccountOfficerForm
 from .models import *
@@ -766,7 +771,7 @@ class initial_attendance_view(LoginRequiredMixin, View):
         for employee in emp:
             print("SAVE")
             form = EmployeeAttendance(
-                employee_id_id=employee.employee_id, status="NONE", remarks="ABSENT",)
+                employee_id_id=employee.employee_id, status="NONE", remarks="ABSENT", hours=0, lateMin=0)
             form.save()
 
         context = {
@@ -936,8 +941,178 @@ def payroll_items_screen_view(request):
     return render(request, 'admin/payroll/payroll-items.html')
 
 
-def salary_view_screen_view(request):
-    return render(request, 'admin/payroll/salary-view.html')
+class salary_view_screen_view(View):
+    def get(self, request, id):
+
+        context = {
+
+        }
+
+        return render(request, 'admin/payroll/salary-view.html', context)
+
+    @staticmethod
+    def first_period(request, id):
+        employee = Employee.objects.filter(employee_id=id)
+
+        # GET DESIGNATION NAME
+        for desig in employee:
+            desigId = desig.designation_name_id
+
+        designation = Designation.objects.filter(department_name_id=desigId)
+
+        for role in designation:
+            emp_role = role.designation_name
+
+        # GET CURRENT DATE
+        current_month = date.today().month
+
+        today_month = calendar.month_name[current_month]
+        todays_date = date.today()
+
+        # PASS HEADER TO TEMPLATE
+        payslip = "PAYSLIP FOR THE MONTH OF " + \
+            today_month + " " + str(todays_date.year) + " (1st Period)"
+
+        # GENERATE RANDOM NUMBER FOR PAYSLIP
+        range_start = 10**(5-1)
+        range_end = (10**5)-1
+        payslip_number = randint(range_start, range_end)
+
+        # Number to Words
+        p = inflect.engine()
+
+        # COUNT ABSENT FIRST PERIOD
+        absent_first_period = EmployeeAttendance.objects.filter(employee_id_id=id).filter(
+            status="NONE").filter(todaydate__range=[datetime.now().replace(day=1), datetime.now().replace(day=15)]).filter(remarks="ABSENT").count()
+
+        # SUM TOTAL MINUTES LATE
+        late_first_period = EmployeeAttendance.objects.filter(employee_id_id=id).filter(
+            status="LATE").filter(todaydate__range=[datetime.now().replace(day=1), datetime.now().replace(day=15)]).aggregate(TOTAL=Sum('lateMin'))['TOTAL']
+
+        # PASS SALARY DETAILS
+        salary = EmployeeSalary.objects.filter(employee_id_id=id)
+
+        for sal in salary:
+            base_salary = sal.base_salary
+            daily_rate = sal.daily_rate
+            gross_rate = sal.gross_salary
+            pagibig = sal.pag_ibig
+            philhealth = sal.philhealth
+            sss = sal.sss
+
+        absent_deductions = daily_rate * absent_first_period
+        total_deductions = pagibig + philhealth + \
+            sss + absent_deductions + late_first_period
+
+        net_salary = int((gross_rate / 2) - total_deductions)
+
+        context = {
+            'id': id,
+            'employee': employee,
+            'emp_role': emp_role,
+            'payslip': payslip,
+            'today_month': today_month,
+            'today_year':  str(todays_date.year),
+            'payslip_number': payslip_number,
+            'base_salary': base_salary,
+            'daily_rate': daily_rate,
+            'gross_rate': gross_rate,
+            'pagibig': pagibig,
+            'philhealth': philhealth,
+            'sss': sss,
+            'total_deductions': total_deductions,
+            'net_salary': net_salary,
+            'word_salary': p.number_to_words(net_salary),
+            'absent_first_period': absent_first_period,
+            'absent_deductions': absent_deductions,
+            'late_first_period': str(late_first_period),
+            'first_period_salary': int(base_salary/2),
+        }
+
+        return render(request, 'admin/payroll/salary-view.html', context)
+
+    @staticmethod
+    def second_period(request, id):
+        employee = Employee.objects.filter(employee_id=id)
+
+        # GET DESIGNATION NAME
+        for desig in employee:
+            desigId = desig.designation_name_id
+
+        designation = Designation.objects.filter(department_name_id=desigId)
+
+        for role in designation:
+            emp_role = role.designation_name
+
+        # GET CURRENT DATE
+        current_month = date.today().month
+
+        today_month = calendar.month_name[current_month]
+        todays_date = date.today()
+
+        # PASS HEADER TO TEMPLATE
+        payslip = "PAYSLIP FOR THE MONTH OF " + \
+            today_month + " " + str(todays_date.year) + " (2nd Period)"
+
+        # GENERATE RANDOM NUMBER FOR PAYSLIP
+        range_start = 10**(5-1)
+        range_end = (10**5)-1
+        payslip_number = randint(range_start, range_end)
+
+        # Number to Words
+        p = inflect.engine()
+
+        # COUNT ABSENT SECOND PERIOD
+        absent_second_period = EmployeeAttendance.objects.filter(employee_id_id=id).filter(
+            status="NONE").filter(todaydate__range=[
+                datetime.now().replace(day=16), datetime.now().replace(day=31)]).filter(remarks="ABSENT").count()
+
+        # SUM TOTAL MINUTES LATE
+        late_second_period = EmployeeAttendance.objects.filter(employee_id_id=id).filter(
+            status="LATE").filter(todaydate__range=[
+                datetime.now().replace(day=16), datetime.now().replace(day=31)]).aggregate(TOTAL=Sum('lateMin'))['TOTAL']
+
+        # PASS SALARY DETAILS
+        salary = EmployeeSalary.objects.filter(employee_id_id=id)
+
+        for sal in salary:
+            base_salary = sal.base_salary
+            daily_rate = sal.daily_rate
+            gross_rate = sal.gross_salary
+            pagibig = sal.pag_ibig
+            philhealth = sal.philhealth
+            sss = sal.sss
+
+        absent_deductions = daily_rate * absent_second_period
+        total_deductions = pagibig + philhealth + \
+            sss + absent_deductions + late_second_period
+
+        net_salary = int((gross_rate / 2) - total_deductions)
+
+        context = {
+            'id': id,
+            'employee': employee,
+            'emp_role': emp_role,
+            'payslip': payslip,
+            'today_month': today_month,
+            'today_year':  str(todays_date.year),
+            'payslip_number': payslip_number,
+            'base_salary': base_salary,
+            'daily_rate': daily_rate,
+            'gross_rate': gross_rate,
+            'pagibig': pagibig,
+            'philhealth': philhealth,
+            'sss': sss,
+            'total_deductions': total_deductions,
+            'net_salary': net_salary,
+            'word_salary': p.number_to_words(net_salary),
+            'absent_first_period': absent_second_period,
+            'absent_deductions': absent_deductions,
+            'late_first_period': str(late_second_period),
+            'first_period_salary': int(base_salary/2),
+        }
+
+        return render(request, 'admin/payroll/salary-view.html', context)
 
 
 class salary_screen_view(View):

@@ -1,7 +1,8 @@
 # UniOrientBackup
 Human Resource Information System for Uni-Orient Travel Incorporated (Cebu) with Descriptive Analytics
 
-1. Don' forget to install all apps in requirements.txtusing pip freeze command
+1. Don't forget to install all apps in requirements.txt using pip freeze command
+2. pip install -r requirements.txt
 
 Set Database to this:
 

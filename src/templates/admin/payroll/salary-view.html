@@ -22,9 +22,8 @@
 							</div>
 							<div class="col-auto float-right ml-auto">
 								<div class="btn-group btn-group-sm">
-									<button class="btn btn-white">CSV</button>
-									<button class="btn btn-white">PDF</button>
-									<button class="btn btn-white"><i class="fa fa-print fa-lg"></i> Print</button>
+									<button id="btnExportPDF" class="btn btn-white">Download PDF</button>
+									{% comment %} <button class="btn btn-white"><i class="fa fa-print fa-lg"></i> Print</button> {% endcomment %}
 								</div>
 							</div>
 						</div>
@@ -34,8 +33,8 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="card">
-								<div class="card-body">
-									<h4 class="payslip-title">Payslip for the month of Feb 2019</h4>
+								<div class="card-body employee-payslip">
+									<h4 class="payslip-title">{{payslip}}</h4>
 									<div class="row">
 										<div class="col-sm-6 m-b-20">
 											<img src="{% static '/home/assets/img/uni-logo-transparent.png' %}" class="inv-logo" alt="">
@@ -48,9 +47,9 @@
 										</div>
 										<div class="col-sm-6 m-b-20">
 											<div class="invoice-details">
-												<h3 class="text-uppercase">Payslip #49029</h3>
+												<h3 class="text-uppercase">Payslip #{{payslip_number}}</h3>
 												<ul class="list-unstyled">
-													<li>Salary Month: <span>March, 2019</span></li>
+													<li>Salary Month: <span>{{today_month}}, {{today_year}}</span></li>
 												</ul>
 											</div>
 										</div>
@@ -58,10 +57,12 @@
 									<div class="row">
 										<div class="col-lg-12 m-b-20">
 											<ul class="list-unstyled">
-												<li><h5 class="mb-0"><strong>John Doe</strong></h5></li>
-												<li><span>Web Designer</span></li>
-												<li>Employee ID: FT-0009</li>
-												<li>Joining Date: 1 Jan 2013</li>
+												{% for emp in employee %}
+												<li><h5 class="mb-0"><strong>{{emp.firstname}} {{emp.lastname}}</strong></h5></li>
+												<li><span>{{emp_role}}</span></li>
+												<li>{{emp.employee_id}}</li>
+												<li>Joined Date: {{emp.join_date|date:"M d,Y"}}</li>
+												{% endfor %}
 											</ul>
 										</div>
 									</div>
@@ -72,19 +73,19 @@
 												<table class="table table-bordered">
 													<tbody>
 														<tr>
-															<td><strong>Basic Salary</strong> <span class="float-right">$6500</span></td>
+															<td><strong>Monthy Basic Salary</strong> <span class="float-right">₱{{base_salary}}</span></td>
 														</tr>
 														<tr>
-															<td><strong>House Rent Allowance (H.R.A.)</strong> <span class="float-right">$55</span></td>
+															<td><strong>Daily Rate</strong> <span class="float-right">₱{{daily_rate}}</span></td>
 														</tr>
 														<tr>
-															<td><strong>Conveyance</strong> <span class="float-right">$55</span></td>
+															<td><strong>Monthly Gross Salary</strong> <span class="float-right">₱{{gross_rate}}</span></td>
 														</tr>
 														<tr>
-															<td><strong>Other Allowance</strong> <span class="float-right">$55</span></td>
+															<td><strong>First Period Salary</strong> <span class="float-right">₱{{first_period_salary}}</span></td>
 														</tr>
 														<tr>
-															<td><strong>Total Earnings</strong> <span class="float-right"><strong>$55</strong></span></td>
+															<td><strong>Total Earnings</strong> <span class="float-right"><strong>₱{{first_period_salary}}</strong></span></td>
 														</tr>
 													</tbody>
 												</table>
@@ -96,26 +97,29 @@
 												<table class="table table-bordered">
 													<tbody>
 														<tr>
-															<td><strong>Tax Deducted at Source (T.D.S.)</strong> <span class="float-right">$0</span></td>
+															<td><strong>PAG-IBIG</strong> <span class="float-right">₱{{pagibig}}</span></td>
 														</tr>
 														<tr>
-															<td><strong>Provident Fund</strong> <span class="float-right">$0</span></td>
+															<td><strong>PHILHEALTH</strong> <span class="float-right">₱{{philhealth}}</span></td>
 														</tr>
 														<tr>
-															<td><strong>ESI</strong> <span class="float-right">$0</span></td>
+															<td><strong>SSS</strong> <span class="float-right">₱{{sss}}</span></td>
 														</tr>
 														<tr>
-															<td><strong>Loan</strong> <span class="float-right">$300</span></td>
+															<td><strong>ABSENT</strong> <span class="float-right">₱{{absent_deductions}} | Absents: <span>{{absent_first_period}}</span></span></td>
 														</tr>
 														<tr>
-															<td><strong>Total Deductions</strong> <span class="float-right"><strong>$59698</strong></span></td>
+															<td><strong>LATE per Minute</strong> <span class="float-right">₱{{late_first_period}} | Total late: {{late_first_period}} mins.</span></td>
+														</tr>
+														<tr>
+															<td><strong>Total Deductions</strong> <span class="float-right"><strong>₱{{total_deductions}}</strong></span></td>
 														</tr>
 													</tbody>
 												</table>
 											</div>
 										</div>
 										<div class="col-sm-12">
-											<p><strong>Net Salary: $59698</strong> (Fifty nine thousand six hundred and ninety eight only.)</p>
+											<p><strong>Net Salary: ₱{{net_salary}}</strong> <span style="text-transform:capitalize">({{word_salary}})</span></p>
 										</div>
 									</div>
 								</div>
@@ -154,7 +158,11 @@
 		<!-- Custom JS -->
 		<script src="{% static '/admin/assets/js/app.js' %}"></script>
 
-		    <script>
+		<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+<script>
     	// Small Sidebar
 
 	$(document).on('click', '#toggle_btn', function() {
@@ -181,5 +189,27 @@
 			return false;
 		}
 	});
+
+	function Export() {
+			html2canvas(document.querySelector(".employee-payslip"), {
+				onrendered: function (canvas) {
+					var data = canvas.toDataURL();
+					var docDefinition = {
+						content: [{
+							image: data,
+							width: 700
+						}],
+							pageSize: 'LETTER',
+							pageOrientation: 'landscape',
+						left: 60, // the left position
+						right: 60, // the right position
+						verticalRatio: 0.2, // the ratio of space used vertically in this document (excluding margins)
+						horizontalRatio: 0.0
+					};
+					pdfMake.createPdf(docDefinition).download("Payslip.pdf");
+				}
+			});
+		}
+		document.querySelector('#btnExportPDF').addEventListener('click', Export);
     </script>
 {% endblock script %}
