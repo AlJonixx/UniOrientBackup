@@ -38,8 +38,8 @@ class attendance_screen_view(LoginRequiredMixin, View):
             emp = Employee.objects.all()
             sked = EmployeeSchedule.objects.filter(id=1)
             sched = EmployeeSchedule.objects.filter(status="ACTIVE")
-            
-            for schdule in sked:
+
+            for schdule in sched:
                 timein = schdule.timein
                 # officialTimein = timein.strftime("%H:%M:%S")
 
@@ -59,11 +59,11 @@ class attendance_screen_view(LoginRequiredMixin, View):
         if request.method == 'POST':
             if 'TimeLogin' in request.POST:
                 empId = request.POST.get("employeeID")
-                InOut = request.POST.get("LoginOptions")                
+                InOut = request.POST.get("LoginOptions")
 
                 currentDateAndTime = datetime.now()
                 currentTime = currentDateAndTime.strftime("%H:%M:%S")
-                                
+
                 currentEndTime = request.POST.get("timeout")
 
                 officialTimeIn = request.POST.get("timein")
@@ -88,14 +88,18 @@ class attendance_screen_view(LoginRequiredMixin, View):
 
                     if EmployeeAttendance.objects.filter(timein__isnull=False).filter(todaydate=datetime.today()).filter(employee_id_id=empId).exists():
                         if EmployeeAttendance.objects.filter(timein__isnull=False).filter(todaydate=datetime.today()):
+                            print(start_time)
+                            print(official_start_time)
                             messages.success(request, 'Already Timed In!')
                             return redirect('attendance')
                         else:
+                            print(start_time)
+                            print(official_start_time)
                             messages.success(request, 'Already Timed In!')
                             return redirect('attendance')
                     else:
 
-                        if inout > official_start_time:
+                        if start_time > official_start_time:
 
                             # LATE CALCULATIONS
                             EmpofficialTimeIn = datetime.strptime(
@@ -115,9 +119,13 @@ class attendance_screen_view(LoginRequiredMixin, View):
                                     EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(
                                         employee_id_id=empId).update(
                                         timein=inout, employee_id_id=empId, status="LATE", remarks="TIMED IN", lateMin=TimeIntotalMin)
+
                         else:
-                            EmployeeAttendance.objects.update(
-                                timein=inout, employee_id_id=empId, status="TIME IN", remarks="TIMED IN")
+                            if EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(employee_id_id=empId).exists():
+                                if EmployeeAttendance.objects.filter(timein__isnull=True).filter(todaydate=datetime.today()):
+                                    EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(
+                                        employee_id_id=empId).update(
+                                        timein=inout, employee_id_id=empId, status="TIME IN", remarks="TIMED IN", lateMin=0)
 
                     messages.success(request, 'Timed In Successfully!')
                     return redirect('attendance')
@@ -989,9 +997,10 @@ class salary_view_screen_view(View):
             status="NONE").filter(todaydate__range=[datetime.now().replace(day=1), datetime.now().replace(day=15)]).filter(remarks="ABSENT").count()
 
         # SUM TOTAL MINUTES LATE
-        late_first_period = EmployeeAttendance.objects.filter(employee_id_id=id).filter(
-            status="LATE").filter(todaydate__range=[datetime.now().replace(day=1), datetime.now().replace(day=15)]).aggregate(TOTAL=Sum('lateMin'))['TOTAL']
         late_first_period = 0
+        late_first_period = EmployeeAttendance.objects.filter(employee_id_id=id).filter(todaydate__range=[
+            datetime.now().replace(day=1), datetime.now().replace(day=15)]).aggregate(TOTAL=Sum('lateMin'))['TOTAL']
+
         # PASS SALARY DETAILS
         salary = EmployeeSalary.objects.filter(employee_id_id=id)
 
@@ -1071,10 +1080,9 @@ class salary_view_screen_view(View):
                 datetime.now().replace(day=16), datetime.now().replace(day=31)]).filter(remarks="ABSENT").count()
 
         # SUM TOTAL MINUTES LATE
-        late_second_period = EmployeeAttendance.objects.filter(employee_id_id=id).filter(
-            status="LATE").filter(todaydate__range=[
-                datetime.now().replace(day=16), datetime.now().replace(day=31)]).aggregate(TOTAL=Sum('lateMin'))['TOTAL']
-        late_second_period = 0
+        late_second_period = EmployeeAttendance.objects.filter(employee_id_id=id).filter(todaydate__range=[
+            datetime.now().replace(day=16), datetime.now().replace(day=31)]).aggregate(TOTAL=Sum('lateMin'))['TOTAL']
+
         # PASS SALARY DETAILS
         salary = EmployeeSalary.objects.filter(employee_id_id=id)
 
@@ -1160,7 +1168,7 @@ class employee_schedule_view(LoginRequiredMixin, View):
 
             messages.success(request, "Schedule successfully Added!")
             return redirect('employee-schedule')
-        
+
         if "activate" in request.POST:
             id = request.POST.get("activate")
             schedin = schedule.filter(id=id).values_list("timein")
@@ -1168,12 +1176,13 @@ class employee_schedule_view(LoginRequiredMixin, View):
 
             for empShed in schedule:
                 if empShed.id != id:
-                    EmployeeSchedule.objects.filter(id=empShed.id).exclude(id=id).update(status="INACTIVE")                     
-                            
-            EmployeeSchedule.objects.filter(id=id).update(status="ACTIVE")                
-            messages.success(request, "Schedule successfully Activated!")  
+                    EmployeeSchedule.objects.filter(id=empShed.id).exclude(
+                        id=id).update(status="INACTIVE")
 
-            Employee.objects.all().update(sched_start=schedin, sched_end=schedout)                                     
+            EmployeeSchedule.objects.filter(id=id).update(status="ACTIVE")
+            messages.success(request, "Schedule successfully Activated!")
+
+            Employee.objects.all().update(sched_start=schedin, sched_end=schedout)
             return redirect('employee-schedule')
 
         if "deactivate" in request.POST:
