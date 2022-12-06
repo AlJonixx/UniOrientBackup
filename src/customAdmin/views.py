@@ -37,14 +37,16 @@ class attendance_screen_view(LoginRequiredMixin, View):
         if user.role == "admin":
             emp = Employee.objects.all()
             sked = EmployeeSchedule.objects.filter(id=1)
-
+            sched = EmployeeSchedule.objects.filter(status="ACTIVE")
+            
             for schdule in sked:
                 timein = schdule.timein
-                officialTimein = timein.strftime("%H:%M:%S")
+                # officialTimein = timein.strftime("%H:%M:%S")
 
             context = {
                 'empl': emp,
                 'officialTimein': timein,
+                'sched': sched,
             }
 
             return render(request, 'take_attendance_template.html', context)
@@ -57,13 +59,14 @@ class attendance_screen_view(LoginRequiredMixin, View):
         if request.method == 'POST':
             if 'TimeLogin' in request.POST:
                 empId = request.POST.get("employeeID")
-                InOut = request.POST.get("LoginOptions")
+                InOut = request.POST.get("LoginOptions")                
 
                 currentDateAndTime = datetime.now()
                 currentTime = currentDateAndTime.strftime("%H:%M:%S")
-                currentEndTime = "17:00:00"
+                                
+                currentEndTime = request.POST.get("timeout")
 
-                officialTimeIn = "8:00:00"
+                officialTimeIn = request.POST.get("timein")
                 official_start_time = datetime.strptime(
                     officialTimeIn, "%H:%M:%S")
 
@@ -1141,6 +1144,7 @@ class employee_schedule_view(LoginRequiredMixin, View):
         return render(request, 'admin/employee/employees-schedule.html', context)
 
     def post(self, request):
+        schedule = EmployeeSchedule.objects.all()
         form = EmployeeScheduleForm(request.POST)
         if "btnSubmitSchedule" in request.POST:
             schedin = request.POST.get("schedule_in")
@@ -1156,7 +1160,28 @@ class employee_schedule_view(LoginRequiredMixin, View):
 
             messages.success(request, "Schedule successfully Added!")
             return redirect('employee-schedule')
+        
+        if "activate" in request.POST:
+            id = request.POST.get("activate")
+            schedin = schedule.filter(id=id).values_list("timein")
+            schedout = schedule.filter(id=id).values_list("timeout")
 
+            for empShed in schedule:
+                if empShed.id != id:
+                    EmployeeSchedule.objects.filter(id=empShed.id).exclude(id=id).update(status="INACTIVE")                     
+                            
+            EmployeeSchedule.objects.filter(id=id).update(status="ACTIVE")                
+            messages.success(request, "Schedule successfully Activated!")  
+
+            Employee.objects.all().update(sched_start=schedin, sched_end=schedout)                                     
+            return redirect('employee-schedule')
+
+        if "deactivate" in request.POST:
+            id = request.POST.get("deactivate")
+
+            EmployeeSchedule.objects.filter(id=id).update(status="INACTIVE")
+            messages.success(request, "Schedule successfully Deactivated!")
+            return redirect('employee-schedule')
 
 # START OF REPORT VIEWS
 
