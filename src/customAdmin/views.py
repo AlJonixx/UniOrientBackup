@@ -181,16 +181,23 @@ class admin_screen_view(LoginRequiredMixin, View):
     def get(self, request):
         user = request.user
         if user.role == "admin":
+            employee = Employee.objects.all()
             totalEmp = Employee.objects.count()
             totalDept = Department.objects.count()
             totalDesg = Designation.objects.count()
             totalPresent = EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(
                 timein__isnull=False, timeout__isnull=False).count()
+            todayAbsent = EmployeeAttendance.objects.filter(todaydate=datetime.today()).filter(
+                remarks="ABSENT").count()
+            schedule = EmployeeSchedule.objects.all()
             context = {
+                'empl': employee,
                 'totalEmp': totalEmp,
                 'totalDept': totalDept,
                 'totalDesg': totalDesg,
-                'totalPresent': totalPresent
+                'totalPresent': totalPresent,
+                'todayAbsent': todayAbsent,
+                'sched': schedule
             }
             return render(request, 'admin/index.html', context)
         else:
